@@ -49,7 +49,7 @@ CHANGELOG_TEXT = """MEER TOOL PRO — Changelog
 
 v1.0 (2026-10-22) — pehli mukammal release
 - Modules: HOME / UNLOCK / PLATFORMS / UTILITY / CHANGELOG
-- UNLOCK: 35 operations (ops tree) + Fenix-style MDM List — per-model
+- UNLOCK: 52 operations (ops tree) + Fenix-style MDM List — per-model
   database (tools/mdm-models.json, 58 models), mode tabs tags ke
   hisaab se: MTK par Download / Transsion META, Unisoc par Download /
   DIAG / Network / PATCHER, dono par ADB / FASTBOOT.
@@ -70,6 +70,29 @@ v1.0 (2026-10-22) — pehli mukammal release
   SPD official-tools launcher + FRP.pac guide.
 - Jo cheez server ke baghair nahi ho sakti, wahan tool imaandari se
   🔒 SERVER REQUIRED kehta hai — nakli success kabhi nahi.
+
+v1.0 — Round 4 izafa (REPAIR-METHODS-RESEARCH ke baad, 52 ops):
+- Qualcomm FRP v2 (GPT-driven): pehle GPT parh kar asal naam
+  (frp / persistent / config) erase hota hai — Samsung QC ke
+  A05s/A23 class par ab asal rasta. 'persist' (calibration)
+  kabhi nahi chua jata.
+- Unisoc ke standalone ops (spd_dump engine, stock PAC ke FDL
+  se): FRP Erase, Factory Reset, Cert (prodnv) Backup.
+- MTK NV Backup / NV Restore (nvram+nvdata jora) aur SN Writer /
+  Modem META launcher+guide — asal IMEI wapas karne ke raste.
+- Qualcomm QCN Backup/Restore (QPST/QFIL guide + diag tayyari)
+  aur selective EFS Backup/Restore (modemst1/2, fsg, fsc).
+- Fastboot FRP Erase + Factory Reset (sirf unlocked bootloader,
+  halat pehle getvar se confirm hoti hai).
+- IMEI gate mazboot: har tasdeeq tools/imei-audit.log me
+  mehfooz hoti hai; restore wale har op par pre-restore
+  snapshot lazmi hai.
+- Android 15/16 note (imaandari): Android 15/16 ki nayi FRP
+  sakhti setup-wizard wali tricks ko rokti hai — partition
+  erase wale asal servicing raste (BROM/EDL/FDL/fastboot) is
+  se band NAHI hote. Asal rok chipset ki server-signed auth
+  (SLA/DAA) hai, Android version nahi — jahan wo lage, tool
+  saaf SERVER REQUIRED kehta hai.
 """
 
 
@@ -410,7 +433,15 @@ class App(tk.Tk):
         """Model panel ke buttons — bilkul START wala rasta (runner)."""
         if op_obj is None:
             return
-        if self.runner.start(op_obj, self.device):
+        # IMEI gate: op par imei_write ka nishan ho to Network tab
+        # ke tasdeeq checkbox ki halat ctx tak bhejo — op khud
+        # warning chhapega aur baghair tasdeeq wahin ruk jayega.
+        confirmed = False
+        if getattr(op_obj, "OP", {}).get("imei_write"):
+            var = getattr(self, "net_imei_confirm_var", None)
+            confirmed = bool(var.get()) if var is not None else False
+        if self.runner.start(op_obj, self.device,
+                             imei_write_confirmed=confirmed):
             self.start_btn.configure(state="disabled")
             self.stop_btn.configure(state="normal")
 
@@ -572,11 +603,12 @@ class App(tk.Tk):
 
     def _tab_network(self, frame, model):
         self.net_vars = {}
-        for key, title in (("imei1", "IMEI 1"), ("imei2", "IMEI 2"),
+        for key, title in (("imei1", "Original IMEI 1 (dabbe/sticker wala)"),
+                           ("imei2", "Original IMEI 2 (dabbe/sticker wala)"),
                            ("bt_mac", "BT MAC"), ("wifi_mac", "WiFi MAC")):
             row = tk.Frame(frame, bg=PANEL)
             row.pack(fill="x", pady=1)
-            tk.Label(row, text=f"{title}:", bg=PANEL, fg=MUTED, width=9,
+            tk.Label(row, text=f"{title}:", bg=PANEL, fg=MUTED, width=32,
                      anchor="e", font=("Segoe UI", 8)).pack(side="left")
             var = tk.StringVar()
             self.net_vars[key] = var
@@ -589,6 +621,18 @@ class App(tk.Tk):
                              "Cert lazmi hai.",
                  bg=PANEL, fg=MUTED, wraplength=520, justify="left",
                  font=("Segoe UI", 8)).pack(anchor="w", pady=(4, 2))
+        # IMEI GATE ki tasdeeq: ye checkbox ON kiye baghair RESTORE
+        # CERT / RESTORE ORIGINAL IMEI live log me warning dikha kar
+        # wahi ruk jayenge — koi write shuru nahi hogi.
+        self.net_imei_confirm_var = tk.BooleanVar(value=False)
+        tk.Checkbutton(
+            frame,
+            text="Tasdeeq: ye IMEI is phone ke DABBE / STICKER wala "
+                 "ASAL IMEI hai — doosra IMEI likhna JURM hai",
+            variable=self.net_imei_confirm_var, bg=PANEL, fg=FG,
+            selectcolor=PANEL2, activebackground=PANEL,
+            activeforeground=FG, font=("Segoe UI", 8),
+            anchor="w").pack(anchor="w", pady=(2, 2))
         provider = lambda: (self.net_vars["imei1"].get(),
                             self.net_vars["imei2"].get())
         btnrow = tk.Frame(frame, bg=PANEL)
@@ -1203,7 +1247,15 @@ class App(tk.Tk):
     def start_op(self):
         if self.selected_op is None:
             return
-        if self.runner.start(self.selected_op, self.device):
+        # IMEI gate: ops-tree se chalne wale gated ops ko bhi
+        # Network tab ke tasdeeq checkbox ki halat bhejo (MDM
+        # panel wala _run_action rasta pehle se ye karta hai).
+        confirmed = False
+        if getattr(self.selected_op, "OP", {}).get("imei_write"):
+            var = getattr(self, "net_imei_confirm_var", None)
+            confirmed = bool(var.get()) if var is not None else False
+        if self.runner.start(self.selected_op, self.device,
+                             imei_write_confirmed=confirmed):
             self.start_btn.configure(state="disabled")
             self.stop_btn.configure(state="normal")
 
