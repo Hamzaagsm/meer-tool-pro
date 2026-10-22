@@ -127,6 +127,17 @@ jobs:
           --hidden-import ops.util_install_drivers
           --hidden-import ops.util_update_check
           --hidden-import ops.xiaomi_miassistant
+          --hidden-import ops.mtk_rpmb_read
+          --hidden-import ops.mtk_rpmb_write
+          --hidden-import ops.mtk_rpmb_erase
+          --hidden-import ops.qc_sector_read
+          --hidden-import ops.qc_sector_write
+          --hidden-import ops.qc_diag_enable
+          --hidden-import ops.adb_remove_ads
+          --hidden-import ops.adb_restore_ads
+          --hidden-import ops.adb_service_menus
+          --hidden-import ops.adb_private_dns
+          --hidden-import ops.adb_fix_install
           src/main.py
 
       - name: Package (EXE + tools folder aik ZIP me)
