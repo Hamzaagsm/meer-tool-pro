@@ -42,9 +42,12 @@ def _resolve_edl(ctx):
     loader, lnote = engines.pick_qualcomm_loader(dev)
     if loader is None:
         ctx.log(lnote, "ERROR")
-        ctx.log("Guide: koi firehose loader bundle NAHI kiya gaya "
-                "(brand-signed files hoti hain) — apne loaders app ke "
-                "tools/loaders/qualcomm/<brand>/ folder me rakho.", "WARN")
+        ctx.log("Guide: loaders Loaders Library "
+                "(tools/loaders/qualcomm/) se ate hain — pack install "
+                "hai ya nahi, 'EDL Loader Library' op se check karo; "
+                "apne alag loaders bhi wahan <brand>/ subfolder me "
+                "rakh sakte ho, ya 'Loaders Library Import' op se "
+                "andar kar sakte ho.", "WARN")
         return None
     if lnote:
         ctx.log(lnote, "INFO")
