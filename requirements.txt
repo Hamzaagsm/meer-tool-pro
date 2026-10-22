@@ -1,0 +1,8 @@
+# MEER TOOL PRO — minimal dependencies
+# Bunyadi tool SIRF Python standard library (Tkinter) par chalta hai,
+# taake EXE build aur one-click run kabhi na tore.
+#
+# COM-port detection (BROM/EDL scan) ke liye — EXE build me shamil
+# hai; source mode me na bhi ho to tool graceful degrade ke saath
+# phir bhi chalega:
+pyserial>=3.5
