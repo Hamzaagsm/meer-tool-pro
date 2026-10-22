@@ -27,8 +27,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import demo as demo_mod                       # noqa: E402
 from core import device_watch                 # noqa: E402
+from core import firmware_catalog             # noqa: E402
 from core import mdm_list                     # noqa: E402
 from core import platforms_mtk                # noqa: E402
+from core import repair_intel                 # noqa: E402
 from core import shop_db                      # noqa: E402
 from core import utility                      # noqa: E402
 from core.runner import ENGINES_DIR, Runner, TOOLS_DIR     # noqa: E402
@@ -241,6 +243,41 @@ sirf verified FT jawab — status 0x00 — par):
   asal phone par in ki verification pehle asal test ke
   saath hogi. Galat jawab par ops nakli success ki
   bajaye saaf FAIL dete hain — yahi design hai.
+
+v1.0.1 — Suite Phase 2 izafa (Firmware Center + Repair
+Intelligence; 99 ops):
+- FIRMWARE module: firmware RECORDS ka catalogue
+  (tools/firmware-catalog.json) — brand/model/code/
+  version/Android/size/official link/SHA-256 checksum.
+  Firmware yahan HOST nahi hoti; sirf official sources
+  ke records hain (catalogue source: Hovatek Stock ROM
+  Forum). Downloaded file ka checksum record se verify
+  karne ka button — match/mismatch log me saaf.
+- Firmware → Loader Harvest (naya op): factory firmware
+  (.zip/.tgz/.ofp/.ozip/.pac) ke andar se preloader /
+  lk / MTK DA / firehose / PAC ke FDL1/FDL2 nikaal kar
+  Loaders Library me darj — firehose/DA ki tasdeeq
+  magic bytes se, FDL ki PAC table se (Unisoc ke FDL
+  khane loaders/unisoc/ me), preloader/lk naam se
+  (alag record-khane; auto-select inhe kabhi DA nahi
+  samajhta). Har darj par provenance: 'harvested from
+  <firmware file>'.
+- REPAIR INTELLIGENCE: error-code library
+  (tools/repair-intel.json, 18 entries — har aik
+  vendored engines ke asal error strings/codes se
+  grounded, source darj) + FIRMWARE module me search.
+  Runner ab har FAIL hue op ke aakhir me log ko in
+  patterns se scan karke '💡 Repair Intelligence' hint
+  khud jor deta hai (match ho tab hi).
+- Driver rehnumai: koi op device/port na milne par
+  fail ho to aakhir me saaf 🔌 wali line — sahi mode
+  ki hidayat + UTILITY ke Install Drivers op ki taraf
+  ishara.
+- Backup-first audit: tamam destructive ops registry
+  se gin kar check hue. Do asal gaps band hue — Format
+  NVRAM+NVDATA aur Proinfo Write pehle warning-only
+  thay, ab dono par DANGER GATE (tasdeeq ke baghair
+  zero koshish) lag gaya hai.
 """
 
 
@@ -292,6 +329,10 @@ class App(tk.Tk):
         self.job_items = {}             # job tree item id -> job id
         self.job_cust_ids = []          # job form combo ki tartib se ids
         self.job_cust_labels = []       # combo labels (ids ke parallel)
+        # Suite Phase 2 (FIRMWARE CENTER) ki halat
+        self.fw_selected = None         # catalog entries ka index
+        self.fw_items = {}              # fw tree item id -> catalog index
+        self.fw_catalog = None          # load shuda catalogue dict
 
         self.runner = Runner(
             log_fn=lambda m, lvl: self.ui_q.put(("log", m, lvl)),
@@ -332,6 +373,7 @@ class App(tk.Tk):
                            ("utility", "UTILITY"),
                            ("customers", "CUSTOMERS"),
                            ("jobs", "JOBS"),
+                           ("firmware", "FIRMWARE"),
                            ("changelog", "CHANGELOG")):
             btn = tk.Button(mbar, text=title, relief="flat",
                             font=("Segoe UI", 9, "bold"), padx=12, pady=3,
@@ -434,6 +476,7 @@ class App(tk.Tk):
         self.module_frames["utility"] = self._build_utility(modarea)
         self.module_frames["customers"] = self._build_customers(modarea)
         self.module_frames["jobs"] = self._build_jobs(modarea)
+        self.module_frames["firmware"] = self._build_firmware(modarea)
         self.module_frames["changelog"] = self._build_changelog(modarea)
         mid.pack(fill="both", expand=True)
 
@@ -942,6 +985,8 @@ class App(tk.Tk):
         elif name == "jobs":
             self._refresh_job_customers()
             self._refresh_jobs()
+        elif name == "firmware":
+            self._refresh_firmware()
 
     def _run_lazy(self, op_id):
         """Click ke waqt registry se module dhoondo (builders GUI banne
@@ -1000,7 +1045,9 @@ class App(tk.Tk):
                 ("👥 CUSTOMERS",
                  lambda: self.show_module("customers")),
                 ("🎫 REPAIR JOBS",
-                 lambda: self.show_module("jobs"))):
+                 lambda: self.show_module("jobs")),
+                ("📀 FIRMWARE CENTER",
+                 lambda: self.show_module("firmware"))):
             tk.Button(row, text=text, bg=PANEL2, fg=FG, relief="flat",
                       font=("Segoe UI", 9, "bold"), padx=10, pady=6,
                       command=cmd).pack(side="left", padx=3)
@@ -1808,6 +1855,334 @@ class App(tk.Tk):
             return
         self.log_line(f"CSV export tayyar: {cp}", "OK")
         self.log_line(f"CSV export tayyar: {jp}", "OK")
+
+    # ------------------------------------------------- FIRMWARE -------
+    def _build_firmware(self, parent):
+        f = tk.Frame(parent, bg=BG)
+        top = tk.Frame(f, bg=PANEL)
+        top.pack(fill="x")
+        tk.Label(top, text="📀 FIRMWARE CENTER", bg=PANEL, fg=FG,
+                 font=("Segoe UI", 12, "bold")).pack(side="left",
+                                                     padx=10, pady=3)
+        tk.Label(top, text="Firmware files yahan HOST nahi hotin — "
+                           "sirf official links + records + "
+                           "checksums. Asal file official source "
+                           "se ati hai.",
+                 bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).pack(side="left", padx=6)
+
+        body = tk.Frame(f, bg=BG)
+        body.pack(fill="both", expand=True, pady=(3, 0))
+        form = tk.LabelFrame(body, text=" FIRMWARE RECORD ",
+                             bg=PANEL, fg=MUTED,
+                             font=("Segoe UI", 9, "bold"), bd=1,
+                             width=424)
+        form.pack(side="left", fill="y")
+        form.pack_propagate(False)
+        self.fw_vars = {}
+
+        def _fw_field(row, col, label, key, width, span=1):
+            tk.Label(form, text=label, bg=PANEL, fg=MUTED,
+                     font=("Segoe UI", 8)).grid(
+                         row=row, column=col, sticky="w",
+                         padx=(8 if col == 0 else 4), pady=2)
+            var = tk.StringVar()
+            self.fw_vars[key] = var
+            tk.Entry(form, textvariable=var, bg=PANEL2, fg=FG,
+                     insertbackground=FG, relief="flat",
+                     font=("Segoe UI", 9), width=width).grid(
+                         row=row, column=col + 1, columnspan=span,
+                         sticky="w", pady=1)
+
+        _fw_field(0, 0, "Brand *", "brand", 41, span=3)
+        _fw_field(1, 0, "Model *", "model", 41, span=3)
+        _fw_field(2, 0, "Code", "code", 14)
+        _fw_field(2, 2, "Version", "version", 14)
+        _fw_field(3, 0, "Android", "android", 14)
+        _fw_field(3, 2, "Size", "size", 14)
+        _fw_field(4, 0, "Official Link", "official_link", 41, span=3)
+        _fw_field(5, 0, "SHA-256", "checksum_sha256", 41, span=3)
+        nrow = 6
+        tk.Label(form, text="Note", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).grid(row=nrow, column=0,
+                                            sticky="nw", padx=8,
+                                            pady=2)
+        self.fw_note_txt = tk.Text(
+            form, bg=PANEL2, fg=FG, insertbackground=FG,
+            relief="flat", font=("Segoe UI", 9), height=2, width=41,
+            wrap="word")
+        self.fw_note_txt.grid(row=nrow, column=1, columnspan=3,
+                              sticky="w", pady=3)
+        self.fw_info_label = tk.Label(
+            form, text="", bg=PANEL, fg=ACCENT, wraplength=368,
+            justify="left", font=("Segoe UI", 8))
+        self.fw_info_label.grid(row=nrow + 1, column=0, columnspan=4,
+                                sticky="w", padx=8, pady=(3, 0))
+        btnrow = tk.Frame(form, bg=PANEL)
+        btnrow.grid(row=nrow + 2, column=0, columnspan=4, sticky="w",
+                    padx=8, pady=3)
+        self.fw_save_btn = tk.Button(
+            btnrow, text="➕ NAYA RECORD", bg=GREEN, fg="#0b0e13",
+            relief="flat", font=("Segoe UI", 9, "bold"), padx=10,
+            pady=3, command=self._fw_save)
+        self.fw_save_btn.pack(side="left")
+        tk.Button(btnrow, text="🧹 Saaf", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 9, "bold"),
+                  padx=10, pady=3,
+                  command=self._fw_clear).pack(side="left", padx=4)
+        tk.Label(form, text="Records: tools/firmware-catalog.json "
+                            "(khud bhi edit ho sakti hai).",
+                 bg=PANEL, fg=MUTED, wraplength=368, justify="left",
+                 font=("Segoe UI", 8)).grid(
+                     row=nrow + 3, column=0, columnspan=4,
+                     sticky="w", padx=8, pady=(2, 4))
+
+        right = tk.Frame(body, bg=BG)
+        right.pack(side="left", fill="both", expand=True,
+                   padx=(8, 0))
+        srow = tk.Frame(right, bg=BG)
+        srow.pack(fill="x", pady=(0, 4))
+        tk.Label(srow, text="Talash:", bg=BG, fg=MUTED,
+                 font=("Segoe UI", 9)).pack(side="left")
+        self.fw_search_var = tk.StringVar()
+        self.fw_search_var.trace_add(
+            "write", lambda *_a: self._refresh_firmware())
+        tk.Entry(srow, textvariable=self.fw_search_var, bg=PANEL2,
+                 fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 9), width=36).pack(side="left",
+                                                      padx=4)
+        self.fw_tree = ttk.Treeview(
+            right, columns=("brand", "model", "code", "version",
+                            "android", "size"),
+            show="headings", selectmode="browse", height=4)
+        for col, title, width in (("brand", "Brand", 110),
+                                  ("model", "Model", 170),
+                                  ("code", "Code", 80),
+                                  ("version", "Version", 90),
+                                  ("android", "Android", 70),
+                                  ("size", "Size", 90)):
+            self.fw_tree.heading(col, text=title)
+            self.fw_tree.column(col, width=width, anchor="w")
+        self.fw_tree.pack(fill="x")
+        self.fw_tree.bind("<<TreeviewSelect>>", self._fw_on_select)
+
+        arow = tk.Frame(right, bg=BG)
+        arow.pack(fill="x", pady=(6, 2))
+        tk.Button(arow, text="📁 Downloaded File — Checksum Verify",
+                  bg=PANEL2, fg=FG, relief="flat",
+                  font=("Segoe UI", 8, "bold"), padx=8, pady=4,
+                  command=self._fw_verify_checksum).pack(
+                      side="left")
+        tk.Button(arow, text="🌾 Firmware → Loader Harvest",
+                  bg=PANEL2, fg=FG, relief="flat",
+                  font=("Segoe UI", 8, "bold"), padx=8, pady=4,
+                  command=lambda: self._run_lazy(
+                      "fw_loader_harvest")).pack(side="left", padx=6)
+        self.fw_verify_label = tk.Label(
+            arow, text="Verify: pehle record select karo, phir "
+                       "downloaded file chuno.",
+            bg=BG, fg=MUTED, font=("Segoe UI", 8))
+        self.fw_verify_label.pack(side="left", padx=4)
+        tk.Label(right, text="Harvest: firmware file pehle "
+                             "tools/firmware-inbox/ me rakho — "
+                             "DA / firehose / preloader / lk / FDL "
+                             "khud Loaders Library me darj ho "
+                             "jayenge.",
+                 bg=BG, fg=MUTED, wraplength=820, justify="left",
+                 font=("Segoe UI", 8)).pack(anchor="w", pady=(0, 2))
+
+        intel = tk.LabelFrame(right, text=" 🔧 REPAIR INTELLIGENCE ",
+                              bg=PANEL, fg=MUTED,
+                              font=("Segoe UI", 9, "bold"), bd=1)
+        intel.pack(fill="both", expand=True)
+        irow = tk.Frame(intel, bg=PANEL)
+        irow.pack(fill="x", padx=6, pady=(3, 2))
+        tk.Label(irow, text="Error code / naam:", bg=PANEL,
+                 fg=MUTED, font=("Segoe UI", 8)).pack(side="left")
+        self.fw_intel_var = tk.StringVar()
+        tk.Entry(irow, textvariable=self.fw_intel_var, bg=PANEL2,
+                 fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 9), width=30).pack(side="left",
+                                                      padx=4)
+        tk.Button(irow, text="🔍 Dhoondo", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 8, "bold"),
+                  padx=8, pady=3,
+                  command=self._fw_intel_search).pack(side="left")
+        self.fw_intel_count = tk.Label(
+            irow, text="", bg=PANEL, fg=MUTED,
+            font=("Segoe UI", 8))
+        self.fw_intel_count.pack(side="left", padx=8)
+        self.fw_intel_txt = tk.Text(
+            intel, bg=PANEL2, fg=FG, insertbackground=FG,
+            relief="flat", font=("Segoe UI", 8), height=3,
+            wrap="word", state="disabled")
+        self.fw_intel_txt.pack(fill="both", expand=True, padx=6,
+                               pady=(2, 4))
+        try:
+            n = len(repair_intel.load_entries())
+            self.fw_intel_count.configure(
+                text=f"Library me {n} error patterns hain.")
+            self._fw_intel_show(repair_intel.load_entries())
+        except Exception:  # noqa: BLE001
+            pass
+        return f
+
+    def _fw_intel_show(self, entries):
+        txt = getattr(self, "fw_intel_txt", None)
+        if txt is None:
+            return
+        lines = []
+        for e in entries:
+            head = e["title"]
+            if e["code"]:
+                head += f"  [{e['code']}]"
+            lines.append(head)
+            if e["wajah"]:
+                lines.append(f"  Wajah: {e['wajah']}")
+            for step in e["hal_steps"]:
+                lines.append(f"  Hal: {step}")
+            if e["source"]:
+                lines.append(f"  Source: {e['source']}")
+            lines.append("")
+        txt.configure(state="normal")
+        txt.delete("1.0", "end")
+        txt.insert("1.0", "\n".join(lines) if lines
+                   else "Koi entry nahi mili.")
+        txt.configure(state="disabled")
+
+    def _fw_intel_search(self):
+        q = self.fw_intel_var.get().strip()
+        try:
+            results = repair_intel.search(q)
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Repair Intelligence search fail: {e}",
+                          "ERROR")
+            return
+        self.fw_intel_count.configure(
+            text=f"{len(results)} entries mili"
+                 + (f" — '{q}'" if q else " (tamam)."))
+        self._fw_intel_show(results)
+
+    def _refresh_firmware(self):
+        tree = getattr(self, "fw_tree", None)
+        if tree is None:
+            return
+        try:
+            self.fw_catalog = firmware_catalog.load_catalog()
+            rows = firmware_catalog.search_entries(
+                self.fw_catalog, self.fw_search_var.get())
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Firmware catalogue load nahi ho saka: "
+                          f"{e}", "ERROR")
+            return
+        for item in tree.get_children():
+            tree.delete(item)
+        self.fw_items = {}
+        for idx, e in rows:
+            item = tree.insert("", "end", values=(
+                e["brand"], e["model"], e["code"], e["version"],
+                e["android"], e["size"]))
+            self.fw_items[item] = idx
+
+    def _fw_on_select(self, _event=None):
+        sel = self.fw_tree.selection()
+        idx = self.fw_items.get(sel[0]) if sel else None
+        if idx is None or self.fw_catalog is None:
+            return
+        try:
+            e = self.fw_catalog["entries"][idx]
+        except Exception:  # noqa: BLE001
+            return
+        self.fw_selected = idx
+        for key, var in self.fw_vars.items():
+            var.set(e.get(key, ""))
+        self.fw_note_txt.delete("1.0", "end")
+        self.fw_note_txt.insert("1.0", e.get("note", ""))
+        self.fw_info_label.configure(
+            text=f"Record #{idx + 1} — {e['brand']} {e['model']}.")
+        self.fw_save_btn.configure(text="💾 SAVE (UPDATE)")
+
+    def _fw_clear(self):
+        self.fw_selected = None
+        for var in self.fw_vars.values():
+            var.set("")
+        self.fw_note_txt.delete("1.0", "end")
+        self.fw_info_label.configure(text="")
+        self.fw_save_btn.configure(text="➕ NAYA RECORD")
+        if hasattr(self, "fw_tree"):
+            self.fw_tree.selection_remove(self.fw_tree.selection())
+
+    def _fw_save(self):
+        entry = {key: var.get() for key, var in self.fw_vars.items()}
+        entry["note"] = self.fw_note_txt.get("1.0", "end").strip()
+        try:
+            if self.fw_catalog is None:
+                self.fw_catalog = firmware_catalog.load_catalog()
+            if self.fw_selected is not None:
+                firmware_catalog.update_entry(
+                    self.fw_catalog, self.fw_selected, entry)
+                msg = (f"Firmware record update ho gaya: "
+                       f"{entry['brand']} {entry['model']}")
+            else:
+                firmware_catalog.add_entry(self.fw_catalog, entry)
+                msg = (f"Naya firmware record ban gaya: "
+                       f"{entry['brand']} {entry['model']}")
+            firmware_catalog.save_catalog(self.fw_catalog)
+        except ValueError as e:
+            self.log_line(str(e), "WARN")
+            return
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Firmware record save nahi ho saka: {e}",
+                          "ERROR")
+            return
+        self.log_line(msg + " (tools/firmware-catalog.json).", "OK")
+        self._fw_clear()
+        self._refresh_firmware()
+
+    def _fw_verify_checksum(self):
+        if self.fw_selected is None or self.fw_catalog is None:
+            self.log_line("Checksum verify ke liye pehle upar ki "
+                          "fehrist se aik firmware record select "
+                          "karo.", "WARN")
+            return
+        entry = self.fw_catalog["entries"][self.fw_selected]
+        if not str(entry.get("checksum_sha256", "")).strip():
+            self.log_line("Is record me SHA-256 checksum darj "
+                          "NAHI hai — pehle record me checksum "
+                          "likho (official source se mila hua), "
+                          "phir verify hoga.", "WARN")
+            return
+        path = filedialog.askopenfilename(
+            title="Downloaded firmware file select karo",
+            initialdir=str(TOOLS_DIR.parent))
+        if not path:
+            return
+        status, actual = firmware_catalog.verify_checksum(entry,
+                                                          path)
+        name = Path(path).name
+        if status == "match":
+            self.fw_verify_label.configure(
+                text=f"✔ MATCH — {name}", fg=GREEN)
+            self.log_line(f"✔ CHECKSUM MATCH: {name} bilkul wahi "
+                          "file hai jo record kehta hai "
+                          f"({entry['brand']} {entry['model']} "
+                          f"{entry['version']}). Flash ki taraf "
+                          "barh sakte ho.", "OK")
+        elif status == "mismatch":
+            self.fw_verify_label.configure(
+                text=f"✖ MISMATCH — {name}", fg="#f87171")
+            self.log_line(f"✖ CHECKSUM MISMATCH: {name} record "
+                          "wali file NAHI hai!", "ERROR")
+            self.log_line(f"Record ka checksum: "
+                          f"{entry['checksum_sha256']}", "DATA")
+            self.log_line(f"Is file ka checksum: {actual}", "DATA")
+            self.log_line("File badli hui ya kharab download ho "
+                          "sakti hai — isay flash MAT karo. "
+                          "Official source se dobara download "
+                          "karo.", "WARN")
+        else:
+            self.log_line(f"File parhi nahi ja saki: {path}",
+                          "ERROR")
 
     # --------------------------------------------------------- JOBS -------
     def _build_jobs(self, parent):
