@@ -169,16 +169,18 @@ def find_platform_tool(name):
 # User-supplied cheezen: MTK DA, Qualcomm loaders, firmware folders
 # --------------------------------------------------------------------------
 def user_mtk_da():
-    """tools/loaders/mtk/ me agar AKEli DA file (.bin) ho to us ka Path.
+    """tools/loaders/mtk/ (brand subfolders samet) me agar AKEli DA
+    file (.bin) ho to us ka Path.
 
     Ek se zyada hon to None (galat DA khud chunna khatarnak hai — op
-    log me saaf kahega ke sirf aik rakho).
+    log me saaf kahega ke sirf aik rakho). Library layout ane ke baad
+    files brand subfolders me hoti hain, is liye talaash recursive
+    hai; "akeli file" wala usool waisa hi barqarar.
     """
     folder = TOOLS_DIR / "loaders" / "mtk"
     if not folder.is_dir():
         return None
-    bins = sorted(p for p in folder.iterdir()
-                  if p.is_file() and p.suffix.lower() == ".bin")
+    bins = sorted(p for p in folder.rglob("*.bin") if p.is_file())
     if len(bins) == 1:
         return bins[0]
     return None
@@ -194,33 +196,66 @@ def scan_qualcomm_loaders():
 
 
 def pick_qualcomm_loader(device=None):
-    """(loader Path|None, note str) — HWID/chip hint matching jahan mumkin.
+    """(loader Path|None, note str) — Loaders Library se auto-select.
 
-    0 loader → (None, khali-library wali wajah)
-    1 loader → (wohi, '')
-    zyada → device ke chip/detail ya loader ke naam me chip token
-    (masalan 'msm8953', 'sm6225', 'sdm660') match ho to wo, warna
-    (None, fehrist wali wajah) — galat loader khud nahi chunte.
+    Tartib:
+      0 loader → library-aware wajah (pack install nahi hai to wahi
+        jumla — core.loader_library.not_installed_note)
+      1 loader → (wohi, '')
+      zyada → core.loader_library.match_qc se ranking: tier 1/2 ka
+        AKEla saaf match khud chunta hai (note me file + wajah);
+        barabar ke candidates ya sirf cross-brand milein to
+        (None, candidates wali guided wajah) — galat loader khud
+        nahi chunte. Index me na hone wali user files ke liye purani
+        naam-token wali matching fallback hai.
     """
     loaders = scan_qualcomm_loaders()
     if not loaders:
-        return None, ("Loader library khali hai — koi firehose loader "
-                      "nahi mila.")
+        note = None
+        try:
+            from core import loader_library
+            note = loader_library.not_installed_note()
+        except Exception:  # noqa: BLE001
+            note = None
+        return None, note or ("Loader library khali hai — koi firehose "
+                              "loader nahi mila.")
     if len(loaders) == 1:
         return loaders[0], ""
+    brand = getattr(device, "brand", "") or "" if device is not None else ""
     haystacks = []
     if device is not None:
         haystacks = [getattr(device, "chip", "") or "",
                      getattr(device, "detail", "") or "",
                      getattr(device, "model", "") or ""]
-    hint = " ".join(haystacks).lower()
-    if hint.strip():
+    hint = " ".join(haystacks)
+    try:
+        from core import loader_library
+        ranked = loader_library.match_qc(brand, hint)
+    except Exception:  # noqa: BLE001
+        ranked = []
+    if ranked:
+        top_tier = ranked[0]["tier"]
+        tops = [r for r in ranked if r["tier"] == top_tier]
+        if top_tier <= 2 and len(tops) == 1:
+            pick = tops[0]
+            return pick["path"], (f"Auto-selected loader (library): "
+                                  f"{pick['path'].name} — {pick['why']}")
+        names = ", ".join(f"{r['path'].name} ({r['why']})"
+                          for r in tops[:6])
+        return None, (f"Library me {len(tops)} barabar ke loader "
+                      f"candidates mile — galat loader khud NAHI "
+                      f"chuna gaya: {names}. Sahi wala khud rakhna ho "
+                      "to baqion ko kuch dair ke liye "
+                      "tools/loaders/qualcomm/ se hata do, ya model/"
+                      "chip ki saaf pehchan ke saath dobara try karo.")
+    hint_l = hint.lower()
+    if hint_l.strip():
         for loader in loaders:
             name = loader.stem.lower()
             # naam ke tokens (underscore/dash se tore hue) hint me dhoondo
             tokens = [t for t in name.replace("-", "_").split("_")
                       if len(t) >= 4]
-            if any(tok in hint for tok in tokens):
+            if any(tok in hint_l for tok in tokens):
                 return loader, (f"Device ki chip se match karke chuna: "
                                 f"{loader.name}")
     names = ", ".join(p.name for p in loaders)

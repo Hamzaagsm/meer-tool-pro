@@ -179,12 +179,44 @@ def model_tabs(m):
     }
 
 
-def da_files():
-    """tools/loaders/ ke tamam .bin files (Download tab ke DA dropdown ke liye)."""
+def da_files(model=None):
+    """Download tab ke DA dropdown ke liye .bin files.
+
+    Loaders Library ke installed MTK DA pehle ate hain; `model`
+    diya jaye to us model ke brand/chipset se match karne wale
+    sab se upar (library ranking) — dropdown ka pehla item hi
+    auto-select hota hai, user khud badal sakta hai (manual choice
+    hamesha jeet-ti hai). Library se bahir ki user .bin files bhi
+    fehrist me rehti hain (aakhir me, naam ki tartib se).
+    """
     base = TOOLS_DIR / "loaders"
     if not base.is_dir():
         return []
-    return sorted(p for p in base.rglob("*.bin") if p.is_file())
+    all_bins = sorted(p for p in base.rglob("*.bin") if p.is_file())
+    try:
+        from core import loader_library
+        if model is not None:
+            brand = model.get("brand", "")
+            chip = " ".join([str(model.get("chipset", "")),
+                             str(model.get("model", "")),
+                             str(model.get("name", ""))])
+            ranked = loader_library.match_mtk(brand, chip)
+            head = [r["path"] for r in ranked
+                    if r["path"].suffix.lower() == ".bin"]
+        else:
+            head = [loader_library.entry_abspath(e)
+                    for e in loader_library.installed_entries(kind="mtk-da")]
+    except Exception:  # noqa: BLE001
+        head = []
+    seen, out = set(), []
+    for p in head:
+        if p not in seen and p in all_bins:
+            seen.add(p)
+            out.append(p)
+    for p in all_bins:
+        if p not in seen:
+            out.append(p)
+    return out
 
 
 # --------------------------------------------------------------------------
@@ -254,13 +286,49 @@ def download_frp_op(model, da_path):
 
     def run(ctx):
         ctx.log(f"Model: {model_label(model)}", "INFO")
-        if da_path is None:
-            ctx.log("Koi DA file muntakhib nahi.", "ERROR")
+        # Loaders Library auto-select: DA na chuna gaya ho to is
+        # model ke liye library ka best match khud uthao (log ke
+        # saath). Manual dropdown choice hamesha waisi ki waisi
+        # rehti hai — ye rasta sirf None par chalta hai.
+        picked = da_path
+        try:
+            from core import loader_library
+            chip = " ".join([str(model.get("chipset", "")),
+                             str(model.get("model", "")),
+                             str(model.get("name", ""))])
+            ranked = loader_library.match_mtk(model.get("brand", ""), chip)
+        except Exception:  # noqa: BLE001
+            ranked = []
+        if picked is None and ranked:
+            top = ranked[0]
+            picked = top["path"]
+            ctx.log(f"Auto-selected DA (library): {picked.name} — "
+                    f"{top['why']}", "INFO")
+            same_tier = [r for r in ranked if r["tier"] == top["tier"]]
+            if len(same_tier) > 1:
+                ctx.log(f"Isi darjay ke {len(same_tier)} DA library me "
+                        "aur hain — dropdown se khud bhi badal sakte "
+                        "ho; ye wala ranking me sab se upar tha.",
+                        "INFO")
+        elif picked is not None and ranked and ranked[0]["path"] == picked:
+            ctx.log(f"DA library ke best match par hai: "
+                    f"{picked.name} — {ranked[0]['why']}", "INFO")
+        if picked is None:
+            ctx.log("Koi DA file muntakhib nahi aur library me is "
+                    "model ka match bhi nahi mila.", "ERROR")
+            try:
+                from core import loader_library
+                note = loader_library.not_installed_note()
+            except Exception:  # noqa: BLE001
+                note = None
+            if note:
+                ctx.log(note, "WARN")
             ctx.log("Guide: is model ka DA (.bin) app ke tools/loaders/ "
                     "folder me rakho, phir dropdown se select karke "
                     "dobara chalao. Ghalat DA phone ko nuksan de sakta "
                     "hai — sirf isi model ka DA istemal karo.", "WARN")
             return False
+        da_path = picked
         if not _brom_guard(ctx):
             return False
         cmd, cwd = _engine_or_fail(ctx)
