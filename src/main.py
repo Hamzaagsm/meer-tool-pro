@@ -18,6 +18,8 @@ import sys
 import threading
 import time
 import tkinter as tk
+import webbrowser
+from datetime import date
 from pathlib import Path
 from tkinter import filedialog, ttk
 
@@ -27,6 +29,7 @@ import demo as demo_mod                       # noqa: E402
 from core import device_watch                 # noqa: E402
 from core import mdm_list                     # noqa: E402
 from core import platforms_mtk                # noqa: E402
+from core import shop_db                      # noqa: E402
 from core import utility                      # noqa: E402
 from core.runner import ENGINES_DIR, Runner, TOOLS_DIR     # noqa: E402
 from ops import load_operations               # noqa: E402
@@ -134,6 +137,62 @@ v1.0.1 — Round 5 izafa (Pandora sweep ke baad, 75 ops):
   is liye op nahi bana; META Partition Manager aur Unisoc
   ADL-mode (ZTE) bhi bench-verification ke baghair guided
   hain. Jhoota button kabhi nahi.
+
+v1.0.1 — Suite Phase 1 (Server Edition ki pehli seedhi; ops
+ab bhi 75 hi — ye modules device-ops nahi, dukaan ke records
+hain):
+- CUSTOMERS module: dukaan ke customers ka LOCAL record
+  (SQLite — tools/shop.db) — naam/phone/address/notes,
+  add/edit/search. Koi server nahi, koi network nahi:
+  record hamesha is PC par mehfooz rehta hai (survival rule).
+- JOBS module: repair tickets — auto ticket number (T-0001),
+  customer se link, device (brand/model, IMEI sirf record
+  ke liye), masla, status (Received / In Progress / Done /
+  Delivered — aik click quick buttons), charges (estimate +
+  final), received/delivered dates (Delivered par date
+  khud lagti hai). Search + status filter.
+- RECEIPT: kisi bhi job ki printable receipt (HTML ya
+  text) — dukaan ka naam CUSTOMERS screen se badal sakte
+  ho; receipt browser me khul kar print hoti hai.
+- HOME dashboard barha: DUKAAN — AAJ KA HISAB (aaj ke
+  jobs, pending jobs, kul customers, kul jobs).
+- BACKUP / EXPORT (CUSTOMERS screen par): shop.db ki
+  one-click backup copy (backups/ folder me) + customers/
+  jobs ka CSV export — record kabhi aik jagah band nahi
+  rehta.
+
+v1.0.1 — Round 6 izafa (TSM/UAT sweep ke baad, 86 ops):
+- MTK RPMB ops (MTKClient ka apna `da rpmb` toolset): RPMB
+  Read (saboot DA ke 'Done reading' jawab + file size se —
+  exit code yahan saboot nahi hota), RPMB Write aur RPMB
+  Erase. Write/Erase DESTRUCTIVE hain: naye DANGER GATE ke
+  baghair nahi chalte (neeche PARAMS bar ki tasdeeq checkbox
+  + tools/danger-audit.log me audit line), aur dono
+  BACKUP-FIRST hain — pehle maujooda data parh kar mehfooz
+  hota hai, backup na bane to amal hota hi nahi; aakhir me
+  read-back verify (write: byte-match; erase: poori range
+  zero) lazmi hai.
+- Qualcomm Raw Sector Read/Write (edl rs/ws): LUN + Start
+  Sector + Sectors + Sector Size window ke neeche PARAMS
+  bar se ate hain. Read size-verify ke saath; Write danger
+  gate + backup-first + read-back byte-match ke saath.
+  Loader lazmi hai — na ho to saaf guided FAIL.
+- ADB Servicing Tasks pack: Remove Ads / Restore Ads
+  (Xiaomi ads set + generic set — pm disable-user, device
+  list se verify), Servicing Menus (network/APN/wireless
+  ke public intents; DIAG ka koi public intent nahi hota —
+  wo jhoota daawa nahi), Private DNS Toggle (dns.google,
+  readback verify), Fix Install Apps (verifier settings,
+  har aik ki readback). Har task par root chahiye ya nahi,
+  log me saaf likha ata hai; device-side saboot ke baghair
+  koi SUCCESS nahi.
+- Enable DIAG Port ab alag op hai (Qualcomm) — QCN helper
+  hi asal kaam karta hai, saath Samsung *#0808# aur
+  OnePlus/Xiaomi *#*#717717#*#* dialer codes ki guide.
+- spd_dump refresh check: upstream ki latest official
+  release 1.20260403 hi hai — hamari vendored copy wahi
+  hai, is liye koi tabdeeli nahi ki gayi (provenance
+  engines/spd_dump/README-MEER.md me darj hai).
 """
 
 
@@ -178,6 +237,13 @@ class App(tk.Tk):
         # Utility File Manager ki halat
         self.fm_path = "/sdcard/"
         self.fm_items = {}              # fm tree item id -> entry dict
+        # Suite Phase 1 (CUSTOMERS / JOBS) ki halat
+        self.cust_selected_id = None
+        self.cust_items = {}            # cust tree item id -> customer id
+        self.job_selected_id = None
+        self.job_items = {}             # job tree item id -> job id
+        self.job_cust_ids = []          # job form combo ki tartib se ids
+        self.job_cust_labels = []       # combo labels (ids ke parallel)
 
         self.runner = Runner(
             log_fn=lambda m, lvl: self.ui_q.put(("log", m, lvl)),
@@ -189,6 +255,7 @@ class App(tk.Tk):
         self._build_ui()
         self._load_ops_tree()
         self._load_mdm_models()
+        self._init_shop()
         self.after(60, self._drain_queue)
         threading.Thread(target=self._watch_loop, daemon=True).start()
         self.log_line("MEER TOOL PRO tayyar hai. Phone lagao — device "
@@ -215,6 +282,8 @@ class App(tk.Tk):
         for key, title in (("home", "HOME"), ("unlock", "UNLOCK"),
                            ("platforms", "PLATFORMS"),
                            ("utility", "UTILITY"),
+                           ("customers", "CUSTOMERS"),
+                           ("jobs", "JOBS"),
                            ("changelog", "CHANGELOG")):
             btn = tk.Button(mbar, text=title, relief="flat",
                             font=("Segoe UI", 9, "bold"), padx=12, pady=3,
@@ -315,6 +384,8 @@ class App(tk.Tk):
         self.module_frames["home"] = self._build_home(modarea)
         self.module_frames["platforms"] = self._build_platforms(modarea)
         self.module_frames["utility"] = self._build_utility(modarea)
+        self.module_frames["customers"] = self._build_customers(modarea)
+        self.module_frames["jobs"] = self._build_jobs(modarea)
         self.module_frames["changelog"] = self._build_changelog(modarea)
         mid.pack(fill="both", expand=True)
 
@@ -362,6 +433,45 @@ class App(tk.Tk):
                                    font=("Segoe UI", 11, "bold"))
         self.start_btn.pack(side="right", padx=4)
 
+        # PARAMS bar — raw sector / RPMB ops ke numeric inputs
+        # (LUN / Start Sector / Sectors / Sector Size) aur
+        # khatarnaak (destructive) write ops ki tasdeeq checkbox
+        # (danger gate — core/danger_gate.py). Har waqt nazar
+        # ati hai taake gated op chalane se pehle user ko pata
+        # ho ke tasdeeq kahan deni hai.
+        parambar = tk.Frame(self, bg=PANEL)
+        self.parambar = parambar
+        tk.Label(parambar, text="PARAMS (Sector / RPMB ops):",
+                 bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 9, "bold")).pack(side="left",
+                                                    padx=(10, 4),
+                                                    pady=5)
+
+        def _param_entry(var_name, label, default, width=7):
+            tk.Label(parambar, text=label, bg=PANEL, fg=FG,
+                     font=("Segoe UI", 9)).pack(side="left")
+            var = tk.StringVar(value=default)
+            setattr(self, var_name, var)
+            tk.Entry(parambar, textvariable=var, width=width,
+                     bg=PANEL2, fg=FG, insertbackground=FG,
+                     relief="flat",
+                     font=("Consolas", 10)).pack(side="left",
+                                                 padx=(2, 10), pady=4)
+
+        _param_entry("param_lun_var", "LUN", "0")
+        _param_entry("param_start_sector_var", "Start Sector", "0")
+        _param_entry("param_sectors_var", "Sectors", "")
+        _param_entry("param_sector_size_var", "Sector Size", "")
+        self.danger_confirm_var = tk.BooleanVar(value=False)
+        tk.Checkbutton(
+            parambar,
+            text="⚠ Tasdeeq: KHATARNAAK write — zimmedari meri hai",
+            variable=self.danger_confirm_var, bg=PANEL,
+            fg="#fbbf24", selectcolor=PANEL2,
+            activebackground=PANEL, activeforeground="#fbbf24",
+            font=("Segoe UI", 9, "bold")).pack(side="right",
+                                               padx=10, pady=4)
+
         # Pack tartib ki islah: LIVE LOG aur bottom bar ko bottom se
         # anchor karo, module area darmiyan ki baqi jagah lega — warna
         # baray module (Platforms) par log/buttons window se bahir
@@ -370,6 +480,7 @@ class App(tk.Tk):
         logf.pack_forget()
         bot.pack(side="bottom", fill="x", padx=10, pady=(4, 10))
         logf.pack(side="bottom", fill="x", padx=10, pady=(0, 2))
+        parambar.pack(side="bottom", fill="x", padx=10, pady=(2, 0))
 
     # ------------------------------------------------------------ ops tree -
     def _load_ops_tree(self):
@@ -405,6 +516,13 @@ class App(tk.Tk):
             hint += f" · Zaroori mode: {', '.join(modes)}"
         if op.get("server_required"):
             hint += " · Ye operation paid server ke baghair nahi chal sakta."
+        if op.get("danger_write"):
+            hint += (" · ⚠ KHATARNAAK write: neeche PARAMS bar ki "
+                     "tasdeeq checkbox lazmi hai, warna gate rok "
+                     "dega.")
+        if op.get("params"):
+            hint += (" · Inputs neeche PARAMS bar se ate hain "
+                     "(LUN / Start Sector / Sectors / Sector Size).")
         self.op_hint.configure(text=hint)
         self.start_btn.configure(state="normal")
 
@@ -470,19 +588,46 @@ class App(tk.Tk):
                 return module
         return None
 
+    def _collect_op_args(self, op_obj):
+        """GUI ki gates/params halat ikatthi karo — (imei_confirmed,
+        danger_confirmed, params dict). Dono start rastay (ops tree
+        aur model panel) yahi istemal karte hain:
+          - IMEI gate: op par imei_write ho to Network tab ki
+            tasdeeq checkbox ki halat.
+          - Danger gate: op par danger_write ho to PARAMS bar ki
+            tasdeeq checkbox ki halat.
+          - Params: PARAMS bar ke chaaron entries (raw strings —
+            parsing/validation op khud karta hai)."""
+        op = getattr(op_obj, "OP", {}) or {}
+        imei = False
+        if op.get("imei_write"):
+            var = getattr(self, "net_imei_confirm_var", None)
+            imei = bool(var.get()) if var is not None else False
+        danger = False
+        if op.get("danger_write"):
+            var = getattr(self, "danger_confirm_var", None)
+            danger = bool(var.get()) if var is not None else False
+
+        def _entry(name):
+            var = getattr(self, name, None)
+            return var.get() if var is not None else ""
+
+        params = {
+            "lun": _entry("param_lun_var"),
+            "start_sector": _entry("param_start_sector_var"),
+            "sectors": _entry("param_sectors_var"),
+            "sector_size": _entry("param_sector_size_var"),
+        }
+        return imei, danger, params
+
     def _run_action(self, op_obj):
         """Model panel ke buttons — bilkul START wala rasta (runner)."""
         if op_obj is None:
             return
-        # IMEI gate: op par imei_write ka nishan ho to Network tab
-        # ke tasdeeq checkbox ki halat ctx tak bhejo — op khud
-        # warning chhapega aur baghair tasdeeq wahin ruk jayega.
-        confirmed = False
-        if getattr(op_obj, "OP", {}).get("imei_write"):
-            var = getattr(self, "net_imei_confirm_var", None)
-            confirmed = bool(var.get()) if var is not None else False
+        imei, danger, params = self._collect_op_args(op_obj)
         if self.runner.start(op_obj, self.device,
-                             imei_write_confirmed=confirmed):
+                             imei_write_confirmed=imei,
+                             danger_confirmed=danger, params=params):
             self.start_btn.configure(state="disabled")
             self.stop_btn.configure(state="normal")
 
@@ -733,6 +878,14 @@ class App(tk.Tk):
             active = key == name
             btn.configure(bg=ACCENT if active else PANEL,
                           fg="#111" if active else FG)
+        # Suite screens har dafa taza data ke saath khulen
+        if name == "home":
+            self._refresh_home_shop()
+        elif name == "customers":
+            self._refresh_customers()
+        elif name == "jobs":
+            self._refresh_job_customers()
+            self._refresh_jobs()
 
     def _run_lazy(self, op_id):
         """Click ke waqt registry se module dhoondo (builders GUI banne
@@ -787,10 +940,35 @@ class App(tk.Tk):
                 ("🧰 PLATFORMS — MediaTek",
                  lambda: self.show_module("platforms")),
                 ("🛠 UTILITY",
-                 lambda: self.show_module("utility"))):
+                 lambda: self.show_module("utility")),
+                ("👥 CUSTOMERS",
+                 lambda: self.show_module("customers")),
+                ("🎫 REPAIR JOBS",
+                 lambda: self.show_module("jobs"))):
             tk.Button(row, text=text, bg=PANEL2, fg=FG, relief="flat",
                       font=("Segoe UI", 9, "bold"), padx=10, pady=6,
                       command=cmd).pack(side="left", padx=3)
+        shopf = tk.LabelFrame(card, text=" DUKAAN — AAJ KA HISAB ",
+                              bg=PANEL, fg=MUTED,
+                              font=("Segoe UI", 9, "bold"), bd=1)
+        shopf.pack(fill="x", padx=14, pady=6)
+        self.home_shop_label = tk.Label(
+            shopf, text="Records load ho rahe hain...",
+            bg=PANEL, fg=FG, font=("Segoe UI", 11, "bold"))
+        self.home_shop_label.pack(anchor="w", padx=10, pady=(8, 2))
+        tk.Label(shopf, text="Records sirf is PC par mehfooz hain "
+                             "(local SQLite) — koi server nahi, "
+                             "internet ho ya na ho dukaan chalti hai.",
+                 bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).pack(anchor="w", padx=10)
+        srow = tk.Frame(shopf, bg=PANEL)
+        srow.pack(fill="x", padx=8, pady=8)
+        for text, key in (("👥 CUSTOMERS", "customers"),
+                          ("🎫 REPAIR JOBS", "jobs")):
+            tk.Button(srow, text=text, bg=PANEL2, fg=FG, relief="flat",
+                      font=("Segoe UI", 9, "bold"), padx=10, pady=6,
+                      command=lambda k=key: self.show_module(k)
+                      ).pack(side="left", padx=3)
         tk.Label(card, text="Har operation asal engine par chalta hai "
                             "aur output neeche LIVE LOG me stream hota "
                             "hai. Pehle poora flow dekhna ho to upar "
@@ -798,6 +976,22 @@ class App(tk.Tk):
                  bg=PANEL, fg=MUTED, wraplength=760, justify="left",
                  font=("Segoe UI", 8)).pack(anchor="w", padx=14, pady=8)
         return f
+
+    def _refresh_home_shop(self):
+        """HOME ke dukaan hisab wale label ko taza numbers do."""
+        lbl = getattr(self, "home_shop_label", None)
+        if lbl is None:
+            return
+        try:
+            st = shop_db.stats()
+        except Exception as e:  # noqa: BLE001
+            lbl.configure(text=f"Dukaan records load nahi ho sake: {e}")
+            return
+        lbl.configure(
+            text=f"Aaj ke jobs: {st['today_jobs']}      ·      "
+                 f"Pending (deliver baqi): {st['pending_jobs']}      "
+                 f"·      Kul customers: {st['total_customers']}      "
+                 f"·      Kul jobs: {st['total_jobs']}")
 
     # ------------------------------------------------------- PLATFORMS ---
     def _build_platforms(self, parent):
@@ -1293,6 +1487,626 @@ class App(tk.Tk):
         dest = self.fm_path_var.get().strip() or "/sdcard/"
         self._run_action(utility.push_op(path, dest))
 
+    # ------------------------------------------- SUITE: SHOP (Phase 1) --
+    def _init_shop(self):
+        """Dukaan records (SQLite, LOCAL) tayyar karo + pehla refresh."""
+        try:
+            path = shop_db.init_db()
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Dukaan records (shop.db) nahi ban sake: {e}",
+                          "ERROR")
+            return
+        try:
+            st = shop_db.stats()
+            self.log_line(
+                f"Dukaan records tayyar (local): "
+                f"{st['total_customers']} customers, {st['total_jobs']} "
+                f"jobs — {path}", "INFO")
+            self.shop_name_var.set(shop_db.shop_name())
+        except Exception:  # noqa: BLE001
+            pass
+        self._refresh_home_shop()
+        self._refresh_customers()
+        self._refresh_job_customers()
+        self._refresh_jobs()
+
+    @staticmethod
+    def _parse_money(text):
+        t = str(text or "").replace(",", "").replace("Rs", "").strip()
+        try:
+            return float(t) if t else 0.0
+        except ValueError:
+            return 0.0
+
+    @staticmethod
+    def _money_text(value):
+        try:
+            v = float(value or 0)
+        except (TypeError, ValueError):
+            v = 0.0
+        return "%g" % v if v else ""
+
+    # ---------------------------------------------------- CUSTOMERS -----
+    def _build_customers(self, parent):
+        f = tk.Frame(parent, bg=BG)
+        top = tk.Frame(f, bg=PANEL)
+        top.pack(fill="x")
+        tk.Label(top, text="👥 CUSTOMER MANAGER", bg=PANEL, fg=FG,
+                 font=("Segoe UI", 12, "bold")).pack(side="left", padx=10,
+                                                      pady=6)
+        tk.Label(top, text="Dukaan ka naam (receipt par):", bg=PANEL,
+                 fg=MUTED,
+                 font=("Segoe UI", 8)).pack(side="left", padx=(14, 2))
+        self.shop_name_var = tk.StringVar(
+            value=shop_db.DEFAULT_SHOP_NAME)
+        tk.Entry(top, textvariable=self.shop_name_var, bg=PANEL2,
+                 fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 9), width=24).pack(side="left")
+        tk.Button(top, text="Naam Save", bg=PANEL2, fg=FG, relief="flat",
+                  font=("Segoe UI", 8, "bold"), padx=8, pady=3,
+                  command=self._cust_save_shop_name).pack(side="left",
+                                                          padx=4)
+        tk.Button(top, text="📤 CSV EXPORT", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 8, "bold"), padx=8,
+                  pady=3,
+                  command=self._cust_export).pack(side="right", padx=4)
+        tk.Button(top, text="💾 BACKUP (shop.db)", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 8, "bold"), padx=8,
+                  pady=3,
+                  command=self._cust_backup).pack(side="right",
+                                                  padx=(4, 0))
+
+        body = tk.Frame(f, bg=BG)
+        body.pack(fill="both", expand=True, pady=(6, 0))
+        form = tk.LabelFrame(body, text=" CUSTOMER ", bg=PANEL,
+                             fg=MUTED, font=("Segoe UI", 9, "bold"),
+                             bd=1, width=336)
+        form.pack(side="left", fill="y")
+        form.pack_propagate(False)
+        self.cust_name_var = tk.StringVar()
+        self.cust_phone_var = tk.StringVar()
+        self.cust_addr_var = tk.StringVar()
+        for row, (label, var) in enumerate((
+                ("Naam *", self.cust_name_var),
+                ("Phone", self.cust_phone_var),
+                ("Address", self.cust_addr_var))):
+            tk.Label(form, text=label, bg=PANEL, fg=MUTED,
+                     font=("Segoe UI", 8)).grid(
+                         row=row, column=0, sticky="w", padx=8, pady=3)
+            tk.Entry(form, textvariable=var, bg=PANEL2, fg=FG,
+                     insertbackground=FG, relief="flat",
+                     font=("Segoe UI", 9), width=30).grid(
+                         row=row, column=1, sticky="w", pady=3)
+        tk.Label(form, text="Notes", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).grid(row=3, column=0, sticky="nw",
+                                            padx=8, pady=3)
+        self.cust_notes_txt = tk.Text(
+            form, bg=PANEL2, fg=FG, insertbackground=FG, relief="flat",
+            font=("Segoe UI", 9), height=4, width=30, wrap="word")
+        self.cust_notes_txt.grid(row=3, column=1, sticky="w", pady=3)
+        self.cust_info_label = tk.Label(
+            form, text="", bg=PANEL, fg=ACCENT, wraplength=300,
+            justify="left", font=("Segoe UI", 8))
+        self.cust_info_label.grid(row=4, column=0, columnspan=2,
+                                  sticky="w", padx=8, pady=(6, 2))
+        btnrow = tk.Frame(form, bg=PANEL)
+        btnrow.grid(row=5, column=0, columnspan=2, sticky="w",
+                    padx=8, pady=4)
+        self.cust_save_btn = tk.Button(
+            btnrow, text="➕ NAYA CUSTOMER", bg=GREEN, fg="#0b0e13",
+            relief="flat", font=("Segoe UI", 9, "bold"), padx=10,
+            pady=5, command=self._cust_save)
+        self.cust_save_btn.pack(side="left")
+        tk.Button(btnrow, text="🧹 Saaf", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 9, "bold"), padx=10,
+                  pady=5, command=self._cust_clear).pack(side="left",
+                                                         padx=4)
+        tk.Label(form, text="Record sirf is PC par rehta hai "
+                            "(tools/shop.db) — koi server, koi "
+                            "internet nahi. Backup/Export upar hai.",
+                 bg=PANEL, fg=MUTED, wraplength=300, justify="left",
+                 font=("Segoe UI", 8)).grid(row=6, column=0, columnspan=2,
+                                            sticky="w", padx=8, pady=6)
+
+        right = tk.Frame(body, bg=BG)
+        right.pack(side="left", fill="both", expand=True, padx=(8, 0))
+        srow = tk.Frame(right, bg=BG)
+        srow.pack(fill="x", pady=(0, 4))
+        tk.Label(srow, text="Talash:", bg=BG, fg=MUTED,
+                 font=("Segoe UI", 9)).pack(side="left")
+        self.cust_search_var = tk.StringVar()
+        self.cust_search_var.trace_add(
+            "write", lambda *_a: self._refresh_customers())
+        tk.Entry(srow, textvariable=self.cust_search_var, bg=PANEL2,
+                 fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 9), width=36).pack(side="left", padx=4)
+        self.cust_tree = ttk.Treeview(
+            right, columns=("name", "phone", "address", "jobs"),
+            show="headings", selectmode="browse")
+        for col, title, width in (("name", "Naam", 210),
+                                  ("phone", "Phone", 140),
+                                  ("address", "Address", 300),
+                                  ("jobs", "Jobs", 60)):
+            self.cust_tree.heading(col, text=title)
+            self.cust_tree.column(col, width=width, anchor="w")
+        self.cust_tree.pack(fill="both", expand=True)
+        self.cust_tree.bind("<<TreeviewSelect>>", self._cust_on_select)
+        return f
+
+    def _refresh_customers(self):
+        tree = getattr(self, "cust_tree", None)
+        if tree is None:
+            return
+        try:
+            rows = shop_db.search_customers(self.cust_search_var.get())
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Customers load nahi ho sake: {e}", "ERROR")
+            return
+        for item in tree.get_children():
+            tree.delete(item)
+        self.cust_items = {}
+        for c in rows:
+            item = tree.insert("", "end", values=(
+                c["name"], c["phone"], c["address"], c["jobs_count"]))
+            self.cust_items[item] = c["id"]
+
+    def _cust_on_select(self, _event=None):
+        sel = self.cust_tree.selection()
+        cid = self.cust_items.get(sel[0]) if sel else None
+        if cid is None:
+            return
+        try:
+            c = shop_db.get_customer(cid)
+            njobs = len(shop_db.customer_jobs(cid))
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Customer load nahi ho saka: {e}", "ERROR")
+            return
+        if c is None:
+            return
+        self.cust_selected_id = cid
+        self.cust_name_var.set(c["name"])
+        self.cust_phone_var.set(c["phone"])
+        self.cust_addr_var.set(c["address"])
+        self.cust_notes_txt.delete("1.0", "end")
+        self.cust_notes_txt.insert("1.0", c["notes"])
+        self.cust_info_label.configure(
+            text=f"Customer #{cid} — is ke {njobs} repair jobs hain.")
+        self.cust_save_btn.configure(text="💾 SAVE (UPDATE)")
+
+    def _cust_clear(self):
+        self.cust_selected_id = None
+        self.cust_name_var.set("")
+        self.cust_phone_var.set("")
+        self.cust_addr_var.set("")
+        self.cust_notes_txt.delete("1.0", "end")
+        self.cust_info_label.configure(text="")
+        self.cust_save_btn.configure(text="➕ NAYA CUSTOMER")
+        if hasattr(self, "cust_tree"):
+            self.cust_tree.selection_remove(
+                self.cust_tree.selection())
+
+    def _cust_save(self):
+        name = self.cust_name_var.get().strip()
+        if not name:
+            self.log_line("Customer ka naam lazmi hai — pehle naam "
+                          "likho.", "WARN")
+            return
+        notes = self.cust_notes_txt.get("1.0", "end").strip()
+        try:
+            if self.cust_selected_id:
+                shop_db.update_customer(
+                    self.cust_selected_id, name,
+                    self.cust_phone_var.get(), self.cust_addr_var.get(),
+                    notes)
+                self.log_line(f"Customer update ho gaya: {name}", "OK")
+            else:
+                cid = shop_db.add_customer(
+                    name, self.cust_phone_var.get(),
+                    self.cust_addr_var.get(), notes)
+                self.log_line(f"Naya customer ban gaya: {name} "
+                              f"(#{cid})", "OK")
+        except ValueError as e:
+            self.log_line(str(e), "WARN")
+            return
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Customer save nahi ho saka: {e}", "ERROR")
+            return
+        self._cust_clear()
+        self._refresh_customers()
+        self._refresh_home_shop()
+        self._refresh_job_customers()
+
+    def _cust_save_shop_name(self):
+        name = self.shop_name_var.get().strip()
+        if not name:
+            self.log_line("Dukaan ka naam khali nahi ho sakta.",
+                          "WARN")
+            return
+        try:
+            shop_db.set_setting("shop_name", name)
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Naam save nahi ho saka: {e}", "ERROR")
+            return
+        self.log_line(f"Dukaan ka naam save ho gaya: {name} — ab "
+                      "receipts par yahi ayega.", "OK")
+
+    def _cust_backup(self):
+        try:
+            p = shop_db.backup_db()
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Backup nahi ban saka: {e}", "ERROR")
+            return
+        self.log_line(f"shop.db ki backup copy tayyar: {p} — isay "
+                      "kahin mehfooz rakh lo (USB/email).", "OK")
+
+    def _cust_export(self):
+        d = filedialog.askdirectory(
+            title="Customers/Jobs CSV kahan export karoon?",
+            initialdir=str(TOOLS_DIR.parent))
+        if not d:
+            return
+        try:
+            cp, jp = shop_db.export_csv(Path(d))
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"CSV export nahi ho saka: {e}", "ERROR")
+            return
+        self.log_line(f"CSV export tayyar: {cp}", "OK")
+        self.log_line(f"CSV export tayyar: {jp}", "OK")
+
+    # --------------------------------------------------------- JOBS -------
+    def _build_jobs(self, parent):
+        f = tk.Frame(parent, bg=BG)
+        top = tk.Frame(f, bg=PANEL)
+        top.pack(fill="x")
+        tk.Label(top, text="🎫 REPAIR JOBS", bg=PANEL, fg=FG,
+                 font=("Segoe UI", 12, "bold")).pack(side="left",
+                                                     padx=10, pady=6)
+        tk.Label(top, text="Select kiye job ka status aik click me:",
+                 bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).pack(side="left", padx=(10, 2))
+        for text, status in (("▶ IN PROGRESS", "In Progress"),
+                             ("✔ DONE", "Done"),
+                             ("📦 DELIVERED", "Delivered")):
+            tk.Button(top, text=text, bg=PANEL2, fg=FG, relief="flat",
+                      font=("Segoe UI", 8, "bold"), padx=8, pady=3,
+                      command=lambda s=status: self._job_quick_status(s)
+                      ).pack(side="left", padx=2)
+        tk.Button(top, text="🧾 RECEIPT", bg=ACCENT, fg="#111",
+                  relief="flat", font=("Segoe UI", 8, "bold"), padx=10,
+                  pady=3,
+                  command=self._job_receipt).pack(side="right", padx=6)
+
+        body = tk.Frame(f, bg=BG)
+        body.pack(fill="both", expand=True, pady=(6, 0))
+        form = tk.LabelFrame(body, text=" JOB CARD ", bg=PANEL,
+                             fg=MUTED, font=("Segoe UI", 9, "bold"),
+                             bd=1, width=348)
+        form.pack(side="left", fill="y")
+        form.pack_propagate(False)
+        self.job_cust_var = tk.StringVar()
+        self.job_brand_var = tk.StringVar()
+        self.job_model_var = tk.StringVar()
+        self.job_imei_var = tk.StringVar()
+        self.job_status_var = tk.StringVar(value="Received")
+        self.job_est_var = tk.StringVar()
+        self.job_final_var = tk.StringVar()
+        self.job_received_var = tk.StringVar(
+            value=date.today().isoformat())
+        self.job_delivered_var = tk.StringVar()
+        tk.Label(form, text="Customer *", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).grid(row=0, column=0, sticky="w",
+                                            padx=8, pady=3)
+        crow = tk.Frame(form, bg=PANEL)
+        crow.grid(row=0, column=1, sticky="w", pady=3)
+        self.job_cust_combo = ttk.Combobox(
+            crow, textvariable=self.job_cust_var, state="readonly",
+            width=26)
+        self.job_cust_combo.pack(side="left")
+        tk.Button(crow, text="↻", bg=PANEL2, fg=FG, relief="flat",
+                  font=("Segoe UI", 8),
+                  command=self._refresh_job_customers).pack(side="left",
+                                                            padx=2)
+        for row, (label, var) in enumerate((
+                ("Brand", self.job_brand_var),
+                ("Model", self.job_model_var),
+                ("IMEI (record)", self.job_imei_var)), start=1):
+            tk.Label(form, text=label, bg=PANEL, fg=MUTED,
+                     font=("Segoe UI", 8)).grid(
+                         row=row, column=0, sticky="w", padx=8, pady=3)
+            tk.Entry(form, textvariable=var, bg=PANEL2, fg=FG,
+                     insertbackground=FG, relief="flat",
+                     font=("Segoe UI", 9), width=28).grid(
+                         row=row, column=1, sticky="w", pady=3)
+        tk.Label(form, text="Masla *", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).grid(row=4, column=0, sticky="nw",
+                                            padx=8, pady=3)
+        self.job_problem_txt = tk.Text(
+            form, bg=PANEL2, fg=FG, insertbackground=FG, relief="flat",
+            font=("Segoe UI", 9), height=3, width=28, wrap="word")
+        self.job_problem_txt.grid(row=4, column=1, sticky="w", pady=3)
+        tk.Label(form, text="Status", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 8)).grid(row=5, column=0, sticky="w",
+                                            padx=8, pady=3)
+        ttk.Combobox(form, textvariable=self.job_status_var,
+                     values=list(shop_db.STATUSES), state="readonly",
+                     width=26).grid(row=5, column=1, sticky="w", pady=3)
+        for row, (label, var) in enumerate((
+                ("Estimate (Rs)", self.job_est_var),
+                ("Final (Rs)", self.job_final_var),
+                ("Received date", self.job_received_var),
+                ("Delivered date", self.job_delivered_var)), start=6):
+            tk.Label(form, text=label, bg=PANEL, fg=MUTED,
+                     font=("Segoe UI", 8)).grid(
+                         row=row, column=0, sticky="w", padx=8, pady=3)
+            tk.Entry(form, textvariable=var, bg=PANEL2, fg=FG,
+                     insertbackground=FG, relief="flat",
+                     font=("Segoe UI", 9), width=28).grid(
+                         row=row, column=1, sticky="w", pady=3)
+        self.job_info_label = tk.Label(
+            form, text="", bg=PANEL, fg=ACCENT, wraplength=310,
+            justify="left", font=("Segoe UI", 8))
+        self.job_info_label.grid(row=10, column=0, columnspan=2,
+                                 sticky="w", padx=8, pady=(6, 2))
+        btnrow = tk.Frame(form, bg=PANEL)
+        btnrow.grid(row=11, column=0, columnspan=2, sticky="w",
+                    padx=8, pady=4)
+        self.job_save_btn = tk.Button(
+            btnrow, text="➕ NAYA JOB", bg=GREEN, fg="#0b0e13",
+            relief="flat", font=("Segoe UI", 9, "bold"), padx=10,
+            pady=5, command=self._job_save)
+        self.job_save_btn.pack(side="left")
+        tk.Button(btnrow, text="🧹 Saaf", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 9, "bold"), padx=10,
+                  pady=5, command=self._job_clear).pack(side="left",
+                                                        padx=4)
+        tk.Label(form, text="IMEI yahan sirf job card ke record ke "
+                            "liye hai — koi device write nahi hota. "
+                            "Delivered karne par date khud lag jati "
+                            "hai.",
+                 bg=PANEL, fg=MUTED, wraplength=310, justify="left",
+                 font=("Segoe UI", 8)).grid(row=12, column=0,
+                                            columnspan=2, sticky="w",
+                                            padx=8, pady=6)
+
+        right = tk.Frame(body, bg=BG)
+        right.pack(side="left", fill="both", expand=True, padx=(8, 0))
+        frow = tk.Frame(right, bg=BG)
+        frow.pack(fill="x", pady=(0, 4))
+        tk.Label(frow, text="Talash:", bg=BG, fg=MUTED,
+                 font=("Segoe UI", 9)).pack(side="left")
+        self.job_search_var = tk.StringVar()
+        self.job_search_var.trace_add(
+            "write", lambda *_a: self._refresh_jobs())
+        tk.Entry(frow, textvariable=self.job_search_var, bg=PANEL2,
+                 fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 9), width=30).pack(side="left", padx=4)
+        tk.Label(frow, text="Status:", bg=BG, fg=MUTED,
+                 font=("Segoe UI", 9)).pack(side="left", padx=(8, 2))
+        self.job_filter_var = tk.StringVar(value="All")
+        fcombo = ttk.Combobox(frow, textvariable=self.job_filter_var,
+                              values=["All", *shop_db.STATUSES],
+                              state="readonly", width=14)
+        fcombo.pack(side="left")
+        fcombo.bind("<<ComboboxSelected>>",
+                    lambda _e: self._refresh_jobs())
+        self.job_tree = ttk.Treeview(
+            right,
+            columns=("ticket", "customer", "device", "problem",
+                     "status", "final", "received"),
+            show="headings", selectmode="browse")
+        for col, title, width in (("ticket", "Ticket", 76),
+                                  ("customer", "Customer", 150),
+                                  ("device", "Device", 170),
+                                  ("problem", "Masla", 220),
+                                  ("status", "Status", 95),
+                                  ("final", "Final Rs", 80),
+                                  ("received", "Received", 95)):
+            self.job_tree.heading(col, text=title)
+            self.job_tree.column(col, width=width, anchor="w")
+        self.job_tree.pack(fill="both", expand=True)
+        self.job_tree.bind("<<TreeviewSelect>>", self._job_on_select)
+        return f
+
+    def _refresh_job_customers(self):
+        combo = getattr(self, "job_cust_combo", None)
+        if combo is None:
+            return
+        try:
+            rows = shop_db.list_customers()
+        except Exception:  # noqa: BLE001
+            rows = []
+        current = self.job_cust_var.get()
+        self.job_cust_ids = [c["id"] for c in rows]
+        self.job_cust_labels = [
+            (f"#{c['id']} — {c['name']} ({c['phone']})"
+             if c["phone"] else f"#{c['id']} — {c['name']}")
+            for c in rows]
+        combo.configure(values=self.job_cust_labels)
+        if current in self.job_cust_labels:
+            self.job_cust_var.set(current)
+        elif self.job_cust_labels:
+            self.job_cust_var.set(self.job_cust_labels[0])
+        else:
+            self.job_cust_var.set("")
+
+    def _job_customer_id(self):
+        label = self.job_cust_var.get()
+        try:
+            idx = self.job_cust_labels.index(label)
+            return self.job_cust_ids[idx]
+        except (ValueError, IndexError):
+            return None
+
+    def _refresh_jobs(self):
+        tree = getattr(self, "job_tree", None)
+        if tree is None:
+            return
+        try:
+            rows = shop_db.search_jobs(self.job_search_var.get(),
+                                       self.job_filter_var.get())
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Jobs load nahi ho sake: {e}", "ERROR")
+            return
+        for item in tree.get_children():
+            tree.delete(item)
+        self.job_items = {}
+        for j in rows:
+            device = f"{j['brand']} {j['model']}".strip() or "—"
+            final = (shop_db.fmt_money(j["final_charges"])
+                     if float(j["final_charges"] or 0) else "—")
+            item = tree.insert("", "end", values=(
+                j["ticket_no"], j["customer_name"], device,
+                (j["problem"] or "")[:60], j["status"], final,
+                j["received_date"]))
+            self.job_items[item] = j["id"]
+
+    def _job_fill(self, job):
+        self.job_selected_id = job["id"]
+        cid = job["customer_id"]
+        if cid in self.job_cust_ids:
+            self.job_cust_var.set(
+                self.job_cust_labels[self.job_cust_ids.index(cid)])
+        self.job_brand_var.set(job["brand"])
+        self.job_model_var.set(job["model"])
+        self.job_imei_var.set(job["imei"])
+        self.job_problem_txt.delete("1.0", "end")
+        self.job_problem_txt.insert("1.0", job["problem"])
+        self.job_status_var.set(job["status"])
+        self.job_est_var.set(self._money_text(job["est_charges"]))
+        self.job_final_var.set(self._money_text(job["final_charges"]))
+        self.job_received_var.set(job["received_date"])
+        self.job_delivered_var.set(job["delivered_date"])
+        self.job_info_label.configure(
+            text=f"Ticket {job['ticket_no']} — "
+                 f"{job.get('customer_name', '')}")
+        self.job_save_btn.configure(text="💾 SAVE (UPDATE)")
+
+    def _job_on_select(self, _event=None):
+        sel = self.job_tree.selection()
+        jid = self.job_items.get(sel[0]) if sel else None
+        if jid is None:
+            return
+        try:
+            job = shop_db.get_job(jid)
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Job load nahi ho saka: {e}", "ERROR")
+            return
+        if job is not None:
+            self._job_fill(job)
+
+    def _job_clear(self):
+        self.job_selected_id = None
+        self.job_brand_var.set("")
+        self.job_model_var.set("")
+        self.job_imei_var.set("")
+        self.job_problem_txt.delete("1.0", "end")
+        self.job_status_var.set("Received")
+        self.job_est_var.set("")
+        self.job_final_var.set("")
+        self.job_received_var.set(date.today().isoformat())
+        self.job_delivered_var.set("")
+        self.job_info_label.configure(text="")
+        self.job_save_btn.configure(text="➕ NAYA JOB")
+        if hasattr(self, "job_tree"):
+            self.job_tree.selection_remove(self.job_tree.selection())
+
+    def _job_save(self):
+        cid = self._job_customer_id()
+        if cid is None:
+            self.log_line("Pehle customer select karo — naya "
+                          "customer CUSTOMERS module me banta hai.",
+                          "WARN")
+            return
+        problem = self.job_problem_txt.get("1.0", "end").strip()
+        if not problem:
+            self.log_line("Masla (problem) likhna lazmi hai.", "WARN")
+            return
+        fields = dict(
+            customer_id=cid,
+            brand=self.job_brand_var.get().strip(),
+            model=self.job_model_var.get().strip(),
+            imei=self.job_imei_var.get().strip(),
+            problem=problem,
+            status=self.job_status_var.get(),
+            est_charges=self._parse_money(self.job_est_var.get()),
+            final_charges=self._parse_money(self.job_final_var.get()),
+            received_date=self.job_received_var.get().strip(),
+            delivered_date=self.job_delivered_var.get().strip())
+        try:
+            if self.job_selected_id:
+                shop_db.update_job(self.job_selected_id, **fields)
+                job = shop_db.get_job(self.job_selected_id)
+                self.log_line(f"Job update ho gaya: "
+                              f"{job['ticket_no']}", "OK")
+            else:
+                _jid, ticket = shop_db.add_job(**fields)
+                self.log_line(f"Naya job ban gaya — Ticket {ticket}",
+                              "OK")
+        except ValueError as e:
+            self.log_line(str(e), "WARN")
+            return
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Job save nahi ho saka: {e}", "ERROR")
+            return
+        self._job_clear()
+        self._refresh_jobs()
+        self._refresh_customers()
+        self._refresh_home_shop()
+
+    def _job_quick_status(self, status):
+        if not self.job_selected_id:
+            self.log_line("Pehle list se aik job select karo — phir "
+                          "status badlo.", "WARN")
+            return
+        try:
+            shop_db.set_job_status(self.job_selected_id, status)
+            job = shop_db.get_job(self.job_selected_id)
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Status nahi badla: {e}", "ERROR")
+            return
+        self.log_line(f"{job['ticket_no']} → {status}", "OK")
+        self._refresh_jobs()
+        self._refresh_home_shop()
+        if job is not None:
+            self._job_fill(job)
+
+    def _job_receipt(self):
+        if not self.job_selected_id:
+            self.log_line("Pehle list se aik job select karo — "
+                          "receipt usi ki banegi.", "WARN")
+            return
+        try:
+            job = shop_db.get_job(self.job_selected_id)
+            cust = shop_db.get_customer(job["customer_id"])
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Receipt data nahi mila: {e}", "ERROR")
+            return
+        rdir = shop_db.receipts_dir()
+        path = filedialog.asksaveasfilename(
+            title="Receipt kahan save karoon?",
+            initialdir=str(rdir),
+            initialfile=f"receipt-{job['ticket_no']}.html",
+            defaultextension=".html",
+            filetypes=[("HTML (print ke liye)", "*.html"),
+                       ("Text", "*.txt")])
+        if not path:
+            return
+        try:
+            if str(path).lower().endswith(".txt"):
+                content = shop_db.receipt_text(job, cust)
+            else:
+                content = shop_db.receipt_html(job, cust)
+            Path(path).write_text(content, encoding="utf-8")
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"Receipt save nahi ho saki: {e}", "ERROR")
+            return
+        self.log_line(f"Receipt tayyar: {path} — browser me khol "
+                      "kar print kar lo.", "OK")
+        try:
+            webbrowser.open(Path(path).as_uri())
+        except Exception:  # noqa: BLE001
+            pass
+
     # ------------------------------------------------------- CHANGELOG ---
     def _build_changelog(self, parent):
         f = tk.Frame(parent, bg=BG)
@@ -1307,15 +2121,13 @@ class App(tk.Tk):
     def start_op(self):
         if self.selected_op is None:
             return
-        # IMEI gate: ops-tree se chalne wale gated ops ko bhi
-        # Network tab ke tasdeeq checkbox ki halat bhejo (MDM
-        # panel wala _run_action rasta pehle se ye karta hai).
-        confirmed = False
-        if getattr(self.selected_op, "OP", {}).get("imei_write"):
-            var = getattr(self, "net_imei_confirm_var", None)
-            confirmed = bool(var.get()) if var is not None else False
+        # Gates + params: IMEI tasdeeq (Network tab), danger
+        # tasdeeq aur PARAMS bar — _collect_op_args dono raston
+        # (tree + model panel) me mushtaraka hai.
+        imei, danger, params = self._collect_op_args(self.selected_op)
         if self.runner.start(self.selected_op, self.device,
-                             imei_write_confirmed=confirmed):
+                             imei_write_confirmed=imei,
+                             danger_confirmed=danger, params=params):
             self.start_btn.configure(state="disabled")
             self.stop_btn.configure(state="normal")
 
