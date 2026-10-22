@@ -762,6 +762,7 @@ class App(tk.Tk):
                          command=lambda o=op_obj: self._run_action(o))
 
     def _tab_download(self, frame, model):
+        self._da_model = model
         row = tk.Frame(frame, bg=PANEL)
         row.pack(fill="x", pady=(0, 4))
         tk.Label(row, text="DA File:", bg=PANEL, fg=MUTED,
@@ -783,7 +784,11 @@ class App(tk.Tk):
                   ).pack(anchor="w")
 
     def _refresh_da_list(self):
-        files = mdm_list.da_files()
+        # Model ke liye library-ranked fehrist: best match sab se
+        # upar (auto-select); user ka pehle se chuna hua DA agar
+        # ab bhi fehrist me ho to wahi barqarar (manual hamesha jeet-ti).
+        prev = self._selected_da()
+        files = mdm_list.da_files(model=getattr(self, "_da_model", None))
         self._da_paths = files
         labels = []
         for p in files:
@@ -792,9 +797,12 @@ class App(tk.Tk):
             except Exception:
                 labels.append(p.name)
         if not labels:
-            labels = ["(koi DA nahi — tools/loaders me .bin rakho)"]
+            labels = ["(koi DA nahi — Loaders pack tools/loaders me lagao)"]
         self.da_combo.configure(values=labels)
-        self.da_combo.current(0)
+        if prev is not None and prev in files:
+            self.da_combo.current(files.index(prev))
+        else:
+            self.da_combo.current(0)
 
     def _selected_da(self):
         idx = self.da_combo.current() if hasattr(self, "da_combo") else -1
