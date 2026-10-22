@@ -40,6 +40,8 @@ class OpContext:
     device: object = None                       # DeviceInfo | None
     op_id: str = ""                             # chal rahe op ki id (audit log ke liye)
     imei_write_confirmed: bool = False          # IMEI gate ki tasdeeq (core/imei_gate.py)
+    danger_confirmed: bool = False              # destructive-write gate ki tasdeeq (core/danger_gate.py)
+    params: dict = field(default_factory=dict)  # GUI params bar ke values (lun/start_sector/sectors/sector_size)
     _log_fn: object = None                      # callable(msg, level)
     _progress_fn: object = None                 # callable(percent, label)
     cancelled: threading.Event = field(default_factory=threading.Event)
@@ -137,7 +139,8 @@ class Runner:
     def busy(self):
         return self._thread is not None and self._thread.is_alive()
 
-    def start(self, op_module, device, imei_write_confirmed=False):
+    def start(self, op_module, device, imei_write_confirmed=False,
+              danger_confirmed=False, params=None):
         if self.busy:
             self._log("Aik operation pehle se chal raha hai — pehle usay "
                       "khatam ya STOP karo.", "WARN")
@@ -145,6 +148,8 @@ class Runner:
         self._ctx = OpContext(
             device=device,
             imei_write_confirmed=bool(imei_write_confirmed),
+            danger_confirmed=bool(danger_confirmed),
+            params=dict(params or {}),
             _log_fn=self._log,
             _progress_fn=self._progress,
             update_device=self._update_device,

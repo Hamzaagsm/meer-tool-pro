@@ -114,6 +114,21 @@ BUILTIN_PROFILES = {
             "com.google.android.retaildemo",
         ],
     },
+    "xiaomi_ads_set": {
+        "name": "Xiaomi / MIUI Ads Set",
+        "description": (
+            "MIUI ke system ads/analytics packages — Remove Ads "
+            "op ke liye (TSM-UAT round 6). Disable = ads "
+            "components band; reversible hai (Restore Ads op / "
+            "Settings se dobara enable). Ye TEMPLATE hai — jo "
+            "package device par installed nahi, wo op skip kar "
+            "deta hai."),
+        "packages": [
+            "com.miui.systemAdSolution",
+            "com.miui.analytics",
+            "com.miui.msa.global",
+        ],
+    },
 }
 
 _TRANSSION_BRANDS = ("transsion", "infinix", "tecno", "itel")
