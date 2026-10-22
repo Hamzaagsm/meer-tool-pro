@@ -1,0 +1,89 @@
+# MEER TOOL PRO — Windows EXE build (PyInstaller, single-file)
+#
+# Kab chalta hai:
+#   - main par har push par (Actions tab se artifact download hota hai)
+#   - v* tag push par (masalan v1.0) — artifact ke saath GitHub Release
+#     par bhi EXE + ZIP lag jate hain
+#   - Actions tab se "Run workflow" (workflow_dispatch) se bhi
+#
+# Khaas faislay:
+#   - tools/ folder ko EXE ke ANDAR bundle NAHI kiya gaya (--add-data nahi
+#     lagaya): onefile EXE temp folder me khulta hai jo har run par mit
+#     jata hai — user ke apne loaders (tools/loaders/qualcomm/) aur
+#     platform-tools wahan kabhi tik hi nahi sakte thay. Is liye tools/
+#     EXE ke SAATH alag folder ki surat me ZIP me jata hai, aur app
+#     (src/core/runner.py, frozen-aware APP_ROOT) use EXE ke barabar
+#     wale folder me dhoondhta hai.
+#   - src/ops/*.py plugins pkgutil se runtime par discover hote hain —
+#     PyInstaller ki static analysis unhe nahi dekh sakti, is liye har
+#     ops module --hidden-import se pakka shamil hai. Naya op jorna ho
+#     to yahan aik --hidden-import line bhi jorna hogi.
+name: Build MEERToolPro EXE
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write # tag builds par Release banane ke liye
+
+jobs:
+  build-exe:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyInstaller + requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install "pyinstaller>=6"
+          pip install -r requirements.txt
+
+      - name: Build single-file windowed EXE
+        run: >
+          pyinstaller --noconfirm --clean
+          --onefile --windowed
+          --name MEERToolPro
+          --hidden-import ops.adb_info
+          --hidden-import ops.adb_reboot
+          --hidden-import ops.demo_session
+          --hidden-import ops.fastboot_info
+          --hidden-import ops.mtk_info
+          --hidden-import ops.stubs
+          --hidden-import serial.tools.list_ports
+          src/main.py
+
+      - name: Package (EXE + tools folder aik ZIP me)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path pkg | Out-Null
+          Copy-Item dist/MEERToolPro.exe pkg/
+          Copy-Item tools pkg/tools -Recurse
+          Copy-Item README.md pkg/
+          Compress-Archive -Path pkg/* -DestinationPath MEERToolPro-Windows.zip -Force
+          Get-ChildItem dist, MEERToolPro-Windows.zip
+
+      - name: Upload artifact (EXE + ZIP)
+        uses: actions/upload-artifact@v4
+        with:
+          name: MEERToolPro-Windows
+          path: |
+            dist/MEERToolPro.exe
+            MEERToolPro-Windows.zip
+          if-no-files-found: error
+
+      - name: Publish GitHub Release (sirf tag builds par)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/MEERToolPro.exe
+            MEERToolPro-Windows.zip
