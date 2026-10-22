@@ -3,6 +3,9 @@
 import shutil
 import subprocess
 import sys
+from pathlib import Path
+
+from core import engines
 
 OP = {
     "id": "fastboot_info",
@@ -38,8 +41,8 @@ def _getvar_all(fastboot, serial):
 
 
 def run(ctx) -> bool:
-    fb = shutil.which("fastboot")
-    if not fb:
+    fb = engines.find_platform_tool("fastboot")
+    if not Path(fb).is_file() and shutil.which(fb) is None:
         ctx.log("fastboot nahi mila — engine setup required "
                 "(tools/platform-tools).", "ERROR")
         return False

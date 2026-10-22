@@ -21,7 +21,7 @@ import importlib
 import pkgutil
 from types import SimpleNamespace
 
-CATEGORIES = ["MTK", "Qualcomm", "Samsung", "ADB / Fastboot", "SPD / Unisoc", "Demo"]
+CATEGORIES = ["MTK", "MDM / Transsion", "Qualcomm", "Samsung", "ADB / Fastboot", "SPD / Unisoc", "Demo"]
 
 
 def load_operations():

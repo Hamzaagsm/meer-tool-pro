@@ -1,6 +1,9 @@
 """adb_reboot.py — ADB reboot operations (normal / bootloader / recovery)."""
 
 import shutil
+from pathlib import Path
+
+from core import engines
 
 OP = {
     "id": "adb_reboot",
@@ -13,8 +16,8 @@ OP = {
 
 
 def _reboot(ctx, target):
-    adb = shutil.which("adb")
-    if not adb:
+    adb = engines.find_platform_tool("adb")
+    if not Path(adb).is_file() and shutil.which(adb) is None:
         ctx.log("adb nahi mila — engine setup required (tools/platform-tools).", "ERROR")
         return False
     dev = ctx.device

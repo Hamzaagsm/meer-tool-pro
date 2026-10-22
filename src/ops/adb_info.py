@@ -7,8 +7,9 @@ bunyadi farq hai: info asal me phone se ATI hai, hardcode nahi hoti.
 """
 
 import shutil
+from pathlib import Path
 
-from core import device_watch
+from core import device_watch, engines
 
 OP = {
     "id": "adb_info",
@@ -21,8 +22,8 @@ OP = {
 
 
 def run(ctx) -> bool:
-    adb = shutil.which("adb")
-    if not adb:
+    adb = engines.find_platform_tool("adb")
+    if not Path(adb).is_file() and shutil.which(adb) is None:
         ctx.log("adb nahi mila — platform-tools app ke tools/ folder me ya "
                 "PATH me chahiye.", "ERROR")
         return False
