@@ -28,6 +28,8 @@ if getattr(sys, "frozen", False):
 else:
     APP_ROOT = Path(__file__).resolve().parents[2]   # hamza-tool-pro/
 TOOLS_DIR = APP_ROOT / "tools"
+ENGINES_DIR = APP_ROOT / "engines"
+BACKUPS_DIR = APP_ROOT / "backups"
 
 LEVELS = ("INFO", "OK", "WARN", "ERROR", "CMD", "DATA")
 
