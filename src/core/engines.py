@@ -120,6 +120,30 @@ def find_edl():
 
 
 # --------------------------------------------------------------------------
+# spd_dump (Unisoc FDL sessions) — self-contained binary
+# --------------------------------------------------------------------------
+def find_spd_dump():
+    """spd_dump: (exe_path|None, note).
+
+    Tartib: engines/spd_dump/spd_dump.exe → tools/spd/spd_dump.exe →
+    PATH. Source bundle (spd_dump.c) akela kaafi nahi — asal binary
+    chahiye; na mile to op imaandar guided FAIL dega.
+    """
+    for base in (ENGINES_DIR / "spd_dump", TOOLS_DIR / "spd"):
+        for name in ("spd_dump.exe", "spd_dump"):
+            cand = base / name
+            if cand.is_file():
+                return str(cand), f"spd_dump mila: {cand}"
+    exe = shutil.which("spd_dump")
+    if exe:
+        return exe, f"spd_dump mila (PATH): {exe}"
+    return None, ("spd_dump binary nahi mila — engines/spd_dump/ me "
+                  "sirf source (spd_dump.c) hai ya wo bhi nahi. "
+                  "Official release ka spd_dump.exe app ke "
+                  "engines/spd_dump/ ya tools/spd/ folder me rakho.")
+
+
+# --------------------------------------------------------------------------
 # platform-tools (adb / fastboot) — self-contained binaries
 # --------------------------------------------------------------------------
 def find_platform_tool(name):

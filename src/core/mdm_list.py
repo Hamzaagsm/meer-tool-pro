@@ -33,6 +33,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from core import engines
+from core.imei_gate import imei_write_gate
 from core.runner import TOOLS_DIR
 
 MODELS_FILE = TOOLS_DIR / "mdm-models.json"
@@ -146,10 +147,11 @@ def da_files():
 # Action factories — har factory aik runner-compatible op object deta hai
 # (OP dict + run(ctx)); execution hamesha runner ke through hoti hai.
 # --------------------------------------------------------------------------
-def _op(op_id, name, run, engine="mdm-list"):
+def _op(op_id, name, run, engine="mdm-list", imei_write=False):
     return SimpleNamespace(OP={
         "id": op_id, "category": "MDM / Transsion", "name": name,
         "engine": engine, "modes": (), "server_required": False,
+        "imei_write": bool(imei_write),
     }, run=run)
 
 
@@ -830,6 +832,10 @@ def _find_cert_backup(model):
 
 def network_restore_cert_op(model):
     def run(ctx):
+        # IMEI GATE: cert/NV restore IMEI bhi wapas likhta hai —
+        # warning + tasdeeq ke baghair aage nahi (core/imei_gate.py).
+        if not imei_write_gate(ctx):
+            return False
         cert = _find_cert_backup(model)
         if cert is None:
             ctx.log("Is model ka cert backup library me nahi mila — "
@@ -853,7 +859,7 @@ def network_restore_cert_op(model):
                 "values upar mehfooz hain.", "WARN")
         return False
     return _op("mdm_list_net_restore_cert", "RESTORE CERT - [NETWORK]",
-               run, engine="adb")
+               run, engine="adb", imei_write=True)
 
 
 def network_restore_imei_op(model, imei_provider):
@@ -862,6 +868,10 @@ def network_restore_imei_op(model, imei_provider):
     hai; NV write ka engine (DIAG/FDL) is build me nahi — imaandar
     guided natija."""
     def run(ctx):
+        # IMEI GATE: warning + tasdeeq sab se pehle — provider,
+        # Luhn, backup check, har cheez gate ke BAAD hai.
+        if not imei_write_gate(ctx):
+            return False
         ctx.log("Usool: yahan sirf phone ka ORIGINAL IMEI (dabbe/"
                 "sticker wala) restore hota hai — IMEI change ya "
                 "clone kabhi nahi.", "WARN")
@@ -895,7 +905,8 @@ def network_restore_imei_op(model, imei_provider):
                 "asal write official DIAG route se hogi.", "WARN")
         return False
     return _op("mdm_list_net_restore_imei",
-               "RESTORE ORIGINAL IMEI - [NETWORK]", run, engine="adb")
+               "RESTORE ORIGINAL IMEI - [NETWORK]", run, engine="adb",
+               imei_write=True)
 
 
 # ==========================================================================

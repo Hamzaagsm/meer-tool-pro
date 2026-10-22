@@ -38,6 +38,8 @@ LEVELS = ("INFO", "OK", "WARN", "ERROR", "CMD", "DATA")
 class OpContext:
     """Har operation ko milne wali sahulaten — log, progress, device, helpers."""
     device: object = None                       # DeviceInfo | None
+    op_id: str = ""                             # chal rahe op ki id (audit log ke liye)
+    imei_write_confirmed: bool = False          # IMEI gate ki tasdeeq (core/imei_gate.py)
     _log_fn: object = None                      # callable(msg, level)
     _progress_fn: object = None                 # callable(percent, label)
     cancelled: threading.Event = field(default_factory=threading.Event)
@@ -135,13 +137,14 @@ class Runner:
     def busy(self):
         return self._thread is not None and self._thread.is_alive()
 
-    def start(self, op_module, device):
+    def start(self, op_module, device, imei_write_confirmed=False):
         if self.busy:
             self._log("Aik operation pehle se chal raha hai — pehle usay "
                       "khatam ya STOP karo.", "WARN")
             return False
         self._ctx = OpContext(
             device=device,
+            imei_write_confirmed=bool(imei_write_confirmed),
             _log_fn=self._log,
             _progress_fn=self._progress,
             update_device=self._update_device,
@@ -168,6 +171,7 @@ class Runner:
         op_id = op.get("id", "unknown")
         name = op.get("name", op_id)
         ctx = self._ctx
+        ctx.op_id = op_id
         self._log(f"▶ Operation started: {name}", "INFO")
         ctx.progress(0, name)
         ok = False
