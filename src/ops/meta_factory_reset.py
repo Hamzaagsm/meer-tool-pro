@@ -5,7 +5,8 @@ Pehle NEW-AUTH GUARD: naye-security Dimensity chips (MT6835 /
 MT6878 / MT6983, Dimensity 6300/6400/7300/9000/9400) par
 new-algorithm META FRP/auth SERVER-REQUIRED hai — wahan ye op
 chalne ka natak nahi karta, 🔒 wajah ke saath ruk jata hai
-(core.mdm_list.NEW_AUTH_TOKENS; MDM List ke TMETA ops wala hi usool).
+(core.meta_guard ki LADDER — doosra darwaza khud offer hota
+hai; Round 7 B7).
 
 Baaki devices par META port se FT_FACTORY_RESET request jati hai.
 IMAANDARI: ye reset META ka userdata-level reset hai — FRP tabhi
@@ -15,8 +16,7 @@ sirf verified status==0x00 jawab par hai; us ke baad bhi asal
 tasdeeq phone reboot karke setup me khud karni hai.
 """
 
-from core import meta_session
-from core.mdm_list import NEW_AUTH_TOKENS
+from core import meta_guard, meta_session
 
 OP = {
     "id": "meta_factory_reset",
@@ -29,26 +29,15 @@ OP = {
 
 
 def _new_auth_blocked(ctx) -> bool:
-    """True = SERVER-REQUIRED wajah log ho chuki hai, aage mat barho."""
-    dev = ctx.device
-    if dev is None:
-        return False
-    hay = " ".join([getattr(dev, "chip", "") or "",
-                    getattr(dev, "model", "") or "",
-                    getattr(dev, "detail", "") or ""])
-    hit = next((t for t in NEW_AUTH_TOKENS if t.lower() in hay.lower()),
-               None)
+    """True = SERVER-REQUIRED wajah log ho chuki hai, aage mat barho.
+
+    Round 7 (B7): rukna ab LADDER ke saath hai (core.meta_guard) —
+    wajah ke saath doosra zinda darwaza (DA/Heapbait, test point,
+    ADB) khud offer hota hai."""
+    hit = meta_guard.hit_for(ctx)
     if not hit:
         return False
-    ctx.log(f"🔒 SERVER REQUIRED — chip/model pehchana gaya: {hit}. "
-            "Is class par new-algorithm META FRP/auth server-side "
-            "hota hai: Pandora jaisi tools bhi ye kaam apne auth/"
-            "server se karti hain, public offline tareeqa maujood "
-            "nahi.", "ERROR")
-    ctx.log("Is liye ye op yahan ruk raha hai — jhooti koshish ya "
-            "nakli success nahi di jayegi. Doosra darwaza: BROM/"
-            "Download route ke ops (agar is model par chalte hon) "
-            "ya authorized service.", "WARN")
+    meta_guard.ladder_stop(ctx, hit)
     return True
 
 
