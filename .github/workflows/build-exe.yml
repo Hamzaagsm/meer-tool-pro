@@ -138,6 +138,16 @@ jobs:
           --hidden-import ops.adb_service_menus
           --hidden-import ops.adb_private_dns
           --hidden-import ops.adb_fix_install
+          --hidden-import ops.meta_frp_erase
+          --hidden-import ops.meta_ubl_unlock
+          --hidden-import ops.meta_ubl_restore
+          --hidden-import ops.meta_plugin_patch
+          --hidden-import ops.meta_restore_patch
+          --hidden-import ops.meta_gpt_read
+          --hidden-import ops.meta_disable_adb
+          --hidden-import ops.meta_reboot_normal
+          --hidden-import ops.meta_poweroff
+          --hidden-import ops.meta_reboot_fastboot
           src/main.py
 
       - name: Package (EXE + tools folder aik ZIP me)
