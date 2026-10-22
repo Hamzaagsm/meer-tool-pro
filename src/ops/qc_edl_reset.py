@@ -6,6 +6,7 @@ model me ye partition nahi hota — fail sirf WARN), aakhir me device reset.
 """
 
 from core import engines
+from core.reset_honesty import pre_reset_honesty, result_label
 
 OP = {
     "id": "qc_edl_reset",
@@ -53,6 +54,7 @@ def run(ctx) -> bool:
     if resolved is None:
         return False
     cmd, cwd, loader = resolved
+    _hon = pre_reset_honesty(ctx)
 
     ctx.progress(20, "userdata erase ho raha hai...")
     code = ctx.stream(cmd + ["e", "userdata", f"--loader={loader}"],
@@ -88,5 +90,6 @@ def run(ctx) -> bool:
                 "chuka hai, phone ko manual on kar lo.", "WARN")
     else:
         ctx.log("Reset ka hukum bhej diya.", "OK")
+    result_label(ctx, _hon)
     ctx.progress(95, "Factory reset mukammal")
     return True

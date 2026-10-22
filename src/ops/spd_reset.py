@@ -17,6 +17,7 @@ session fail hua to imaandar FAIL hai.
 from datetime import datetime
 
 from core import spd_fdl
+from core.reset_honesty import pre_reset_honesty, result_label
 from core.runner import BACKUPS_DIR
 
 OP = {
@@ -35,6 +36,7 @@ def run(ctx) -> bool:
     session = spd_fdl.prepare_fdl(ctx)
     if session is None:
         return False
+    _hon = pre_reset_honesty(ctx)
 
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
     plist = BACKUPS_DIR / f"spd-partitions-{stamp}.xml"
@@ -73,6 +75,7 @@ def run(ctx) -> bool:
         ctx.progress(95, "Factory reset mukammal")
         ctx.log("userdata + metadata erase ho gaye — factory reset "
                 "mukammal.", "OK")
+        result_label(ctx, _hon)
         return True
 
     # Session fail — lekin agar metadata tha hi nahi, to spd_dump
@@ -87,6 +90,7 @@ def run(ctx) -> bool:
         ctx.progress(95, "Factory reset mukammal (metadata maujood nahi tha)")
         ctx.log("Factory reset mukammal — sirf userdata wala model "
                 "tha.", "OK")
+        result_label(ctx, _hon)
         return True
 
     ctx.log(f"Factory reset fail hua (spd_dump exit code {code}). "

@@ -18,6 +18,7 @@ hai. Isi liye ye step is flow ka hissa hai.
 """
 
 from core import engines
+from core.reset_honesty import pre_reset_honesty, result_label
 from core.runner import APP_ROOT, BACKUPS_DIR, TOOLS_DIR  # noqa: F401
 
 OP = {
@@ -71,6 +72,7 @@ def run(ctx) -> bool:
 
     ctx.log("FRP erase aur factory reset dono kaam aik hi session me "
             "honge — phone ko cable se mat hatana.", "INFO")
+    _hon = pre_reset_honesty(ctx)
 
     # (a) FRP erase — fail = overall FAIL
     ctx.progress(10, "FRP partition erase ho raha hai...")
@@ -145,5 +147,6 @@ def run(ctx) -> bool:
         ctx.log("Phone reset ho gaya — pehli boot par kuch minute lag "
                 "sakte hain.", "OK")
 
+    result_label(ctx, _hon)
     ctx.progress(95, "FRP erase + factory reset mukammal")
     return True

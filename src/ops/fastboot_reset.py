@@ -12,6 +12,7 @@ partitions ko ye op kabhi nahi chuta.
 """
 
 from core import engines  # noqa: F401  (pattern consistency)
+from core.reset_honesty import pre_reset_honesty, result_label
 from ops.fastboot_frp import check_unlocked, resolve_fastboot
 
 OP = {
@@ -33,6 +34,7 @@ def run(ctx) -> bool:
         return False
     ctx.log("Reset ka nishana: userdata + metadata. NV/IMEI aur "
             "baqi partitions mehfooz rahenge.", "INFO")
+    _hon = pre_reset_honesty(ctx)
     ctx.progress(35, "userdata erase ho raha hai...")
     code = ctx.stream([fb, "-s", serial, "erase", "userdata"],
                       timeout=300)
@@ -58,5 +60,6 @@ def run(ctx) -> bool:
     ctx.log("Factory reset mukammal. 'Reboot (Fastboot)' se ya "
             "phone ke Power button se on karo — pehli boot par "
             "setup wizard ayega.", "OK")
+    result_label(ctx, _hon)
     ctx.progress(95, "Factory reset mukammal")
     return True
