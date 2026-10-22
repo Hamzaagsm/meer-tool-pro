@@ -149,7 +149,12 @@ jobs:
           --hidden-import ops.meta_poweroff
           --hidden-import ops.meta_reboot_fastboot
           --hidden-import ops.util_loader_import
+          --hidden-import ops.fw_loader_harvest
+          --hidden-import ops.util_repair_intel
           --hidden-import core.loader_library
+          --hidden-import core.firmware_catalog
+          --hidden-import core.fw_harvest
+          --hidden-import core.repair_intel
           src/main.py
 
       - name: Package (EXE + tools folder aik ZIP me)
