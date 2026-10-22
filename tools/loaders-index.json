@@ -1,0 +1,3729 @@
+{
+ "name": "MEER Tool Pro — Loaders Library Index",
+ "version": 1,
+ "generated": "2026-10-23",
+ "note": "Staging MANIFEST.md se generate hua; har entry ka size+SHA-256 staging file se verify hai.",
+ "count": 465,
+ "entries": [
+  {
+   "type": "mtk-da",
+   "brand": "Doogee",
+   "key": "MT6789",
+   "path": "loaders/mtk/Doogee/MT6789__MT6789_0.bin",
+   "size": 732464,
+   "sha256": "b52138d4a09007ca8e8881c87b6b87bcffcf1505090c8d9e77cc22ec75726fd4"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Doogee",
+   "key": "MT6855",
+   "path": "loaders/mtk/Doogee/MT6855__MT6855_0.bin",
+   "size": 949344,
+   "sha256": "fdc981132b991bf4b5852c9fbe2f00940a0d1093f0c43b6ce52c9dac058e6a0d"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6768",
+   "path": "loaders/mtk/Huawei/MT6768__MT6768_DA1.bin",
+   "size": 257768,
+   "sha256": "44d58c6cab6e3d8a3ca8a6b59de2788150962cec290ab73ed5e43dede73d93a3"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6833",
+   "path": "loaders/mtk/Huawei/MT6833__MT6833_DA1.bin",
+   "size": 335944,
+   "sha256": "dc4460e4636acc3ac2c551a237e75ccd5178f050c38cfcefb8b2cdf8858750f7"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6833",
+   "path": "loaders/mtk/Huawei/MT6833__MT6833_Preloader_DA1.bin",
+   "size": 333080,
+   "sha256": "3b49555700eeeb39e62a8d643c6a47dfdc3e31981dfc2264044a2c7ec93e5263"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6853",
+   "path": "loaders/mtk/Huawei/MT6853__MT6853_DA1.bin",
+   "size": 323784,
+   "sha256": "b4b5943fa8d2eec54963d6078acf796609d236b1d441e56a29187ca1c16a6761"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6873",
+   "path": "loaders/mtk/Huawei/MT6873__MT6873_DA1.bin",
+   "size": 325896,
+   "sha256": "87eaca39e94748df6da5d4714839225fd390bb889d1d1d5ce597b2e683ed8911"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6877",
+   "path": "loaders/mtk/Huawei/MT6877__MT6877_DA1.bin",
+   "size": 454376,
+   "sha256": "1a629cef77989c81318e2ff35acefe1eaf42f96bf0d5a1ed3c85630755c663a8"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6877",
+   "path": "loaders/mtk/Huawei/MT6877__MT6877_DA1_PATCHED.bin",
+   "size": 454376,
+   "sha256": "74fc763285fe99f43f8df1445f61e97b0b10f32f8b7937d3e04c9a273475da85"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6893",
+   "path": "loaders/mtk/Huawei/MT6893__MT6893_DA1.bin",
+   "size": 349640,
+   "sha256": "6fe4651c625d5b6cf23bc490421186c4c9d2445d2d5470c89fef59e19542292a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6895",
+   "path": "loaders/mtk/Huawei/MT6895__MT6895_DA1.bin",
+   "size": 554808,
+   "sha256": "8e00e4da367c1f47765f602ad25adce03183c853926da1d74220656d6dbeed5e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "MT6895",
+   "path": "loaders/mtk/Huawei/MT6895__MT6895_DA2.bin",
+   "size": 332108,
+   "sha256": "d102f42c90ec77d2f0912f36b9c42efd000e865d2af32399185f55ae67e543bc"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "PL_M6765_HONOR",
+   "path": "loaders/mtk/Huawei/PL_M6765_HONOR__DA_PL_M6765_HONOR.bin",
+   "size": 533442,
+   "sha256": "c298a06e130e90251aade3f6ae7cc6eeedbfa96a6b482a5bb1da34a99550cfdf"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "PL_M6768_HONOR",
+   "path": "loaders/mtk/Huawei/PL_M6768_HONOR__DA_PL_M6768_HONOR.bin",
+   "size": 657330,
+   "sha256": "00ea348744fcdb87d380aa422bed8628f369a631298f18ba3405af3769c42f01"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Huawei",
+   "key": "PL_M6833_HONOR",
+   "path": "loaders/mtk/Huawei/PL_M6833_HONOR__DA_PL_M6833_HONOR.bin",
+   "size": 763968,
+   "sha256": "2e6baf9685be3a5a57075cccc835f0ab6c27d3a3d3afcb55452be10de450231c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "AllInOne",
+   "path": "loaders/mtk/Infinix/AllInOne__DA_Infinix.bin",
+   "size": 6715664,
+   "sha256": "a2a32d839dd0d829f906759b9a5d989c97a077ac414e3446f78e979892c0d6e9"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6739",
+   "path": "loaders/mtk/Infinix/MT6739__MT6739_2.bin",
+   "size": 410928,
+   "sha256": "08c62ba3fd3fb4762e7d8bbf3f79c28956ccb733c6f5eac103e30dfe36ef2ce4"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6761",
+   "path": "loaders/mtk/Infinix/MT6761__MT6761_2.bin",
+   "size": 587280,
+   "sha256": "a24bd24106517109d363a3fe7ae9c512bd979fc72f7d8aae603a8d5d94c4ea58"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6765",
+   "path": "loaders/mtk/Infinix/MT6765__MT6765_2.bin",
+   "size": 584896,
+   "sha256": "8855b0a951dc534f570f676ea2981fbf1adc9248c8e424d788ec45fb7dd55e75"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6765",
+   "path": "loaders/mtk/Infinix/MT6765__MT6765_2__NEW_LOADER_10_2024.bin",
+   "size": 588640,
+   "sha256": "1114f5efa60216c7cf56bec5ef973fe5a6ccb6088dc933c95e692a3eae4cddf9"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6768",
+   "path": "loaders/mtk/Infinix/MT6768__MT6768_2.bin",
+   "size": 635776,
+   "sha256": "cd9feebfb727ca41ea2e4eaac35a0ac54833d688be250cf085b86957ba00e768"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6768",
+   "path": "loaders/mtk/Infinix/MT6768__MT6768_2__NEW_LOADER_10_2024.bin",
+   "size": 640592,
+   "sha256": "4ca160c831a3201be8a227d1b23f3415f5827bb2fce23a4442331296483867c2"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6781",
+   "path": "loaders/mtk/Infinix/MT6781__MT6781_2.bin",
+   "size": 551856,
+   "sha256": "ea77d68e0f0314e4f138aa950e7c13654e23ac417504163bbe1d83c074da0d2e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6785",
+   "path": "loaders/mtk/Infinix/MT6785__MT6785_2.bin",
+   "size": 587040,
+   "sha256": "dd924763e43d750d467d84069ce2a968223de7ff1d6899cf300c28cdd874332e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6789",
+   "path": "loaders/mtk/Infinix/MT6789__MT6789_0.bin",
+   "size": 752712,
+   "sha256": "cdd1ea53ba64af8f38f921f4fcceebab49d77afb9c9516f7e4db316b888b84e8"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6789",
+   "path": "loaders/mtk/Infinix/MT6789__MT6789_2.bin",
+   "size": 759848,
+   "sha256": "514c8bb225746d2ffd9c812323ea87c5adea7898a9764df074c0f891546d884a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6789",
+   "path": "loaders/mtk/Infinix/MT6789__MT6789_3.bin",
+   "size": 762720,
+   "sha256": "e76cae22c56723711e125c2176390035139b4c4b4225d2b1a9e7400b36466cc0"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6833",
+   "path": "loaders/mtk/Infinix/MT6833__MT6833_1.bin",
+   "size": 765552,
+   "sha256": "3d3b463eba3a01d7e97d674c9c5ba25aeebc0331d0d5e65db2a42e4d9e23ad91"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6833",
+   "path": "loaders/mtk/Infinix/MT6833__MT6833_2.bin",
+   "size": 771152,
+   "sha256": "fd05df0a1b8f96b137e886bd84e37ccf9749b562353e04ded316caa4f9153d02"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6835",
+   "path": "loaders/mtk/Infinix/MT6835__MT6835_1.bin",
+   "size": 874776,
+   "sha256": "6793c1f6e652770ed17e3344c10fc1cf9cd8496f69aebb07fe0266e907178a48"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6855",
+   "path": "loaders/mtk/Infinix/MT6855__MT6855.bin",
+   "size": 969172,
+   "sha256": "e1c03b04ccfb1440e59088b891a0349164ba30f8e65e10f9bf33cb052a551f0e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6877",
+   "path": "loaders/mtk/Infinix/MT6877__MT6877_2.bin",
+   "size": 1011392,
+   "sha256": "df3a278a9207806b97e7ae29162a36fb47dd0ba920f5b64662a184d313c92631"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6878",
+   "path": "loaders/mtk/Infinix/MT6878__MT6878.bin",
+   "size": 1277812,
+   "sha256": "d31d7740a23d92bc96cf9c942cb3d671d5f51e38dc07ba8a46a1b3c9a109b94e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6878",
+   "path": "loaders/mtk/Infinix/MT6878__MT6878_0.bin",
+   "size": 1278540,
+   "sha256": "5db78991c56d997c48185975d00b7561432a09d6083e5aad7e7c6e1c1d9f4ad4"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6893",
+   "path": "loaders/mtk/Infinix/MT6893__MT6893_0.bin",
+   "size": 802704,
+   "sha256": "0bc34545b704b160e9998e0523c322a50246399f800e554283b0171be14d0ec7"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6895",
+   "path": "loaders/mtk/Infinix/MT6895__MT6895_0.bin",
+   "size": 999144,
+   "sha256": "88721ba6bd7af9bc7828cec98dcccea632baf9d6774e4926b42380a8bdf11eba"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6895",
+   "path": "loaders/mtk/Infinix/MT6895__MT6895_2.bin",
+   "size": 1009968,
+   "sha256": "beed6510f3395e43b78d6c228d8a7b8e7b12961256cbf52645cade63ef0e9bd6"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6897",
+   "path": "loaders/mtk/Infinix/MT6897__MT6897_0.bin",
+   "size": 1238284,
+   "sha256": "31a15125bc587f2a9b985733119f24fbf6458302927972f707b52abee3fff1c9"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6983",
+   "path": "loaders/mtk/Infinix/MT6983__MT6983_0.bin",
+   "size": 963740,
+   "sha256": "cabb2c019186ab955a186e76a143b45b4abdb22cca0a4fa3f6b9a8f9ed37e6dc"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Infinix",
+   "key": "MT6983",
+   "path": "loaders/mtk/Infinix/MT6983__MT6983_2.bin",
+   "size": 964724,
+   "sha256": "b4b8bcb9c0ea4d28ae393acf64930497505bf40d5a62b1b5c6fa6c495f7c6f97"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lava",
+   "key": "MT6835",
+   "path": "loaders/mtk/Lava/MT6835__MT6835_0.bin",
+   "size": 849472,
+   "sha256": "2920b5fb0facc9bc292a2076ceae620db658d2c229e41d2e1aacf02d33ddf379"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lava",
+   "key": "MT6855",
+   "path": "loaders/mtk/Lava/MT6855__MT6855_0.bin",
+   "size": 946960,
+   "sha256": "a28134fccd6bbda10a1d8e43dc4668fa7bdbe745de2880a1061a76ad3984b118"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lava",
+   "key": "MT6878",
+   "path": "loaders/mtk/Lava/MT6878__MT6878.bin",
+   "size": 1249660,
+   "sha256": "f879d641e19c0f9d80d940e87c46cda506bc97ce7ee57451d2e90076c5ff77cc"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lenovo",
+   "key": "LENOVO_TB350FU",
+   "path": "loaders/mtk/Lenovo/LENOVO_TB350FU__LENOVO_TB350FU.bin",
+   "size": 727436,
+   "sha256": "e7074de7fc6c4165e2724b3e3359f14b2b9a1c700e4c9965c5623bdc2d6a8a2a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lenovo",
+   "key": "MTK_AllInOne_DA_6761",
+   "path": "loaders/mtk/Lenovo/MTK_AllInOne_DA_6761__MTK_AllInOne_DA_6761.bin",
+   "size": 527072,
+   "sha256": "ad6984197c42d794878374b72e0c794e5f935080f5b80ce741294bc56d82d3f1"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lenovo",
+   "key": "TB-X6C6F_MT6765",
+   "path": "loaders/mtk/Lenovo/TB-X6C6F_MT6765__TB-X6C6F_MT6765.bin",
+   "size": 562336,
+   "sha256": "ae5e99decc6c111162398557ff6a6eac3b6963f8a18d35bf639a58073e5aa5f2"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lenovo",
+   "key": "TB351FU",
+   "path": "loaders/mtk/Lenovo/TB351FU__TB351FU.bin",
+   "size": 732484,
+   "sha256": "69b08bfd0912cd1d3330b80bafa9ea3ee4571337b395df1f6357297ba165a359"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Lenovo",
+   "key": "TB372FC",
+   "path": "loaders/mtk/Lenovo/TB372FC__TB372FC.bin",
+   "size": 1012256,
+   "sha256": "c2e8212529f280f17ec13b843e9d2699ca15207c6c040f7ddaa4a0a1f264f8df"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "A14_lamulg",
+   "path": "loaders/mtk/Motorola/A14_lamulg__DA_A14_lamulg.bin",
+   "size": 635232,
+   "sha256": "7a77f6b9d859a13a1827f6e309e479e65aa767e1278e09afc139acc56e82bbff"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "A15_lamu",
+   "path": "loaders/mtk/Motorola/A15_lamu__DA_A15_lamu.bin",
+   "size": 634224,
+   "sha256": "0afb5e733abf3e2e5824c98a7401edc8585cdca071f2e321d6162912fc28fddd"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "AllInOne",
+   "path": "loaders/mtk/Motorola/AllInOne__MTK_AllInOne_DA.bin",
+   "size": 18621596,
+   "sha256": "eb9e016b8f6da1c0a22ae9c7d5760ac2728a1cdc2f44747141dc862cf3300f3d"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "DA_PL",
+   "path": "loaders/mtk/Motorola/DA_PL__DA_PL.bin",
+   "size": 18555332,
+   "sha256": "74b39ffd53842ceb70825cfa97a510cac2d95714f56d8cc22fdc2df8e246f740"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "DA_PL",
+   "path": "loaders/mtk/Motorola/DA_PL__DA_PL_CRYPTO20.bin",
+   "size": 18555332,
+   "sha256": "271ab2a1768073ce2b8089e47e12aa7801e42bc0995d172833e2689ce5d2fc68"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "MOTO_G20",
+   "path": "loaders/mtk/Motorola/MOTO_G20__MOTO_G20.bin",
+   "size": 562336,
+   "sha256": "15b35ca44c1cae705f1e8ee73cf2760e354567b7ab5d0947719ec02f81b2f8b2"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "MOTO_G70",
+   "path": "loaders/mtk/Motorola/MOTO_G70__MOTO_G70.bin",
+   "size": 576656,
+   "sha256": "d7fcdd47eefe2e82b2e9291c59fac4aaa46b6823ca81ba0e07794d0a6ae00db9"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "MT6765",
+   "path": "loaders/mtk/Motorola/MT6765__MT6765_XT2229.bin",
+   "size": 563008,
+   "sha256": "b75001dec3d72a0592ad5332a8818715448044911726e260cf449801619324b2"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "MT6768",
+   "path": "loaders/mtk/Motorola/MT6768__MT6768_SLA.bin",
+   "size": 634000,
+   "sha256": "4fc43ed51728f1d76992079fd6676cdc4e4df89037a8817633a0ef026f42b1f6"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "MT6768",
+   "path": "loaders/mtk/Motorola/MT6768__MT6768_USER.bin",
+   "size": 634497,
+   "sha256": "5fce44cc54451997159d3fd78564d1ddafdfda02341fedcadeee8780004258a9"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "MT6768",
+   "path": "loaders/mtk/Motorola/MT6768__MT6768_efuse.bin",
+   "size": 634032,
+   "sha256": "b32720d5c83f00028e82e51cbd09244e9dccfd9fdb406406d89f17d5fe2b9a60"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "MTK_AllInOne_DA_PENANG",
+   "path": "loaders/mtk/Motorola/MTK_AllInOne_DA_PENANG__MTK_AllInOne_DA_PENANG.bin",
+   "size": 634032,
+   "sha256": "9aa4516da041960cd166b95bcd18c162fa899db9f2a77ec2b4f9eae90170ae06"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "Moto-E22",
+   "path": "loaders/mtk/Motorola/Moto-E22__Moto-E22.bin",
+   "size": 584544,
+   "sha256": "e120cc0dab70e18852cc8f204a66efce2813055887f8727e829251cba1db014f"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "Motorola_MTK_V6_MT6878_DA",
+   "path": "loaders/mtk/Motorola/Motorola_MTK_V6_MT6878_DA__Motorola_MTK_V6_MT6878_DA.bin",
+   "size": 1249580,
+   "sha256": "aa129a5c07059866569ec82c7dbc9725c3d5656e2495e2266525147500cc315c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "PL_NO_CERT_V6",
+   "path": "loaders/mtk/Motorola/PL_NO_CERT_V6__DA_PL_NO_CERT_V6.bin",
+   "size": 637376,
+   "sha256": "77ae575005f2cde1613fea88a11ed7d92f3170984c1ec566f2586ad847466992"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "SWSEC_2316_p325a",
+   "path": "loaders/mtk/Motorola/SWSEC_2316_p325a__DA_SWSEC_2316_p325a.bin",
+   "size": 634992,
+   "sha256": "4c35a2bb9fdd922da9e34e726d0fbe648fcfcf5733fc43d9b3c942608cccf9d2"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "SWSEC_2316_p325a_dl_forbidden3",
+   "path": "loaders/mtk/Motorola/SWSEC_2316_p325a_dl_forbidden3__DA_SWSEC_2316_p325a_dl_forbidden3.bin",
+   "size": 635200,
+   "sha256": "2167ba44a48f0f1c87e2c7eb68414e28e8f71264940b2775a3335ae284373932"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "SWSEC_2404_lamu_dl_forbidden",
+   "path": "loaders/mtk/Motorola/SWSEC_2404_lamu_dl_forbidden__DA_SWSEC_2404_lamu_dl_forbidden.bin",
+   "size": 635216,
+   "sha256": "cabb578c7371c5ee41c3c01215c10c1f82ea4320dc63e2c7ee70930fe7080d25"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "SWSEC_2404_lamu_lite_go_dl_forbidden",
+   "path": "loaders/mtk/Motorola/SWSEC_2404_lamu_lite_go_dl_forbidden__DA_SWSEC_2404_lamu_lite_go_dl_forbidden.bin",
+   "size": 635232,
+   "sha256": "e800f12fc4967e1e62685436f99831c62aa3b5ed596be0e275ec748158f28063"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "SWSEC_CRYPTO20",
+   "path": "loaders/mtk/Motorola/SWSEC_CRYPTO20__DA_SWSEC_CRYPTO20.bin",
+   "size": 2195360,
+   "sha256": "cbf92dba6709dd3dc182f9ed02e3ce6922d62f1c76cb989f757504e5af140e89"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "SWSEC",
+   "path": "loaders/mtk/Motorola/SWSEC__DA_SWSEC.bin",
+   "size": 2195360,
+   "sha256": "4ec8670cadf5954ea528ab089615abe07921b632b761457ece5df9cbeabc20ff"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "fogorow",
+   "path": "loaders/mtk/Motorola/fogorow__DA_fogorow.bin",
+   "size": 599546,
+   "sha256": "e74dfe815aa1611895fd77850ba4ea0456fe4cd2b568940136fecdc1f0c8ae4e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Motorola",
+   "key": "moto_xt2055",
+   "path": "loaders/mtk/Motorola/moto_xt2055__moto_xt2055.bin",
+   "size": 529152,
+   "sha256": "ff49d868352ca50652f45283ce2e0943ea51adfd98873c3d9da32bb5d4244c68"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Nokia",
+   "key": "Nokia_2017",
+   "path": "loaders/mtk/Nokia/Nokia_2017__DA_Nokia_2017.bin",
+   "size": 4416492,
+   "sha256": "b6dcfdd5e71ecc633068acaa46c4c0233a352efaa2470d7830840c4e847dd900"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Nothing",
+   "key": "MT6878",
+   "path": "loaders/mtk/Nothing/MT6878__MT6878_NOTHING.bin",
+   "size": 1248068,
+   "sha256": "415a2ce14faa4d1303b41a44a498acb18055d166e89fcd10f53fff63cd26ed50"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Nothing",
+   "key": "MT6878",
+   "path": "loaders/mtk/Nothing/MT6878__MT6878_NOTHING_1.bin",
+   "size": 1255284,
+   "sha256": "661ba3a4c610735656ab5480b6842cf4a78c64cd86bebe970539cd1d35baa8e8"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Nothing",
+   "key": "MT6886",
+   "path": "loaders/mtk/Nothing/MT6886__MT6886_NOTHING_0.bin",
+   "size": 985068,
+   "sha256": "a6b213c395c01580fb0dfa586580dd793e80b4d54c4d4d56359bfc196c19adcd"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6765_20271",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6765_20271__DA_BR_MT6765_20271.bin",
+   "size": 601554,
+   "sha256": "962eb50abb955377215cbf35b469c90ab6bd423508f0c79d86765614e7113f48"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6768",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6768__DA_BR_MT6768.bin",
+   "size": 618930,
+   "sha256": "3903f2b0c308754d248f52a79873ff4edb71b169f7c9e5727433813cbea07350"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6779",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6779__DA_BR_MT6779.bin",
+   "size": 587746,
+   "sha256": "0e551c773f7e42ad660bc52e97b5a57c44a3ba11ab2ad1f74b560def82ee8359"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6781",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6781__DA_BR_MT6781.bin",
+   "size": 557282,
+   "sha256": "4222d9a481adfe7cf3871ed45d6373f646b0af433b8b995d4143e3e7084d127a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6785",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6785__DA_BR_MT6785.bin",
+   "size": 580578,
+   "sha256": "ff0a5e10526c6be127775aa71e1dc189ca439ef9e307f9944507f2f9a16e5bb1"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6853",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6853__DA_BR_MT6853.bin",
+   "size": 817218,
+   "sha256": "b7fe61c03c731753f489e5975759bbb8bd5369a554058397105a2b7bf40943ab"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6873",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6873__DA_BR_MT6873.bin",
+   "size": 787986,
+   "sha256": "cd1ec680403a5839f2236ac6c20c2e52fff0e41d050ecefb8ad4324874f29686"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6877_1",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6877_1__DA_BR_MT6877_1.bin",
+   "size": 1034722,
+   "sha256": "75721af3285fb95793f8d7827cfc88caee8740d91000b081f82ef7ee48b39ffc"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6877",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6877__DA_BR_MT6877.bin",
+   "size": 1032514,
+   "sha256": "0f88ed6f7359bc0d4b3185eac0ba5509e664ea3260e642dd630170fdb35389c8"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6885",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6885__DA_BR_MT6885.bin",
+   "size": 789442,
+   "sha256": "ffed0727323445bfcfb1f25fafeb684ab5fe0d492393091cf4ebd78c2ffa690e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "BR_MT6893",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/BR_MT6893__DA_BR_MT6893.bin",
+   "size": 823362,
+   "sha256": "56b596881eb933eab8a69c2a94a4d2a301818ce7d136910ba8b33a79c0600804"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6763",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6763__MT6763_DA1.bin",
+   "size": 229640,
+   "sha256": "621e444cd3ad4556b031cb54424ff19c187b9c5ec96e1f5730f4ee8b937f9bf0"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6763",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6763__MT6763_DA2.bin",
+   "size": 312236,
+   "sha256": "37e9ac930e8917bad2154f676246dc861e3614fb585d49cdf97f7e980333557c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6768",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6768__MT6768_1_AUTH.bin",
+   "size": 657762,
+   "sha256": "f53c1d35c5a1fb56381c5778249c823e3405eadf38ae73daf5d2c4f172fa4a24"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6768",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6768__MT6768_DA1.bin",
+   "size": 258504,
+   "sha256": "87e7938d30b6fce64ce9a1d74fc52ad18821c137ace901fb3fcbc917f1deb38e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6768",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6768__MT6768_DA2.bin",
+   "size": 337788,
+   "sha256": "a2d6e3678ebf4c6e6de695e0b7ecba21c84faa27934fb0d7284bff4cd889ae88"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6771",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6771__MT6771_DA1.bin",
+   "size": 216632,
+   "sha256": "aa52c01b8e2810a680f6a061acc36e575ec2baaaf3d462b6b78c784dd84e6e6f"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6789",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6789__MT6789_REALME.bin",
+   "size": 759508,
+   "sha256": "024d01b80a0ef2e50d4dae83ca90f3594c9879586163421d0f2fcb7bd6abb811"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6833",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6833__MT6833_15_2025_DA1.bin",
+   "size": 337208,
+   "sha256": "722bc21475bca1a6794ae0a703808d148b457768ee1258ca3532a758408b61b9"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6833",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6833__MT6833_15_2025_DA2.bin",
+   "size": 410108,
+   "sha256": "c1591cdedb858c9640d64f27935254a521bc8eb9eecbc071676018994b0392c6"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6833",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6833__MT6833_DA1.bin",
+   "size": 338104,
+   "sha256": "dd1c29086ade21bd31c35728c613291da76d402bde73919489c550b117a4f022"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6833",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6833__MT6833_DA2.bin",
+   "size": 410108,
+   "sha256": "c3a3eb7c2a7cf542979f3ae2394cd02cc82545083ec6b74963acb86fd33666d1"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6833",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6833__MT6833_WO.bin",
+   "size": 589808,
+   "sha256": "3a3fb618a1720d02c1ae0bba8928351bcec3a72dff09e55ff7f2d1db125c0380"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6835",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6835__MT6835_DA1.bin",
+   "size": 428308,
+   "sha256": "704e59fbc3e2659a44bb0d9a644857458ec49b7a98451ad3bfe93e43ba4def42"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6835",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6835__MT6835_DA2.bin",
+   "size": 357616,
+   "sha256": "3c916a491cec406d8c592318750a3a23595205cc51ba47da319d63dbcae354aa"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6835",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6835__MT6835_REALME.bin",
+   "size": 787056,
+   "sha256": "6d996c9466496ba2303037884242abebe93efe0ffdd46b5276c589cfc4680106"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6835",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6835__MT6835_REALME_2.bin",
+   "size": 807040,
+   "sha256": "e2ad354f227ddac5c04f1d7c6543a64ba400bdb7b055e6b4e46c53f8465c5148"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6853",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6853__MT6853_DA1.bin",
+   "size": 340760,
+   "sha256": "67f11d3211e2d42484b2457bdc954dd9f9bd3e33723a55dc14cab41036df1162"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6853",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6853__MT6853_DA2.bin",
+   "size": 424636,
+   "sha256": "04f7c127aa4f7b521be127f50914fe721bde084852170d9faeed42e902c631be"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6873",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6873__MT6873_DA1.bin",
+   "size": 335848,
+   "sha256": "190a97db45bc3a884c3fee5dff0a9508accecd8d296900e262984b105cbfca31"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6877",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6877__MT6877_2025_DA1.bin",
+   "size": 458536,
+   "sha256": "ae4805d4caef431f9b650ad0ea66a43188b843d154279f318ce3e6ac1a2d6d2b"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6877",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6877__MT6877_2025_DA2.bin",
+   "size": 558924,
+   "sha256": "d53cf9726cdd545915f51b9fdb7ad7945dab6eb5483fe52fc57c090079fa9621"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6877",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6877__MT6877_DA1.bin",
+   "size": 458936,
+   "sha256": "485a3a6a62535de105055cd1d7909af5ff0241bb436dfcd054423e46397f08c4"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6877",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6877__MT6877_EXP.bin",
+   "size": 1048560,
+   "sha256": "616cc5a707b8c4e85bcd411dc1e75724d8bd53c0b902ce2c81c93f958a6cf231"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6878",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6878__MT6878_REALME.bin",
+   "size": 1278156,
+   "sha256": "b2af955bdb408709804a1d3dbc72c1f4718564ea5796b85301e4309cebe9d0bd"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6885",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6885__MT6885_DA1.bin",
+   "size": 327840,
+   "sha256": "60876267129c90ac92da1028efe680da4092d109d95a8e49ef650104774f3839"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6885",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6885__MT6885_DA2.bin",
+   "size": 405212,
+   "sha256": "73ab62a0bfa1841e0f58406eaed024faa41d76c22deea289860a8197ea1109d1"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6893",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6893__MT6893_DA1.bin",
+   "size": 352664,
+   "sha256": "705c419bc632924aad9a5f1d043d82c37f2ffbd34fcc4c8945bf2eaed4255f6a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6893",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6893__MT6893_DA2.bin",
+   "size": 432476,
+   "sha256": "cd0aab864c858cfd75cf1882b8447a92eece7dad32cea0e6457e4c1ea44cb891"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6895",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6895__MT6895_DA1.bin",
+   "size": 595232,
+   "sha256": "1dd59cb3da8f4ac94834dec22d76a439c77328eceacca132e3151c74d07408da"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6895",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6895__MT6895_DA2.bin",
+   "size": 353444,
+   "sha256": "fc89007f25c867ae17546f2d4eeee72ecf168bce17673384fff0a045fb3edfc7"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6895",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6895__MT6895_REALME.bin",
+   "size": 946192,
+   "sha256": "61ae646b0590bbefb0883e9460b3e2222f6559af21e5294c41eb712f5be6f729"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6897",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6897__MT6897_OPPO.bin",
+   "size": 1239528,
+   "sha256": "534a182f1c02a2eac6683a8a83dbf4e00d797322a9cedf4c4cb2e89b7daf3052"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6983",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6983__MT6983_DA1.bin",
+   "size": 579552,
+   "sha256": "7c3dae8d44e0b1e1f3b9be55ae81b97c29ded01be4d264f6089ecad96174c159"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6983",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6983__MT6983_DA2.bin",
+   "size": 392744,
+   "sha256": "6f85d83bb72ba8a7db4afa286bb26ed74145b83f1c07f45d3d11385308ed65e6"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6983",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6983__MT6983_ONEPLUS.bin",
+   "size": 971588,
+   "sha256": "c36e9c99f96fe5d2c25b40349b22f6b6f48d74b65140e027e46d01a5325dab9b"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6985",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6985__MT6985_1.bin",
+   "size": 1054268,
+   "sha256": "05ae60b0d39e7e2c376e280cef5a45abc52a971e11cf58774c85afc32fb5a808"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6989",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6989__MT6989_OPPO.bin",
+   "size": 1323676,
+   "sha256": "ac3ec7fda3835938858427ae5851b1d96d4d374294db5727c3578248dec5ad1c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "MT6991",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/MT6991__MT6991_REALME.bin",
+   "size": 1384660,
+   "sha256": "3f38f3273ef3278e0cbe73088bb95068f231cbf5cfe5d60e2998104415c0e836"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "PL_MT6763",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/PL_MT6763__DA_PL_MT6763.bin",
+   "size": 547618,
+   "sha256": "421032a5e50883f8939478f2d804c2e942f4d7b01ae2654fe9ebb4bf95307f15"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oppo-Realme-OnePlus",
+   "key": "PL_MT6771",
+   "path": "loaders/mtk/Oppo-Realme-OnePlus/PL_MT6771__DA_PL_MT6771.bin",
+   "size": 568642,
+   "sha256": "f402c300d538eb1ecd892701a175884cad49ab626f357b7c28edda14652fedca"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oukitel",
+   "key": "MT6789",
+   "path": "loaders/mtk/Oukitel/MT6789__MT6789_0.bin",
+   "size": 728960,
+   "sha256": "9815c803cb92663ea2f4e55020b9ffd62282a9884d332e9c4511e062c7b632ae"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oukitel",
+   "key": "MT6835",
+   "path": "loaders/mtk/Oukitel/MT6835__MT6835_0.bin",
+   "size": 771544,
+   "sha256": "2de8913d6d584e152337aa6efad6cdb29c64dfb42e4d52893c9555ace7b23c8f"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oukitel",
+   "key": "MT6855",
+   "path": "loaders/mtk/Oukitel/MT6855__MT6855_0.bin",
+   "size": 954948,
+   "sha256": "95728f23dd68c6470945171319318f7a0cd1029228b8d466ab31e1a0cf4acce9"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oukitel",
+   "key": "MT6878",
+   "path": "loaders/mtk/Oukitel/MT6878__MT6878_0.bin",
+   "size": 1254548,
+   "sha256": "a3028b187ed251a833fe73fda2cb09873474bceefb358481f8eaeca5c1c92a79"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Oukitel",
+   "key": "MT6895",
+   "path": "loaders/mtk/Oukitel/MT6895__MT6895_0.bin",
+   "size": 906408,
+   "sha256": "07c0d1044d05dd885bf75f40c51ae5c723cf5f85c36e9a0ed085a5d7cdb8565e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A037F_MT6765",
+   "path": "loaders/mtk/Samsung-MTK/A037F_MT6765__A037F_MT6765.bin",
+   "size": 559216,
+   "sha256": "d2875a43821d117b615a21dd570f4028256a367c4bb1ede35d56e49e5df899a2"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A155F_BIT_5",
+   "path": "loaders/mtk/Samsung-MTK/A155F_BIT_5__A155F_BIT_5.bin",
+   "size": 724656,
+   "sha256": "066c1fca28a1200af8b007882663e66d58f2f58db664d3ea093a0b88d7bb06ed"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A156B_BIT_5",
+   "path": "loaders/mtk/Samsung-MTK/A156B_BIT_5__A156B_BIT_5.bin",
+   "size": 775144,
+   "sha256": "669ecfb3f25d8c114e576c3c4c8fd7f1121dc848ed104d0a6d4e8993bff8b70a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A156W_BIT_5",
+   "path": "loaders/mtk/Samsung-MTK/A156W_BIT_5__A156W_BIT_5.bin",
+   "size": 773712,
+   "sha256": "190c982a39e1bfe4b32f8c8abcabf138ee63f24f4351dfc05870dbbac173c7d4"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A165F_BIT_2",
+   "path": "loaders/mtk/Samsung-MTK/A165F_BIT_2__A165F_BIT_2.bin",
+   "size": 726232,
+   "sha256": "8d01f2ea6ee5258de725a88fc1f42c940e3fe0765f2f44f4fa5eff9560c9a945"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A165M_BIT_2",
+   "path": "loaders/mtk/Samsung-MTK/A165M_BIT_2__A165M_BIT_2.bin",
+   "size": 727512,
+   "sha256": "9a700832a696591f19688459188dae852a00150faebddde23ac6481e5cd10a54"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A165N_BIT_2",
+   "path": "loaders/mtk/Samsung-MTK/A165N_BIT_2__A165N_BIT_2.bin",
+   "size": 727512,
+   "sha256": "f618e341335bed9591d17928e3b55cb6ed8869d11edea6ed7e84aa772c60780c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A166P_BIT_3",
+   "path": "loaders/mtk/Samsung-MTK/A166P_BIT_3__A166P_BIT_3.bin",
+   "size": 771252,
+   "sha256": "64b8691d7f27f27c8490808bf5fec15d554e2de986ddd861b3dcc702a308a1cc"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A245M_BIT_9",
+   "path": "loaders/mtk/Samsung-MTK/A245M_BIT_9__A245M_BIT_9.bin",
+   "size": 726320,
+   "sha256": "c19c395c9a820f551df45544272a836e4305e47d4442794c9134759573c76eae"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "A245_U8",
+   "path": "loaders/mtk/Samsung-MTK/A245_U8__A245_U8.bin",
+   "size": 721648,
+   "sha256": "2f763e5ea7416f26687b06e946e8a0775d82de6e84d1696e44d9c36fd71584cf"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "E066B_BIT_1",
+   "path": "loaders/mtk/Samsung-MTK/E066B_BIT_1__E066B_BIT_1.bin",
+   "size": 781800,
+   "sha256": "4fd761e203517d79724d932b75bcef897f59c0f153c49d27dc5e8e396cfcf5e1"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "E156B_BIT_5",
+   "path": "loaders/mtk/Samsung-MTK/E156B_BIT_5__E156B_BIT_5.bin",
+   "size": 775016,
+   "sha256": "91e2a7e376c21fd773117ac4c2f97e64bd69db1c4b65c6460367eb4586f4424e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "M156B_BIT_5",
+   "path": "loaders/mtk/Samsung-MTK/M156B_BIT_5__M156B_BIT_5.bin",
+   "size": 765712,
+   "sha256": "861f7fed9f0048fef8caf8988d449c0f28ae31d494fa028ee54a22fb7d15f36e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "MT6765",
+   "path": "loaders/mtk/Samsung-MTK/MT6765__MT6765_SAM_A042F-BIT-8.bin",
+   "size": 559216,
+   "sha256": "ab3ad2b9e45660e94a361a96cb6bef8f90dbe3f52b7cb60ba95e3e7f4189cc1b"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "MT6765",
+   "path": "loaders/mtk/Samsung-MTK/MT6765__MT6765_SAM_A042M-BIT-8.bin",
+   "size": 559216,
+   "sha256": "44fe1d304a4c162dcf32cacb180464d7cc3f28dbce0bb3b3a00e7e59f6928309"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "MT6765",
+   "path": "loaders/mtk/Samsung-MTK/MT6765__MT6765_SAM_A045F-BIT-8.bin",
+   "size": 584576,
+   "sha256": "620bccc7c40a0a44e7b534716d18b140ce1795f4c0a31478f4a8bdc10c7451aa"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "MT6765",
+   "path": "loaders/mtk/Samsung-MTK/MT6765__MT6765_SAM_T220-BIT-8.bin",
+   "size": 559216,
+   "sha256": "07d09558fcecbb9d3b5de458098628ffa237f3e68a39ddbc77ae29c66674a35d"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "MT6768",
+   "path": "loaders/mtk/Samsung-MTK/MT6768__MT6768_SAM_A065F.bin",
+   "size": 610416,
+   "sha256": "6fe5dc9fabd1ce8a182d71e5b6cd5e28b96dbe3483ca6f4f16a528f11bfe8bb8"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "MTK_AllInOne_DA-S96616AA1",
+   "path": "loaders/mtk/Samsung-MTK/MTK_AllInOne_DA-S96616AA1__MTK_AllInOne_DA-S96616AA1.bin",
+   "size": 584576,
+   "sha256": "6866a97a3ad83a2a4e39c7db6a89405c9dca1bb08c34bd6cea464c7ddb43ac5c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "S156V_BIT_5",
+   "path": "loaders/mtk/Samsung-MTK/S156V_BIT_5__S156V_BIT_5.bin",
+   "size": 764536,
+   "sha256": "75875826f120d64b7333d23c351cef0fcca5bad463c801bc52bc02580df1beb0"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "SAMSUNG_TAB_A9_DA_MT6789",
+   "path": "loaders/mtk/Samsung-MTK/SAMSUNG_TAB_A9_DA_MT6789__SAMSUNG_TAB_A9_DA_MT6789.bin",
+   "size": 732388,
+   "sha256": "617fa2c75c84be14c2a74ed876a2284c472dc86448f971a9db4d79485249e71c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "SAM_MT6768_A05",
+   "path": "loaders/mtk/Samsung-MTK/SAM_MT6768_A05__SAM_MT6768_A05.bin",
+   "size": 634656,
+   "sha256": "b72f09ec399b5a8bc1a10dc89a1f95bc822a3082e77d43db564f9da5faac4b87"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "SAM_MT6833",
+   "path": "loaders/mtk/Samsung-MTK/SAM_MT6833__SAM_MT6833.bin",
+   "size": 755440,
+   "sha256": "9d6e16ce5b4d90fff23283ed771f7cb01a607b57463f569e112259a516036f09"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "SM-X115",
+   "path": "loaders/mtk/Samsung-MTK/SM-X115__SM-X115.bin",
+   "size": 732388,
+   "sha256": "0d11d270cc7348e63e15f1644d395377e665428c7c718bbb1cfd23663b2d3c67"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "SM_A066B_U1",
+   "path": "loaders/mtk/Samsung-MTK/SM_A066B_U1__SM_A066B_U1.bin",
+   "size": 781800,
+   "sha256": "334c9528be2406db1e1fb8b34de77130cf2b569b982154b9346008d9ded6b617"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "X826B_BIT_2",
+   "path": "loaders/mtk/Samsung-MTK/X826B_BIT_2__X826B_BIT_2.bin",
+   "size": 1315852,
+   "sha256": "93af77f1ceb30ff1874bf150735f8c20421bafecd4ba0e7e7c7f4a01bd38981f"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "X920_BIT_2",
+   "path": "loaders/mtk/Samsung-MTK/X920_BIT_2__X920_BIT_2.bin",
+   "size": 1315884,
+   "sha256": "9d60feefdaca9a6342c4901c2276c9e5cb3087e1668581f5a7af4d5398068368"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Samsung-MTK",
+   "key": "X926B_BIT_2",
+   "path": "loaders/mtk/Samsung-MTK/X926B_BIT_2__X926B_BIT_2.bin",
+   "size": 1315836,
+   "sha256": "d8b269d237d960c67be2f72402e2a222ff325f4002e77aa365a3b7580a9ed93e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Tecno",
+   "key": "AllInOne",
+   "path": "loaders/mtk/Tecno/AllInOne__DA_Tecno.bin",
+   "size": 6712296,
+   "sha256": "93657624639cc6174391c53f0cfb858f912d7225ab56944ff0b2d905c9e26efd"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Tecno",
+   "key": "tecno_pova_4",
+   "path": "loaders/mtk/Tecno/tecno_pova_4__DA_tecno_pova_4.bin",
+   "size": 738812,
+   "sha256": "ba3607d215f2cf905bd4dbd5f78623d522003f1b8754010812ab2e33d40b05cb"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6789",
+   "path": "loaders/mtk/Vivo/MT6789__MT6789.bin",
+   "size": 730824,
+   "sha256": "4ed58c17a2467492f006724ceb6ce152bb10bcd901df4c8cf39112955749ad7c"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6833",
+   "path": "loaders/mtk/Vivo/MT6833__MT6833_2025_DA1.bin",
+   "size": 335824,
+   "sha256": "0f9bda3b66df63b1ebc1696830435f70a0fb96e3af5c73f442c769906313aa72"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6833",
+   "path": "loaders/mtk/Vivo/MT6833__MT6833_2025_DA2.bin",
+   "size": 419964,
+   "sha256": "a218b7fdc2d808e2638ab8bd3de12292fa8d1acc1d25d25bee44998159792f6a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6833",
+   "path": "loaders/mtk/Vivo/MT6833__MT6833_DA1.bin",
+   "size": 330088,
+   "sha256": "8a276acefb99ca79961851b24d9a984586bd231fd5f80c09655b89b50deaa61d"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6833",
+   "path": "loaders/mtk/Vivo/MT6833__MT6833_DA2.bin",
+   "size": 411004,
+   "sha256": "9a3a1588676587c71423e989bd539029c1436adc2b9c4b781a0df7b34fd377dd"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6835",
+   "path": "loaders/mtk/Vivo/MT6835__MT6835.bin",
+   "size": 1907360,
+   "sha256": "f057e7ae844499a548497aacd36d0f57243ebf784d9ccac86b9fdc729db8ab8f"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6853",
+   "path": "loaders/mtk/Vivo/MT6853__MT6853_DA1.bin",
+   "size": 348664,
+   "sha256": "d199699a34ad3122fc1681ecd6e358bc257180425e14b6ca1f699eb60deb84c7"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6878",
+   "path": "loaders/mtk/Vivo/MT6878__MT6878_1.bin",
+   "size": 1264804,
+   "sha256": "c222a373612bf81a8b8c635ca9ba390b67df02e34f00c5723161c6fe3af045f4"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6886",
+   "path": "loaders/mtk/Vivo/MT6886__MT6886.bin",
+   "size": 996620,
+   "sha256": "628c4ce229c3beeaea98ddbb178a78dc17ee5e6e4149f4d0624b36d394286942"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6893",
+   "path": "loaders/mtk/Vivo/MT6893__MT6893_DA1.bin",
+   "size": 349592,
+   "sha256": "e8a56476481a030f06b34e7a657c7a8ca78972e05702cee0997591abd994c3e5"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6893",
+   "path": "loaders/mtk/Vivo/MT6893__MT6893_DA1_2.bin",
+   "size": 349936,
+   "sha256": "ac3a9c0e30b54416732f9a4ce038291f5385760282c790507d350546afc54206"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6893",
+   "path": "loaders/mtk/Vivo/MT6893__MT6893_DA2_2.bin",
+   "size": 441644,
+   "sha256": "9ca8f89b86d75cff7b8ef5baa7a0ec5e35bdc6de7f6cb2fc04f83cecedfa49ec"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6895",
+   "path": "loaders/mtk/Vivo/MT6895__MT6895.bin",
+   "size": 933752,
+   "sha256": "8407478ff3541d271639ed65cec474ef34b65f1d5c42ae7b2b47a49c35b45cc3"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6983",
+   "path": "loaders/mtk/Vivo/MT6983__MT6983.bin",
+   "size": 981236,
+   "sha256": "34cd64ab8b9090d43164b6773702ca400aa6d0a9c0ecf27fe2c6f2b89e66258e"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6985",
+   "path": "loaders/mtk/Vivo/MT6985__MT6985.bin",
+   "size": 1046508,
+   "sha256": "9b5cae4fdec73dd5efd17f6317fd03cf8f725b1021a8834168c1a534455ce098"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6989",
+   "path": "loaders/mtk/Vivo/MT6989__MT6989_0.bin",
+   "size": 1337380,
+   "sha256": "d4b05e7dc1ab9368954cfa9325e272eccb2574c1f5ebd9554a1f21c178e89971"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "MT6991",
+   "path": "loaders/mtk/Vivo/MT6991__MT6991.bin",
+   "size": 1382428,
+   "sha256": "acfdeb9ed6ffd146e12d775446780cbf473a9fd8cde46ac94aae92ce545ed2bc"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Vivo",
+   "key": "vivo_mtk_loader_auth_4",
+   "path": "loaders/mtk/Vivo/vivo_mtk_loader_auth_4__vivo_mtk_loader_auth_4.bin",
+   "size": 8920648,
+   "sha256": "a6fe364b674b9373ae606effaf25ba7cb397f857bb2941ff036fd455ebd7d286"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "BLUE_1",
+   "path": "loaders/mtk/Xiaomi/BLUE_1__BLUE_1.bin",
+   "size": 584784,
+   "sha256": "571b856f43b6d84560fa52135c5ebf68ca931f91e2895eb1f49b2f394b681558"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "LAKE_1",
+   "path": "loaders/mtk/Xiaomi/LAKE_1__LAKE_1.bin",
+   "size": 634352,
+   "sha256": "9d9e0967ff375849822612eaec1b3a410e045d6aab1dd0de29cee1aaa32c4205"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6789",
+   "path": "loaders/mtk/Xiaomi/MT6789__MT6789.bin",
+   "size": 731044,
+   "sha256": "df37fb80d2e647a7f7c85fd559244d23534bb55083c7c0b3aa31c8bf92f55c4b"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6835",
+   "path": "loaders/mtk/Xiaomi/MT6835__MT6835.bin",
+   "size": 764800,
+   "sha256": "ba653b4ceea1f9527847a4713d5d07f3deccb3e6799fae8ae07b15a42fce67fc"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6855",
+   "path": "loaders/mtk/Xiaomi/MT6855__MT6855.bin",
+   "size": 943448,
+   "sha256": "2937498c869ba5304096f3d52be9fb47f7562dfc1bdbc4a3772662e93c961b09"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6886",
+   "path": "loaders/mtk/Xiaomi/MT6886__MT6886.bin",
+   "size": 976172,
+   "sha256": "e2b822cbcbed8d297981b970463fe995ee2580992285b20b31cab768e460a52a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6893",
+   "path": "loaders/mtk/Xiaomi/MT6893__MT6893_DA1.bin",
+   "size": 346344,
+   "sha256": "f04b792c511a153b03c5fe28e7c1579bf9114d1e8349c9f17b5b863a895a5521"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6893",
+   "path": "loaders/mtk/Xiaomi/MT6893__MT6893_DA2.bin",
+   "size": 431388,
+   "sha256": "3a202d91b6dabac2c4ac64267d09bfd2eb8cba06ae8aab19de3d67d354588354"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6895",
+   "path": "loaders/mtk/Xiaomi/MT6895__MT6895.bin",
+   "size": 885192,
+   "sha256": "958c27d4e1d0d01280b51eda0c7a576bcc6bad3e6b8d342f6bdf38a0b46c388a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6897",
+   "path": "loaders/mtk/Xiaomi/MT6897__MT6897.bin",
+   "size": 1194924,
+   "sha256": "3c7a182edd4e32a6b9816f745c32c754bea6ce224d51902cc6d459f19b3e45ac"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "MT6985",
+   "path": "loaders/mtk/Xiaomi/MT6985__MT6985.bin",
+   "size": 1012396,
+   "sha256": "39a3be7062270be07ae24f5bee7f93d43181bb5ab8181e2308e0e31dae27aab2"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "Redmi_13C_gale_OS1.0.2.0",
+   "path": "loaders/mtk/Xiaomi/Redmi_13C_gale_OS1.0.2.0__Redmi_13C_gale_OS1.0.2.0.bin",
+   "size": 634480,
+   "sha256": "f6d2c91c1fd1966690049ed2bb47d537a0950d4735d0da510e2f07cf0423f16a"
+  },
+  {
+   "type": "mtk-da",
+   "brand": "Xiaomi",
+   "key": "xiaomi_gold",
+   "path": "loaders/mtk/Xiaomi/xiaomi_gold__xiaomi_gold.bin",
+   "size": 766112,
+   "sha256": "f2ab881035921109badae5450f1289f68eb1a268bc532af6d674eb59b11c748a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Acer",
+   "key": "Acer_8909",
+   "path": "loaders/qualcomm/Acer/Acer_8909.mbn",
+   "size": 284408,
+   "sha256": "c44745acaa490ab0f7cd44c7548a69417c25167895af1aee03dda55aaab7854b"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "07c01589",
+   "path": "loaders/qualcomm/Asus/07c01589.elf",
+   "size": 414044,
+   "sha256": "07c01589b4da3b5cebca5a689308eb520b49ee58e9bed9b1bfbba312ecf66c77"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "088f73c2",
+   "path": "loaders/qualcomm/Asus/088f73c2.elf",
+   "size": 383156,
+   "sha256": "088f73c24cee7669bc825d53bc0f928f452c526c402f2cd96193d39daf2b1907"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "0945afec",
+   "path": "loaders/qualcomm/Asus/0945afec.elf",
+   "size": 608025,
+   "sha256": "0945afec304a7c110d934b9bd38f4aa7a13d62b2ce4cc425adb74392b5b5b675"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "160fe1da",
+   "path": "loaders/qualcomm/Asus/160fe1da.elf",
+   "size": 101600,
+   "sha256": "160fe1da3f5e534bf6178d34af052edffe2b093d8060a3ab7cb01143bdd746ee"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "29f37a82",
+   "path": "loaders/qualcomm/Asus/29f37a82.elf",
+   "size": 411544,
+   "sha256": "29f37a82ff0e589bf8b6301684b89a50f12041a76055b0c6eb12b281c907d390"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "2cd2f0bb",
+   "path": "loaders/qualcomm/Asus/2cd2f0bb.elf",
+   "size": 491120,
+   "sha256": "2cd2f0bb8fc726754d7ce2a9eb7580c934acc6bf116e45874d9b5f278d87c1c3"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "3f8fb7a2",
+   "path": "loaders/qualcomm/Asus/3f8fb7a2.elf",
+   "size": 599136,
+   "sha256": "3f8fb7a2c7a924b385e58239fa73713e73a5e8c83121ccab3021398ed1947cf1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "4c2c494e",
+   "path": "loaders/qualcomm/Asus/4c2c494e.elf",
+   "size": 636672,
+   "sha256": "4c2c494e92551b1d7f06f7beece875c0ef2b9b7b2ffab347f76a3dda8fa3d20c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "4ee67c3a",
+   "path": "loaders/qualcomm/Asus/4ee67c3a.elf",
+   "size": 97284,
+   "sha256": "4ee67c3abc4ed4fc23f088df391abab337a0c721e1b5bab2c49d25209ec90aeb"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "566d466b",
+   "path": "loaders/qualcomm/Asus/566d466b.elf",
+   "size": 374444,
+   "sha256": "566d466bcdad80ae11027f0365ef1d562cc1363f4c114229e8bf8cbb75aec888"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "5c0ed62c",
+   "path": "loaders/qualcomm/Asus/5c0ed62c.elf",
+   "size": 479008,
+   "sha256": "5c0ed62c1b026fb4316b3fccf9dce365a4aa95cf4b194708cf1d3370744c704a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "6353db47",
+   "path": "loaders/qualcomm/Asus/6353db47.elf",
+   "size": 716392,
+   "sha256": "6353db47ba9ef8bd46516a9bd501cbbf9be9718fe55569e751401a16561be022"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "6460ee78",
+   "path": "loaders/qualcomm/Asus/6460ee78.elf",
+   "size": 634912,
+   "sha256": "6460ee783623e1417ad3dd0a233c54fbaa9f8b33c444dec5224077ff918b6776"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "7484d821",
+   "path": "loaders/qualcomm/Asus/7484d821.elf",
+   "size": 441576,
+   "sha256": "7484d8213289d64e7070efa5c3f481c31b8bf7c004976de4317d4a89c8c42f96"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "7c7a3073",
+   "path": "loaders/qualcomm/Asus/7c7a3073.elf",
+   "size": 383156,
+   "sha256": "7c7a307327d9da724d23bc7fc85a425c5b095694ef0a486d4d28a5058dcac193"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "7da26bda",
+   "path": "loaders/qualcomm/Asus/7da26bda.elf",
+   "size": 629168,
+   "sha256": "7da26bdaa3484ff15f132543384f35d899cd8b354663a7138ae9649e6db70997"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "8c9b1589",
+   "path": "loaders/qualcomm/Asus/8c9b1589.elf",
+   "size": 680625,
+   "sha256": "8c9b1589ed52e22bbfc3ad44144e11df3d9e15b90ab1a97fdd49607c03104f03"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "90418c30",
+   "path": "loaders/qualcomm/Asus/90418c30.elf",
+   "size": 1677260,
+   "sha256": "90418c30a4129b646b17f3ab41f19ba5fbe9f3714a0cae5b29df35c9f9e79acf"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "95bf8174",
+   "path": "loaders/qualcomm/Asus/95bf8174.elf",
+   "size": 349388,
+   "sha256": "95bf81747adc97de42dfeed66fad3e2a632df686547f5a8a8cc188df9d9a8feb"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "Asus_X003_T500",
+   "path": "loaders/qualcomm/Asus/Asus_X003_T500.mbn",
+   "size": 92348,
+   "sha256": "94146bdf0283f0cd907a74e8f39c54082c35b241ddc74026ea8f8063e3292f5a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "a0c4387b",
+   "path": "loaders/qualcomm/Asus/a0c4387b.elf",
+   "size": 674673,
+   "sha256": "a0c4387bb863e0d10391c8676b9a79524be2b3508a94845381c23dfc892dfd5d"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "aae8910b",
+   "path": "loaders/qualcomm/Asus/aae8910b.elf",
+   "size": 411552,
+   "sha256": "aae8910b5924408335ec4f97ce357224efb6252b945893bdb43f1f2a01e4014b"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "ac3b4872",
+   "path": "loaders/qualcomm/Asus/ac3b4872.elf",
+   "size": 453852,
+   "sha256": "ac3b487288b89737130b86e41f46d97f7fdf7285402d847324c68369fd7cd136"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "ae162be1",
+   "path": "loaders/qualcomm/Asus/ae162be1.elf",
+   "size": 97260,
+   "sha256": "ae162be1409cdd6505489b86db04fb9ff83bd6da517adecbf82d9ca3f9f282a5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "b6323ea4",
+   "path": "loaders/qualcomm/Asus/b6323ea4.elf",
+   "size": 629216,
+   "sha256": "b6323ea4532996d82251bec9d3a71f86af444861bbc200bc48fc2eb387401aea"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "bb9f46f0",
+   "path": "loaders/qualcomm/Asus/bb9f46f0.elf",
+   "size": 695952,
+   "sha256": "bb9f46f060574bba64fec6ec769d48347f1a43a4f1cbe907966ca28c11dbd242"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "bd08489f",
+   "path": "loaders/qualcomm/Asus/bd08489f.elf",
+   "size": 1710948,
+   "sha256": "bd08489f3df613c0e24c83ea91c497fa4578de1502078b50ee17a335cb28893f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "c4bec8f2",
+   "path": "loaders/qualcomm/Asus/c4bec8f2.elf",
+   "size": 692944,
+   "sha256": "c4bec8f29e36d11ca134780c9c9adb850f72c81e123029f56fea8333fdcd0b3a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "c96f847b",
+   "path": "loaders/qualcomm/Asus/c96f847b.elf",
+   "size": 943712,
+   "sha256": "c96f847b23426c0f1ec667315e444b05c71e51765f4e9e15889304e0cf8f4318"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "ca3b3636",
+   "path": "loaders/qualcomm/Asus/ca3b3636.elf",
+   "size": 1541796,
+   "sha256": "ca3b36362094df263319054876128ba35c2f6a438b8dc19eb966f8339132d5e5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "ce531605",
+   "path": "loaders/qualcomm/Asus/ce531605.elf",
+   "size": 417880,
+   "sha256": "ce5316058f4a0def866e1eb038cd2a41bd76d12091c8f6ef83127ae53a5d9263"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "d6e7d9b0",
+   "path": "loaders/qualcomm/Asus/d6e7d9b0.elf",
+   "size": 1521476,
+   "sha256": "d6e7d9b09dca9811bba944fdc16df6ff4154ad975bc7be06f35546f0474a27f5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "d6e845aa",
+   "path": "loaders/qualcomm/Asus/d6e845aa.elf",
+   "size": 629248,
+   "sha256": "d6e845aab488d75d16a39605e139f37571cc982eea35a050de8d3a7c7255f666"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "d71cd6ad",
+   "path": "loaders/qualcomm/Asus/d71cd6ad.elf",
+   "size": 382032,
+   "sha256": "d71cd6ad3236d5b2a2a0fbfc7171f393d40fa1ba0fbc25b58d164361eb6ef140"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "fa9c7e8e",
+   "path": "loaders/qualcomm/Asus/fa9c7e8e.elf",
+   "size": 906848,
+   "sha256": "fa9c7e8e2ee1b284c7f3b87ddb79d22900a6f050785af21e69734658cf34f89a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Asus",
+   "key": "faffb184",
+   "path": "loaders/qualcomm/Asus/faffb184.elf",
+   "size": 415992,
+   "sha256": "faffb184765b25abf2a17b5b67218732703923788a5265d3867aed704a074c25"
+  },
+  {
+   "type": "firehose",
+   "brand": "BLU",
+   "key": "BLU_8937",
+   "path": "loaders/qualcomm/BLU/BLU_8937.mbn",
+   "size": 380388,
+   "sha256": "370bef140d8e700241bc88a26a69aee7bc1b1ca014e0e69adfd570f8902eeaf5"
+  },
+  {
+   "type": "firehose",
+   "brand": "BLU",
+   "key": "BLU_8x26",
+   "path": "loaders/qualcomm/BLU/BLU_8x26.mbn",
+   "size": 82460,
+   "sha256": "77c8803dd323e33cb6b3d05fc9e177dabdc997df3f845a64ff7da495964ab783"
+  },
+  {
+   "type": "firehose",
+   "brand": "Casper",
+   "key": "Casper_VIA_E1C",
+   "path": "loaders/qualcomm/Casper/Casper_VIA_E1C.mbn",
+   "size": 280148,
+   "sha256": "a3347187566700987b5e14b0c3a73930534cfe18527e529b8edcb4a57ed9f974"
+  },
+  {
+   "type": "firehose",
+   "brand": "Casper",
+   "key": "Casper_VIA_P1",
+   "path": "loaders/qualcomm/Casper/Casper_VIA_P1.mbn",
+   "size": 380388,
+   "sha256": "58938937a09952511d9a05de1502619776aa76470806af7f2e475fa332b36fdf"
+  },
+  {
+   "type": "firehose",
+   "brand": "Casper",
+   "key": "Casper_VIA_V10",
+   "path": "loaders/qualcomm/Casper/Casper_VIA_V10.mbn",
+   "size": 92332,
+   "sha256": "6e61531657f6a7dc17ec02933047c2a2646a34cffd80994ee4e8d1f9a63bf899"
+  },
+  {
+   "type": "firehose",
+   "brand": "Casper",
+   "key": "Casper_VIA_V6",
+   "path": "loaders/qualcomm/Casper/Casper_VIA_V6.mbn",
+   "size": 89044,
+   "sha256": "439db2f890af403929d9cf4afc2bbc8661044b81c33bab9ec43e39847c7c8bad"
+  },
+  {
+   "type": "firehose",
+   "brand": "Coolpad",
+   "key": "Coolpad_3635A",
+   "path": "loaders/qualcomm/Coolpad/Coolpad_3635A.mbn",
+   "size": 377528,
+   "sha256": "494c93cb5a81c777d768c6282ac0b066104d5551ea7ce2f1be8f817d9bf1155e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Coolpad",
+   "key": "Coolpad_Cool1",
+   "path": "loaders/qualcomm/Coolpad/Coolpad_Cool1.mbn",
+   "size": 354560,
+   "sha256": "dbc1a06679da160acd2f8b8de41a2960acd31a7b85f91ec99ecc10a55b1e668e"
+  },
+  {
+   "type": "firehose",
+   "brand": "General_Mobile",
+   "key": "General_Mobile_GM5",
+   "path": "loaders/qualcomm/General_Mobile/General_Mobile_GM5.mbn",
+   "size": 93132,
+   "sha256": "d67781885ed68b2b5c9fa32174efdc05181544110d6f9503924d5e7f9dba91e5"
+  },
+  {
+   "type": "firehose",
+   "brand": "General_Mobile",
+   "key": "General_Mobile_GM8",
+   "path": "loaders/qualcomm/General_Mobile/General_Mobile_GM8.mbn",
+   "size": 404356,
+   "sha256": "0e540d4b6c7a7b5c5511395ebc01cc1a0e2ae0a1b7410731ca2e1c17caddbca8"
+  },
+  {
+   "type": "firehose",
+   "brand": "General_Mobile",
+   "key": "General_Mobile_GM_5_Plus",
+   "path": "loaders/qualcomm/General_Mobile/General_Mobile_GM_5_Plus.mbn",
+   "size": 322220,
+   "sha256": "f782d613f85c108d1eb18047c6227c0e02e1994d51ff640e14751d4a2a17a72e"
+  },
+  {
+   "type": "firehose",
+   "brand": "General_Mobile",
+   "key": "General_Mobile_GM_9_Pro",
+   "path": "loaders/qualcomm/General_Mobile/General_Mobile_GM_9_Pro.elf",
+   "size": 628464,
+   "sha256": "3a0f1685417b6997119256522bf31911bdff0248400190c49f8636b6d6d1bcfd"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8610",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8610.mbn",
+   "size": 79996,
+   "sha256": "22d2feadeff477b55bc0ed7277c2f791a7b0bf195036a6a8aad21a4a80f437ce"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8909",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8909.mbn",
+   "size": 155992,
+   "sha256": "815dcdc94caa6840f97d98fdb1b08b710c2d13d7a46a26b4802b38c215a139e6"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8917",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8917.mbn",
+   "size": 377536,
+   "sha256": "efa548ed3d0614d7918f66b81b657e6b67964596184ef5e8323a9c91584946d5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8926",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8926.mbn",
+   "size": 73668,
+   "sha256": "be6cc348a5ec5ff041ca27d5017811d2fe88bf2cc6df2854db903656fb9a615b"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8929",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8929.mbn",
+   "size": 100896,
+   "sha256": "dae5316792b5c34ab9499b64e70343497c6efdc5b3a50ba25d1007debfeb389b"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8936",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8936.mbn",
+   "size": 100912,
+   "sha256": "e47452d9f2b8cb3f150d6ad01537d7e65769f8754606789544232b9e87da1e6e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8937",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8937.mbn",
+   "size": 380340,
+   "sha256": "59270baa8a77686cfa67cc9975d87fd8d92eefd350833cafe01043d337854310"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8939",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8939.mbn",
+   "size": 284420,
+   "sha256": "a5b59ff9c4df1ad1be65e16e6bad82b2ab7d5ec0a0a74d32f217216ac0473e6e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8940",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8940.mbn",
+   "size": 412524,
+   "sha256": "17ae552b285ebb704654c8fab59b5ff18bf390c39f639d916c722953abfbe414"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8953",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8953.mbn",
+   "size": 359048,
+   "sha256": "56ecac849dd161d850382988beb2560bf8a3c2f70bb5e7c255cab86caa4d6bf6"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8974",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8974.mbn",
+   "size": 72324,
+   "sha256": "71c4f97535893ba7a3177320143ac94db4c6584544c01b61860aca80a477d4c9"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8976",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8976.mbn",
+   "size": 344440,
+   "sha256": "48fa6ff14ed04853341c6c7c9f36323a35ce62d8b68e4a8b07574980c6ec3ce2"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8992",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8992.mbn",
+   "size": 404664,
+   "sha256": "e4b1c94c7fd74196bcc86e650865eb919b77cad83b0f128f0352b0b747297ccc"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8994",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8994.mbn",
+   "size": 305488,
+   "sha256": "a7818cb2d8cc0e22dd154c0502765c74046199d4ad51fec0efd2f7bc5ee2105e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8996",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8996.mbn",
+   "size": 455300,
+   "sha256": "b920e62d548d12c8739cb1bbbf2f7759a62b92625aac3088fa8c72d1cdadb332"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8998",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8998.mbn",
+   "size": 597776,
+   "sha256": "7f1dab39c7242e65f0513d6771ed8478b89028c7c42664d126bfef3f530e62c7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8x10",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8x10.mbn",
+   "size": 80004,
+   "sha256": "dfe699552424f79bf832534ed5767ee53b512cd439973900ddb55a474c9fead7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "MSM8x26",
+   "path": "loaders/qualcomm/Generic-Chipset/MSM8x26.mbn",
+   "size": 102692,
+   "sha256": "7c64fb5771e1345269971dd05786be3b7008fe1f23bf7c548380b4f1bca221a5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Generic-Chipset",
+   "key": "prog_ufs_firehose_sm6250_lite",
+   "path": "loaders/qualcomm/Generic-Chipset/prog_ufs_firehose_sm6250_lite.elf",
+   "size": 664524,
+   "sha256": "eec1741a5365aba1ea32cc3f5db03f462c18fa2ed80402eab1a00b2218350965"
+  },
+  {
+   "type": "firehose",
+   "brand": "LYF",
+   "key": "LYF2",
+   "path": "loaders/qualcomm/LYF/LYF2.mbn",
+   "size": 270628,
+   "sha256": "034a74c450353c114bf0eac57a671aed7d86ae35478c1b3a6003a5700b976b59"
+  },
+  {
+   "type": "firehose",
+   "brand": "LYF",
+   "key": "LYF3",
+   "path": "loaders/qualcomm/LYF/LYF3.mbn",
+   "size": 321264,
+   "sha256": "e396d780cbb871234f9ccd589c89654c23928584d6aaaaa9385705a2456169f9"
+  },
+  {
+   "type": "firehose",
+   "brand": "LYF",
+   "key": "LYF_S5010",
+   "path": "loaders/qualcomm/LYF/LYF_S5010.mbn",
+   "size": 97988,
+   "sha256": "ab054575b9d8da36ceab60c85dc8b6b9c531d2b9f90e6be54584918ba353bb98"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "LENOVO_TB128FU",
+   "path": "loaders/qualcomm/Lenovo/LENOVO_TB128FU.elf",
+   "size": 660608,
+   "sha256": "fccca28317cebfb71e2076828fe5e0136eddeae0c6e4f26ec037f3c7d0fe25f3"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_A6010",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_A6010.mbn",
+   "size": 93288,
+   "sha256": "959439aa5864685999b713c3ed12ad5fa408149648b670a9a9ef77bcc9dcab14"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_A6020",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_A6020.mbn",
+   "size": 100960,
+   "sha256": "4531eb100fb50160b08e15786a6b7e899830b4989157f7ed8265b0b62523f47f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_A6020I36",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_A6020I36.mbn",
+   "size": 100960,
+   "sha256": "cbca3b9092a6ed898ccc9431d66b227d10cbcd628075ad26dd9a9e8bbbe04d04"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_K33",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_K33.mbn",
+   "size": 410116,
+   "sha256": "66f0af463e7d4d94d6292b1f6eda3cfba34bb647c11ce01abfa7d01a6f27588d"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_K53",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_K53.mbn",
+   "size": 406744,
+   "sha256": "dd9a34dd8ce61f6c7dca1e33e8512251d6e9247ee302c201d46f3b0fdb247630"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_K53A48",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_K53A48.mbn",
+   "size": 410132,
+   "sha256": "b5536b75bbf904882270dd74ce6a8bacbde1cc44cd4fa9e3af192e61c3e5e144"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_K6_Note_K53A48",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_K6_Note_K53A48.mbn",
+   "size": 407612,
+   "sha256": "a3d13bfb4427368057ec35319428a16592c8ad7fc5357602b42356f5b70accd3"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_K920",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_K920.mbn",
+   "size": 84192,
+   "sha256": "aa5af4c7ed26591e390e07c951869073f053bfd65d3fc3ae879a145c04e9d3ff"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_MSM8X26",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_MSM8X26.mbn",
+   "size": 73572,
+   "sha256": "d76f91f46b70ac7cf4b709921f5237b18a45f5955aec1f0a16db8c6236321587"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_P1a42",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_P1a42.mbn",
+   "size": 100896,
+   "sha256": "cc4ad0fc80927b9256416cc3afd43d664f6a215a63942b1a3ec8d87cdf504567"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_S90",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_S90.mbn",
+   "size": 89192,
+   "sha256": "4b605fff1eee445985723b8dbf8bcb33ecc014f5abb91564ee4484c08be438ea"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_Z2_Pro",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_Z2_Pro.elf",
+   "size": 474688,
+   "sha256": "5491e5b2685c8bd2314f26fb7e07e05dcda80eaf49125ae8ebb3380cddfb3162"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "Lenovo_ZUK_Z2",
+   "path": "loaders/qualcomm/Lenovo/Lenovo_ZUK_Z2.elf",
+   "size": 455316,
+   "sha256": "a04a72a434c7502eebda4b7a6a051b5352841fe6046e187ff86402345a1b2c5f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "TB-320FC",
+   "path": "loaders/qualcomm/Lenovo/TB-320FC.elf",
+   "size": 372728,
+   "sha256": "5f6f7edbac2ab281962b4a5bcd6fa506b55791f84898d989c25cab256355668e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "TB-371FC",
+   "path": "loaders/qualcomm/Lenovo/TB-371FC.elf",
+   "size": 709464,
+   "sha256": "b5c06408696f0a90c9c7a2d2fca28739a6890474e91f40dd7a558219f10e4918"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "TB-610FU",
+   "path": "loaders/qualcomm/Lenovo/TB-610FU.elf",
+   "size": 372728,
+   "sha256": "820e753c2ce602fabb999ebfb381bf42badac9b351d3a7a706e350c030422fda"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "TB-Q706F",
+   "path": "loaders/qualcomm/Lenovo/TB-Q706F.elf",
+   "size": 709392,
+   "sha256": "7b9bd7d1e8a3436252dc16c568d6a2fc1560fa68f1bee5d20d66056c916e8edf"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "TB352FU",
+   "path": "loaders/qualcomm/Lenovo/TB352FU.elf",
+   "size": 672048,
+   "sha256": "a672a8de2739b555bb1030adf60162914f717f6bba29c61b5f4c92f505d14dc7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Lenovo",
+   "key": "TB371FC",
+   "path": "loaders/qualcomm/Lenovo/TB371FC.elf",
+   "size": 709576,
+   "sha256": "bdc35e9dec69ee7330d0d6e699e6388f9668d23a4c367251870d1f02c7eb4694"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "Loader_V2",
+   "path": "loaders/qualcomm/Mixed/Loader_V2.mbn",
+   "size": 224524,
+   "sha256": "4316be3b830b5ce511f4f6492014b42625262d8259c0e9f1eafc6a641d687542"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "YT-K606F",
+   "path": "loaders/qualcomm/Mixed/YT-K606F.elf",
+   "size": 709024,
+   "sha256": "5c4e50ac63afcd701cd250272c8689f0d6536fe8e6bcd4e9c87053f3f3f94d9f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "ZTE_nubia_Z60_Ultra_NX721J",
+   "path": "loaders/qualcomm/Mixed/ZTE_nubia_Z60_Ultra_NX721J.elf",
+   "size": 1553396,
+   "sha256": "01e4f38fd9ffff2056baffde8123ebe966feb6279f2be71bf831729ba66954d9"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "a235f_bit9",
+   "path": "loaders/qualcomm/Mixed/a235f_bit9.elf",
+   "size": 675328,
+   "sha256": "ad511a40f9af86a4edc60a793860fcf119f04b9159aab141e051fc813f6c4f08"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "courbet",
+   "path": "loaders/qualcomm/Mixed/courbet.elf",
+   "size": 687068,
+   "sha256": "134971e1f6f90496b7120771a5a28c072c5de4dfe7916fde3b62e36ca327fb4c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "gauguin",
+   "path": "loaders/qualcomm/Mixed/gauguin.elf",
+   "size": 767464,
+   "sha256": "8bfaad169c145f5c78a95321ea7a94a23d45d434b4154fca5a08acf6951c5f85"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "haydn",
+   "path": "loaders/qualcomm/Mixed/haydn.elf",
+   "size": 915080,
+   "sha256": "3aefb59da6fb4cced5a80b46c5859e139e4c74b1a573a5b88c251a1b2aaa276e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "iQOO_9_SE_5G_PD2154F",
+   "path": "loaders/qualcomm/Mixed/iQOO_9_SE_5G_PD2154F.elf",
+   "size": 968352,
+   "sha256": "ef9c17b03712e2a6e66e3c74f7304e2ee859b75edfc773bb0f9da3d194950fc3"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "lenovo_A101LV",
+   "path": "loaders/qualcomm/Mixed/lenovo_A101LV.elf",
+   "size": 772312,
+   "sha256": "4a86bd79e92e0d173bb10672fbb8ffb300b0ddacb9a234bdfe58209f1eafab24"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "marble",
+   "path": "loaders/qualcomm/Mixed/marble.elf",
+   "size": 1588020,
+   "sha256": "deb187fd92042d713d8a79ebd802fb8ad51dc9356938903e0ccad5a5c9e9f8e3"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "moonstone",
+   "path": "loaders/qualcomm/Mixed/moonstone.elf",
+   "size": 722228,
+   "sha256": "928fcc5548cda509ba823e00d03a134973c81f98c48d8126e926315edead0a76"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "nabu",
+   "path": "loaders/qualcomm/Mixed/nabu.elf",
+   "size": 745072,
+   "sha256": "cba6a1d06188a0ea57b415ffd475c28ac5c958511c862f1f48088293c9f9bfcf"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "nokia_6_1",
+   "path": "loaders/qualcomm/Mixed/nokia_6_1.elf",
+   "size": 629888,
+   "sha256": "b8de97b44a3d174fc4094a1fc7a3907dca254d3089d8d9d862497286485bde60"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "nokia_8",
+   "path": "loaders/qualcomm/Mixed/nokia_8.elf",
+   "size": 596240,
+   "sha256": "ec9669803b6afea223610fb7befab69b19bb8a2576a83c83e9804ef2faee7391"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "note_10_pro_sweet",
+   "path": "loaders/qualcomm/Mixed/note_10_pro_sweet.elf",
+   "size": 695180,
+   "sha256": "12d9041f9362e44604ad1b4a795e93c6ed2a9b57e7f45e19e2f2b72cc3210c16"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "nothing_phone_1",
+   "path": "loaders/qualcomm/Mixed/nothing_phone_1.elf",
+   "size": 946368,
+   "sha256": "c5696a41463926490aadfead2c530a64d12bf6df0f80ff03c6c8105c3ea47cfe"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "nothing_phone_2",
+   "path": "loaders/qualcomm/Mixed/nothing_phone_2.elf",
+   "size": 1579828,
+   "sha256": "ec46e8a59a01aaa38bc0fded28428d2022b5e4f019489903511aa7c6193f463d"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "phoenix",
+   "path": "loaders/qualcomm/Mixed/phoenix.elf",
+   "size": 671204,
+   "sha256": "542cbb59f7e91f0acace106839a78f83ba9878d1742feb7878997c2c070b8731"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "prog_emmc_oppo_a3x",
+   "path": "loaders/qualcomm/Mixed/prog_emmc_oppo_a3x.elf",
+   "size": 644252,
+   "sha256": "5c4d17b25a2fc590319b72b43beec50d87f8b295e44ddb648e051272c89647e8"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "prog_ufs_firehose_sm7250_lge",
+   "path": "loaders/qualcomm/Mixed/prog_ufs_firehose_sm7250_lge.elf",
+   "size": 684804,
+   "sha256": "0a0e6a2624df64ec0f0db31f45bac2ec7e44f15d1d772dd4383939781123ffda"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "samsung_tab_a9_plus_SM_X210_bit_3",
+   "path": "loaders/qualcomm/Mixed/samsung_tab_a9_plus_SM_X210_bit_3.elf",
+   "size": 692356,
+   "sha256": "2a97c26eb16c4a9c5896dba11cff84f21e5a0524bf55a9f26a6cd96f3b9f2639"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "samsung_tab_a9_plus_SM_X210_bit_5",
+   "path": "loaders/qualcomm/Mixed/samsung_tab_a9_plus_SM_X210_bit_5.elf",
+   "size": 692356,
+   "sha256": "4606c65cebbe638c338d997a3bb7d3b2bffed5a8e10142d1562d130a60b28ee7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "sunstone",
+   "path": "loaders/qualcomm/Mixed/sunstone.elf",
+   "size": 722228,
+   "sha256": "53e64cadb385b5883c2370e0ad804c2e3c7c1bbdc58e34fcea57e041352895d6"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "t505n_u7",
+   "path": "loaders/qualcomm/Mixed/t505n_u7.elf",
+   "size": 648044,
+   "sha256": "5bee4734e5e92c7c0c19bc2c8f9288b397b4de67531f74c9815741f96f08c7a7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "v20se_pd20238cf",
+   "path": "loaders/qualcomm/Mixed/v20se_pd20238cf.elf",
+   "size": 612636,
+   "sha256": "35b1d44d981ff27c2e0ce347a5c3e3e8b3cadf8649e71d97d3ee86a59bb6d8a8"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "veux",
+   "path": "loaders/qualcomm/Mixed/veux.elf",
+   "size": 706868,
+   "sha256": "d3d8686efafaf6455c2211f53d7a4cf6f9fc8d5ee0af0b3f418f41ddf9e23ae6"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "vivo_iqoo_7_legend_pd2049f",
+   "path": "loaders/qualcomm/Mixed/vivo_iqoo_7_legend_pd2049f.elf",
+   "size": 968352,
+   "sha256": "f1c4caa166430e5387adb3aa64e002bf5d573254d3e9c4d2e4c2b09779235ba4"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "vivo_iqoo_7_pd2055f",
+   "path": "loaders/qualcomm/Mixed/vivo_iqoo_7_pd2055f.elf",
+   "size": 716232,
+   "sha256": "30d66c4c735649c72a9ba0b5792e93de9885e29b0817d79b50247ab72e24a9d1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "vivo_v29_pd2283f",
+   "path": "loaders/qualcomm/Mixed/vivo_v29_pd2283f.elf",
+   "size": 995536,
+   "sha256": "3940bae02a872eda1a70209146d5b0466d94d0e0d60b9e33d1936f8244d1f491"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "xiaomi_sky",
+   "path": "loaders/qualcomm/Mixed/xiaomi_sky.elf",
+   "size": 1747908,
+   "sha256": "8231bf0e6f494ac13edeed34ca10ebd6d90e3e4beb411282ae183242dee9e5a9"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "xiaomi_vayu",
+   "path": "loaders/qualcomm/Mixed/xiaomi_vayu.elf",
+   "size": 744768,
+   "sha256": "1bfd6569f2ed24b0446b4ec52d2c5fe005901b81fbe16b92422f1a980121c238"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "zte_NP03J",
+   "path": "loaders/qualcomm/Mixed/zte_NP03J.elf",
+   "size": 1553396,
+   "sha256": "819b3b5eb7cf62071ad27a6266534b6974cf10cda46ea410941308f6cf68ce7d"
+  },
+  {
+   "type": "firehose",
+   "brand": "Mixed",
+   "key": "zte_NX789J",
+   "path": "loaders/qualcomm/Mixed/zte_NX789J.elf",
+   "size": 1679780,
+   "sha256": "0aab3f764c8ffa28ae84dee5bafb26f8ad21d6ee626adb375b1a1b483316783c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Motorola",
+   "key": "MOTO_G62_XT2261-2",
+   "path": "loaders/qualcomm/Motorola/MOTO_G62_XT2261-2.elf",
+   "size": 660608,
+   "sha256": "0d1b3b2b816e83bbdf6aba5c6ac72a5a5964f46dd360518c00653162561fdc94"
+  },
+  {
+   "type": "firehose",
+   "brand": "Nokia",
+   "key": "Nokia_TA-1003_Hisen",
+   "path": "loaders/qualcomm/Nokia/Nokia_TA-1003_Hisen.mbn",
+   "size": 377884,
+   "sha256": "6900751514d0bad27986ce7ffa5e576a434b5ad00e8affab4c02c13ecaa214e0"
+  },
+  {
+   "type": "firehose",
+   "brand": "Nokia",
+   "key": "Nokia_TA-1029",
+   "path": "loaders/qualcomm/Nokia/Nokia_TA-1029.mbn",
+   "size": 286592,
+   "sha256": "01a93e89b1792b9b3d11392fd3276acc83c72be9fdc59fe543a0ada8fb183d6b"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo-Realme",
+   "key": "MT2111_PEUM00_CPH2173_PGIM10",
+   "path": "loaders/qualcomm/Oppo-Realme/MT2111_PEUM00_CPH2173_PGIM10.elf",
+   "size": 984280,
+   "sha256": "78d1035686263d690740553e85ca3080e8918b5e7daceec2a33880abee0bbe78"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo-Realme",
+   "key": "OnePlus Nord 5G AC2001_prog_firehose_ddr",
+   "path": "loaders/qualcomm/Oppo-Realme/OnePlus Nord 5G AC2001_prog_firehose_ddr.elf",
+   "size": 735052,
+   "sha256": "924be3fde32e251adbd32f89bcd30953e456e35fd3b9810ef1ce6fe997008c38"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo-Realme",
+   "key": "PEGM10",
+   "path": "loaders/qualcomm/Oppo-Realme/PEGM10.elf",
+   "size": 758848,
+   "sha256": "57558763d0aa9d8cad8cfe3b9de52e070016506d84a2c4c6d5e55a8a5d00bdc7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo-Realme",
+   "key": "PERM10",
+   "path": "loaders/qualcomm/Oppo-Realme/PERM10.elf",
+   "size": 974256,
+   "sha256": "1834dceeecb862e21371201150e4bd9f27844260ecd423a3e91811c609721d47"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo-Realme",
+   "key": "sdm710",
+   "path": "loaders/qualcomm/Oppo-Realme/sdm710.elf",
+   "size": 713324,
+   "sha256": "d86acaa14ef80670a0252c55a9ab0d0dc6b2be6f7b46b0fb45efb455193b236c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "CPH2113",
+   "path": "loaders/qualcomm/Oppo/CPH2113.elf",
+   "size": 695676,
+   "sha256": "fdf2933342d510f9265663be58f1dc45a9ed9c6fbb99d0c536c4d3f9f7f7b145"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "CPH2247",
+   "path": "loaders/qualcomm/Oppo/CPH2247.elf",
+   "size": 697216,
+   "sha256": "8f7b893efaa9f5ee23485b9710b25422f7cb50586f5009500640801f41ac7eee"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "CPH2363",
+   "path": "loaders/qualcomm/Oppo/CPH2363.elf",
+   "size": 665952,
+   "sha256": "3d72fdba83181be3766302816b12d6c5f1c5f8b85048dde57c0801afa1c40bb1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "CPH2373",
+   "path": "loaders/qualcomm/Oppo/CPH2373.elf",
+   "size": 664064,
+   "sha256": "9d82755f41c580cde3677b6b89bc07e4b7e470a5fc9faf9a0a5f9e782d971482"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "CPH2525",
+   "path": "loaders/qualcomm/Oppo/CPH2525.elf",
+   "size": 974248,
+   "sha256": "33b26788123afdb329ceddd1f1af224415d8744c0d39497b339cf8cc4a99afc2"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "CPH2631",
+   "path": "loaders/qualcomm/Oppo/CPH2631.elf",
+   "size": 664000,
+   "sha256": "227b32f4dce03ee11eed9c01630fc74b2ab4037c867628d0bd05a00087d34e81"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "CPH2687",
+   "path": "loaders/qualcomm/Oppo/CPH2687.elf",
+   "size": 688448,
+   "sha256": "ab960e2a37873d317dd5fbaa01a3c9f07f6c89231a86c30643dadd73983cc39e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_A13F",
+   "path": "loaders/qualcomm/Oppo/Oppo_A13F.mbn",
+   "size": 97292,
+   "sha256": "9a9644a4ea3bce9b62642128957a81379a3166763c3510df8459820151abaf50"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_A33F",
+   "path": "loaders/qualcomm/Oppo/Oppo_A33F.mbn",
+   "size": 97308,
+   "sha256": "6125966a980f033ef078f943480e600631c2c1275df462b5951c58d1b7b0b4fe"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_A37",
+   "path": "loaders/qualcomm/Oppo/Oppo_A37.mbn",
+   "size": 97292,
+   "sha256": "3d111004ba7311949afedfad53b267b2c14e236ff9a185923a7a32fde7bed1e7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_A57",
+   "path": "loaders/qualcomm/Oppo/Oppo_A57.mbn",
+   "size": 407112,
+   "sha256": "a2533ccda54a4e26ea9449090f15e8e0ff858d26341b15ccc37c4b5d7b7c3697"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_F1-2",
+   "path": "loaders/qualcomm/Oppo/Oppo_F1-2.mbn",
+   "size": 100896,
+   "sha256": "0573edb45ce1a0d9994b3f26cd7769a916476b0cfb143ec9a50a4813e9650385"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_F1",
+   "path": "loaders/qualcomm/Oppo/Oppo_F1.mbn",
+   "size": 101392,
+   "sha256": "e9c0d815a0d5126ced45ac80ed767df5dcea045c8d4e99a29698b37a519bc092"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_F1F",
+   "path": "loaders/qualcomm/Oppo/Oppo_F1F.mbn",
+   "size": 100912,
+   "sha256": "8299569779e8fb399570a8913817663580d1671ff6377663c9e00fd3e1d3a9a2"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_R7SPlus",
+   "path": "loaders/qualcomm/Oppo/Oppo_R7SPlus.mbn",
+   "size": 100896,
+   "sha256": "3204be2d6f6e1681dc280adeae3f60b9014670c984c66c588f4060726973e36f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_R9S",
+   "path": "loaders/qualcomm/Oppo/Oppo_R9S.mbn",
+   "size": 359112,
+   "sha256": "8393affe42eab559da2d19d146282dee873c4c0e5b4ff81ba43be8dee42d0626"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_R9S_Plus",
+   "path": "loaders/qualcomm/Oppo/Oppo_R9S_Plus.mbn",
+   "size": 356884,
+   "sha256": "e986855902b9ca54530270a811f3e3c958fa4c9cc9069fe1753dd1ad01280477"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_R9S_Plusma_8976",
+   "path": "loaders/qualcomm/Oppo/Oppo_R9S_Plusma_8976.mbn",
+   "size": 344488,
+   "sha256": "b77c5b23e2fa2fb86dc83eb4f25b2d491e7c72a07bb340f6a69260b7bb832ac5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Oppo",
+   "key": "Oppo_Vivo",
+   "path": "loaders/qualcomm/Oppo/Oppo_Vivo.mbn",
+   "size": 96816,
+   "sha256": "5bc29a56e3843fc5109ba56760d6ea934ea5a80a9d82ce5ba959f3abdd02e233"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Gionee_GN5007",
+   "path": "loaders/qualcomm/Other/Gionee_GN5007.mbn",
+   "size": 412464,
+   "sha256": "c6939572f005cb290f3207fb9af423390ccd28dd85acb18baa7364fac2253a7d"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "HAI_8909",
+   "path": "loaders/qualcomm/Other/HAI_8909.mbn",
+   "size": 283948,
+   "sha256": "146259e01b603d2dd8417716f0463f3594cf55a1d7cc6c9d12c520a82987184c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "LeEco_Le_2_X528",
+   "path": "loaders/qualcomm/Other/LeEco_Le_2_X528.mbn",
+   "size": 355704,
+   "sha256": "f19f8cbc7e1e856572e2e692a0ed24dfb9d51f837fb6dc454087fd3cb6000cfd"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "MPRG8916_Xiaomi",
+   "path": "loaders/qualcomm/Other/MPRG8916_Xiaomi.mbn",
+   "size": 56836,
+   "sha256": "2c8d50e2f19d4e95b51c84f640790c28d02958e632ff33d47e5931ea8cee9872"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Motoath_MSM8952",
+   "path": "loaders/qualcomm/Other/Motoath_MSM8952.mbn",
+   "size": 344064,
+   "sha256": "d1c426a4b6cb7b1a7369b8e9de4d2a0c5e2c1b477b613f27a84f943a0890ab08"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "NK5",
+   "path": "loaders/qualcomm/Other/NK5.mbn",
+   "size": 219680,
+   "sha256": "696fb2b312d493924f3b928219391a8f0d8494e2b68bbe504f765ad52f962e51"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "NK6",
+   "path": "loaders/qualcomm/Other/NK6.mbn",
+   "size": 219680,
+   "sha256": "e7e97ccc57dc4e4b966a477b0d1f2bf46b67123a3e1dfb87011e3a75361af82f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Orange_Dive_71",
+   "path": "loaders/qualcomm/Other/Orange_Dive_71.mbn",
+   "size": 277512,
+   "sha256": "3c1915340ea5ef32c44ddd5f3cfd499e42b11dd0d85281ffec8fa9a7dfb1b443"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Turkcell_T60_8916",
+   "path": "loaders/qualcomm/Other/Turkcell_T60_8916.mbn",
+   "size": 219416,
+   "sha256": "7640ceff79ce3ddc496d9b723bb03df0251f4651856db1009dfd4e68902aeb89"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_5.5V_VSP355G",
+   "path": "loaders/qualcomm/Other/Vestel_5.5V_VSP355G.mbn",
+   "size": 82468,
+   "sha256": "5c57bee0ed519f90263735ad69be5a60b8dde57e816548c7f5f659b0d68e2ed6"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_V1_29S",
+   "path": "loaders/qualcomm/Other/Vestel_V1_29S.mbn",
+   "size": 72524,
+   "sha256": "0da2947d03ef48acd1849c82728022aabb234505681c97ffec1f7e535dc78f41"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_Go",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_Go.mbn",
+   "size": 281252,
+   "sha256": "b48c0e2083706b3b1711295d0aa95c5edd91d8b5b068e39ea1b958e3968a9a50"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_V3_5000",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_V3_5000.mbn",
+   "size": 280044,
+   "sha256": "38b1354df2e52dd836998208e9aa681c9521f9a7038880ea54abbe11e5768bad"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_V3_5010",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_V3_5010.mbn",
+   "size": 280092,
+   "sha256": "de44a7b87be580285d350c48c6e4c34d0f91bff4d212319564372e92cc078733"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_V3_5040",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_V3_5040.mbn",
+   "size": 280092,
+   "sha256": "e4719f8822eff8f4969cc060488d430a754b52ee8aaf526a77d5210863f9a727"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_V3_5070",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_V3_5070.mbn",
+   "size": 99960,
+   "sha256": "91b3c51f15b6f4708ed32e74c7d3cd8b6236e907a4d11e828d4186747c9b2b89"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_V3_5530",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_V3_5530.mbn",
+   "size": 280044,
+   "sha256": "85040c235a16d7e358bb240a5aef8fc7c042fd58a42672a9f0c5dc276a6950bf"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_V3_5570",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_V3_5570.mbn",
+   "size": 99960,
+   "sha256": "acc4fa2b5fdea963955a54e80aa8c9c7a9cec2ddc7544b934b31074f096ad5ee"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_V6",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_V6.mbn",
+   "size": 375336,
+   "sha256": "986dffd9228dfe9ff6b71f7be35e11e41d236faa05b6765ad5a4dfe03355439e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Vestel_Venus_Z20",
+   "path": "loaders/qualcomm/Other/Vestel_Venus_Z20.elf",
+   "size": 630560,
+   "sha256": "a62b4049bcf9f48536f2661549c7b5cc553c14266c880e973bd7c984f181b0c1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "Xioami_Mi_4C_S",
+   "path": "loaders/qualcomm/Other/Xioami_Mi_4C_S.mbn",
+   "size": 404680,
+   "sha256": "e317eea3e57407d7a2b44c3f4b8103dbc7bb7bd80346e142668b5634ed6c4e11"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "ZUK_Z2-Pro",
+   "path": "loaders/qualcomm/Other/ZUK_Z2-Pro.elf",
+   "size": 456260,
+   "sha256": "e2e6d1d2e538aa26b2ed5fe92165c6ec0f898dfca5d6fde9664eb6fdc37ea087"
+  },
+  {
+   "type": "firehose",
+   "brand": "Other",
+   "key": "ginkgo_willow_noauth_ddr",
+   "path": "loaders/qualcomm/Other/ginkgo_willow_noauth_ddr.elf",
+   "size": 595644,
+   "sha256": "17741425698012d34f9ade8f9c31ea4d83660bfbaf7554bd8a49dc8e7c53e42d"
+  },
+  {
+   "type": "firehose",
+   "brand": "Realme",
+   "key": "RMX2101",
+   "path": "loaders/qualcomm/Realme/RMX2101.elf",
+   "size": 644316,
+   "sha256": "31bbdfbd6566dc828e66daacf3fa49949229cfda8fbcb08d7be58fc79781fe43"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "A015AZ_LOADER_BIT-A",
+   "path": "loaders/qualcomm/Samsung/A015AZ_LOADER_BIT-A.mbn",
+   "size": 436712,
+   "sha256": "125ccdfde7dff5382e7cbd5d28cf831f0aa02b1f04a796557d44bfe3beb62edd"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "A057F_bit9",
+   "path": "loaders/qualcomm/Samsung/A057F_bit9.elf",
+   "size": 666352,
+   "sha256": "941bece92010ce78004860aef6521919c0730e9f1f2c2c455240c2bbbc10ed43"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "A057G_bit7",
+   "path": "loaders/qualcomm/Samsung/A057G_bit7.elf",
+   "size": 666352,
+   "sha256": "743e3e07c2a422b2b766d558b148bde6721223d653158c16d9ea635cfd211ad7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "A057M_bit9",
+   "path": "loaders/qualcomm/Samsung/A057M_bit9.elf",
+   "size": 666352,
+   "sha256": "8024ed797086bbda04a340bad7f5541e77907b9f6054134813a617cff34cc2e1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "A236E_BIT_5",
+   "path": "loaders/qualcomm/Samsung/A236E_BIT_5.elf",
+   "size": 689908,
+   "sha256": "2da239ab104822c83930d1d8247c8e64b21d50926478300ebbc3f0af48d8c57c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "A528B_BIT_6",
+   "path": "loaders/qualcomm/Samsung/A528B_BIT_6.elf",
+   "size": 1011056,
+   "sha256": "50a072d990e7087e74d75d33afc60942c00e8d5065aa929b984c3777ea673953"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "F936U_BIT-4",
+   "path": "loaders/qualcomm/Samsung/F936U_BIT-4.elf",
+   "size": 1533764,
+   "sha256": "a747d6c1732bcd4727d07f241b20584d2f7ea459534ae3c8fb7ab24ff18819b3"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "J810Y_BIT3",
+   "path": "loaders/qualcomm/Samsung/J810Y_BIT3.mbn",
+   "size": 362976,
+   "sha256": "9b1716b36fd4de0a72887498bc2ebdc6ce0d002457919ef321a7f5109e4061dd"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "M515F_LOADER_BIT6",
+   "path": "loaders/qualcomm/Samsung/M515F_LOADER_BIT6.elf",
+   "size": 687884,
+   "sha256": "5ce7e6731267c3b4c001e508ef7f3bcd0f1d6e17025112bfebbecb7117bbd12f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "N975U_BIT-7",
+   "path": "loaders/qualcomm/Samsung/N975U_BIT-7.elf",
+   "size": 725088,
+   "sha256": "bcc4cee837ade4a2d8b1b66fc7a97a0762625da1f5945eedc9789c5d281d2c0f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "N981N_Bit8",
+   "path": "loaders/qualcomm/Samsung/N981N_Bit8.elf",
+   "size": 731616,
+   "sha256": "6ca25ffe16df4ca19252b0ebd6eb9a77b43a8149ed53b24fd1c785d1158d3ed7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "N981U_BIT C",
+   "path": "loaders/qualcomm/Samsung/N981U_BIT C.elf",
+   "size": 731616,
+   "sha256": "e443d3f5d190e6283923164be13f326cb74e44324633ecfb68d01269ebdbebd2"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "S916U_LOADER_BIT6",
+   "path": "loaders/qualcomm/Samsung/S916U_LOADER_BIT6.elf",
+   "size": 1715044,
+   "sha256": "1dd1ad8ae730b8a14185234f15c59472b082156e89ab448bc32e622ff8f664b8"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "S918B_BIT-4",
+   "path": "loaders/qualcomm/Samsung/S918B_BIT-4.elf",
+   "size": 1715044,
+   "sha256": "912c093e18ab787c9de1b20725954e3cfd0b33736f8dd864240bc0deda6e6c7c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "S918N_BIT_2",
+   "path": "loaders/qualcomm/Samsung/S918N_BIT_2.elf",
+   "size": 1715044,
+   "sha256": "7cd0725a7b3708c2f48331e0e32a749e432500862ab20b5b41069416afbd4a36"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "S918U_LOADER_BIT5",
+   "path": "loaders/qualcomm/Samsung/S918U_LOADER_BIT5.elf",
+   "size": 1715044,
+   "sha256": "2f63138daf5e561d525fe0f0f7be426fca6d9d26d1b309257e785daad898ef00"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "S926U_LOADER_BIT4",
+   "path": "loaders/qualcomm/Samsung/S926U_LOADER_BIT4.elf",
+   "size": 1558180,
+   "sha256": "b10af9b35474d83027b71c7fb73694afe1312002e22f1b2037227c42d260b919"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "S928U_LOADER_BIT4",
+   "path": "loaders/qualcomm/Samsung/S928U_LOADER_BIT4.elf",
+   "size": 1558180,
+   "sha256": "b0b98496f86832d1029f335e5e24341084ba9e63fcd31fa2b4e07ab9894a4bd1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "SAMSUNG_TAB_A7_T500",
+   "path": "loaders/qualcomm/Samsung/SAMSUNG_TAB_A7_T500.elf",
+   "size": 637580,
+   "sha256": "611aad2ae02d73ecddcf9f24df676d767f039b66463493aa9b3f8285e27fbfc1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "SM-F946B_BIT_3",
+   "path": "loaders/qualcomm/Samsung/SM-F946B_BIT_3.elf",
+   "size": 1620836,
+   "sha256": "4638bb3d018d1d1917d50ddd534b49ee54f9a42860f160740bdb0dec520d7069"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "SM-T636B_BIT-9",
+   "path": "loaders/qualcomm/Samsung/SM-T636B_BIT-9.elf",
+   "size": 1048560,
+   "sha256": "2e3db2d29716805d7ab7ebe928efbd12c6c2555af965002742b58cca3b074c14"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "a235m_bitb",
+   "path": "loaders/qualcomm/Samsung/a235m_bitb.elf",
+   "size": 675328,
+   "sha256": "6bbd8325cdf0eb2b550990bb39dd7be739fd384d0ecffe568359e2b225ff8b3a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "a725f_bitb",
+   "path": "loaders/qualcomm/Samsung/a725f_bitb.elf",
+   "size": 690780,
+   "sha256": "eaffbd8b3636cbb4cdc56e0f211f716bc494d73135bf4a4a9b7b3fc7dc09da59"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "a725m_bita",
+   "path": "loaders/qualcomm/Samsung/a725m_bita.elf",
+   "size": 690780,
+   "sha256": "4728fb943f311d7bad156ac1ab3bd5071fe7c5d5614a5d74c9dfa78045b0f3bc"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "e236b_bita",
+   "path": "loaders/qualcomm/Samsung/e236b_bita.elf",
+   "size": 774608,
+   "sha256": "63d6d3cb56f1a4bca9abfd92ba48dccaa234ce5e0ac68e3acd91805d06b73f52"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "f926b_bitc",
+   "path": "loaders/qualcomm/Samsung/f926b_bitc.elf",
+   "size": 939744,
+   "sha256": "91cb29627a23b643b2ed3c7589a05fed92be2db74a2760cce77d4ad8155b6405"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "f996b_bit1",
+   "path": "loaders/qualcomm/Samsung/f996b_bit1.elf",
+   "size": 1693644,
+   "sha256": "93651a3545200ab2f9e7356dceaa618d60f4a7dbf0e5ee57cb2a3dc824df74c9"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "f996u_bit1",
+   "path": "loaders/qualcomm/Samsung/f996u_bit1.elf",
+   "size": 1693644,
+   "sha256": "ef8c501dbd762a7d92066a5160e0a3fcdac0e098836ea4771ec973d4e52cbc44"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "g770f_bit9",
+   "path": "loaders/qualcomm/Samsung/g770f_bit9.elf",
+   "size": 738976,
+   "sha256": "860a86594cb75fab4b697146a571ead720bc407838f9c1cd2aef4efebaaade04"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "g991u_bitf",
+   "path": "loaders/qualcomm/Samsung/g991u_bitf.elf",
+   "size": 939744,
+   "sha256": "2d89dc1b6eba837c7685c94575fe756091ce7ccccd833497e5c6e1a736b7cc85"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "g996u_bitg",
+   "path": "loaders/qualcomm/Samsung/g996u_bitg.elf",
+   "size": 939744,
+   "sha256": "686d051505ef1e4a5a8221723104cc10d08601931681a83740ae170e727f15cf"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "g998u1_bite",
+   "path": "loaders/qualcomm/Samsung/g998u1_bite.elf",
+   "size": 980616,
+   "sha256": "daeafef881108c79bda3f0b0ba1afcd67360436e804e04175b96922b79dc94f0"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "m526br_bit7",
+   "path": "loaders/qualcomm/Samsung/m526br_bit7.elf",
+   "size": 983232,
+   "sha256": "c2e6a2c7ef524d046e213b7608000a62c8e5dcda2215f428b77e7e311c4be270"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "m556e_bit4",
+   "path": "loaders/qualcomm/Samsung/m556e_bit4.elf",
+   "size": 1710996,
+   "sha256": "95a68ba60bc4089a2d9e21084f4b51124639ec234ba33a3e70531fbcd60263d9"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "prog_firehose_ddr",
+   "path": "loaders/qualcomm/Samsung/prog_firehose_ddr.elf",
+   "size": 666352,
+   "sha256": "6932cad1daf6034f6cb77eea7faa349ceaad906fab32d8dc538caa5cb42b0a26"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "s901e_bitc",
+   "path": "loaders/qualcomm/Samsung/s901e_bitc.elf",
+   "size": 1544060,
+   "sha256": "b4131a5a35feb76d466eef61ea6906d40daac4747e24f8455cdc69c6168fcb4c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "s901j_bit1",
+   "path": "loaders/qualcomm/Samsung/s901j_bit1.elf",
+   "size": 1574172,
+   "sha256": "66097c5604fff9665f6f490e5e65d7c09c781178e146b73d53b2583e62bd86e1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "s906n_bit7",
+   "path": "loaders/qualcomm/Samsung/s906n_bit7.elf",
+   "size": 1574172,
+   "sha256": "c4867d4949c9dcc9be697634c8b15a73a35a724b2d7ecd1e567bcdf26a12bcdb"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "s908e_bitc",
+   "path": "loaders/qualcomm/Samsung/s908e_bitc.elf",
+   "size": 1574172,
+   "sha256": "7aff393804246ea290b7701569c475639b0387f9e9aad52589c5a35ca954657e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "s908n_bit7",
+   "path": "loaders/qualcomm/Samsung/s908n_bit7.elf",
+   "size": 1574172,
+   "sha256": "a24d36501744c4d14215c5af9a4babd4bb291b265b15f1d865e28767c62a4df8"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "t867u_bita",
+   "path": "loaders/qualcomm/Samsung/t867u_bita.elf",
+   "size": 725904,
+   "sha256": "10f4d8432e0ae3079b97d95240ef8fa1af7b7f6ba904707d2b6ebe56193debaf"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "x216b_bit8",
+   "path": "loaders/qualcomm/Samsung/x216b_bit8.elf",
+   "size": 696548,
+   "sha256": "4ddd3b9c641080fac9ac62720cf7e25c1e3e00d15ceecce39c09ad4979c8cdc1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Samsung",
+   "key": "x906c_bit9",
+   "path": "loaders/qualcomm/Samsung/x906c_bit9.elf",
+   "size": 1574172,
+   "sha256": "ae46484d7349a4efad918fa40bdd2de2aad43316b81bc2da72eb355e86af902b"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "IQOO_9_PD2136F",
+   "path": "loaders/qualcomm/Vivo/IQOO_9_PD2136F.elf",
+   "size": 968352,
+   "sha256": "5e94b59432e60240d68b98875497bd6b2fbaab4d06c4abda0daad97ccb531dd2"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "IQOO_Z3_5G_PD2073",
+   "path": "loaders/qualcomm/Vivo/IQOO_Z3_5G_PD2073.elf",
+   "size": 691084,
+   "sha256": "6f4e62671394ac3bbccdf330c2ff5b471a2b1fda82102c358dabd4dde75c6f5e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "PD2422F_y300_plus",
+   "path": "loaders/qualcomm/Vivo/PD2422F_y300_plus.elf",
+   "size": 725652,
+   "sha256": "4efc177483911ff2dbdd456e35643e261960be7feca4dd360a224aeb98097220"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_T1_Pro_5G_PD2193F",
+   "path": "loaders/qualcomm/Vivo/Vivo_T1_Pro_5G_PD2193F.elf",
+   "size": 1003728,
+   "sha256": "a417bb584c722aff70023a28b3b4eb936246e58ba7aafaf4117c6bc29c2372b1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_X50_Pro_PD2005F",
+   "path": "loaders/qualcomm/Vivo/Vivo_X50_Pro_PD2005F.elf",
+   "size": 701864,
+   "sha256": "b3424ddfb49b069bec912f9ce69db8cd32a4ec60af0d75fbb468174acde220e0"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_X7",
+   "path": "loaders/qualcomm/Vivo/Vivo_X7.mbn",
+   "size": 344408,
+   "sha256": "a45018c9812916c1b1fe7625be28612510ffe66e9674dcf91d19a8c9c97363b2"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_X7_Plus",
+   "path": "loaders/qualcomm/Vivo/Vivo_X7_Plus.mbn",
+   "size": 344536,
+   "sha256": "c4f6e4dd414410b7a424ca0851a0e5af62a88c8114107b8d2b80d3f6feb3ead1"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_X9",
+   "path": "loaders/qualcomm/Vivo/Vivo_X9.mbn",
+   "size": 356924,
+   "sha256": "a10dbafe27812e194dfccb93a4a19268ce372b7ce3b04b21479b1156b60c3e86"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_X9S",
+   "path": "loaders/qualcomm/Vivo/Vivo_X9S.mbn",
+   "size": 404044,
+   "sha256": "5c8213eddaf815c48561c0e9d5f36d82d50294ca690d8ea612f14d80ff2b58a7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_X9S_Plus",
+   "path": "loaders/qualcomm/Vivo/Vivo_X9S_Plus.mbn",
+   "size": 361668,
+   "sha256": "3cb114fa9b673acdbbdaba4757783c27ddf8ab49848e0e6c07aba979a79b3987"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_X9_Plus",
+   "path": "loaders/qualcomm/Vivo/Vivo_X9_Plus.mbn",
+   "size": 360196,
+   "sha256": "74ec1e8c319c3d2ee68e2d1504a37f366ae9f99a1a2ce9568cd1d773c8d9cd14"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_XPlay_6",
+   "path": "loaders/qualcomm/Vivo/Vivo_XPlay_6.elf",
+   "size": 474944,
+   "sha256": "fe4282f64b045a50dd9f8b2be264add9fb8c15f75303470b23e2068a61e23286"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_Y51",
+   "path": "loaders/qualcomm/Vivo/Vivo_Y51.mbn",
+   "size": 93188,
+   "sha256": "cb4aa64c1e34c1d914b5aec3b403826beb74880c8ff85b0d79094fcd9ed0c4df"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_Y53",
+   "path": "loaders/qualcomm/Vivo/Vivo_Y53.mbn",
+   "size": 334184,
+   "sha256": "cf896496ea2a34920ff150371c3f9a2f96a97ced65e0860fac30e8bc3aec52d2"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_Y55",
+   "path": "loaders/qualcomm/Vivo/Vivo_Y55.mbn",
+   "size": 403132,
+   "sha256": "c0578da335c5f3060ea4f4f0fa46c02a523e47f2d94e917527ca6a40938529b8"
+  },
+  {
+   "type": "firehose",
+   "brand": "Vivo",
+   "key": "Vivo_Y66",
+   "path": "loaders/qualcomm/Vivo/Vivo_Y66.mbn",
+   "size": 404876,
+   "sha256": "178dca5766a2cd336a18489c509df8fa8ae4ee4e0c6878cbde4f39f143a42be5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi5-UFS",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi5-UFS.elf",
+   "size": 456236,
+   "sha256": "fb4dcda3b758b18f9aa0da22680d8e4ba57fe86274527e32971d6f72effaa9b5"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi5S-UFS",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi5S-UFS.elf",
+   "size": 456188,
+   "sha256": "2dde12f09b1217dbbd53860dd9145326a394bf6942131e440c161d9a13dc43dd"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi5S_Plus-UFS",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi5S_Plus-UFS.elf",
+   "size": 475056,
+   "sha256": "4df0f3ba55ceddbc119c8b5f12bcc2aaee4d204517cb29fdacf6f14b6390bfa7"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_3",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_3.mbn",
+   "size": 84208,
+   "sha256": "b3a4aad52709e8ca881c41855037243ab2c402404a775358bde63e907289ce51"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_4A",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_4A.mbn",
+   "size": 377536,
+   "sha256": "70c53536d7bd17e5aa99a3022f9d5b20a83eb3917f5c109499989770eb5e4afd"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_4C",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_4C.mbn",
+   "size": 408776,
+   "sha256": "17aead4d337ede3f0e9e8ef339eb4c1c9dccded99c8343775e9fbb7b47a02f5f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_4i",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_4i.mbn",
+   "size": 100960,
+   "sha256": "0460e7fb5a87be2572bf255e02be6dc93b75c34dbf4ec2a2a774978fef78da6f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_5X",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_5X.mbn",
+   "size": 364416,
+   "sha256": "13b0354d916b1dd1596769987e132f39fbf5ed8e7c3364f354b6b2001aa8b84f"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_6",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_6.elf",
+   "size": 344584,
+   "sha256": "c71c6710e377602760addde8d73c5d7ad3eaa71ca10573ec0f405ca3a939616e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_A1",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_A1.mbn",
+   "size": 363964,
+   "sha256": "0bc79aab9fedea3fca70372ba4d99adf102aac406d0e2474a7e56b2ce01c04cc"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_Max-GP",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_Max-GP.mbn",
+   "size": 357168,
+   "sha256": "cf1ba4722f5d1b67fe9b44a831e7985227b0ae53b8c31e09040c25468c237f6a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_Max-PT",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_Max-PT.mbn",
+   "size": 357168,
+   "sha256": "b1d71048423dd5c3cb7d8e712f8bff7a28a85a912347c3fe074a0a9be56edd84"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_Max_2",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_Max_2.mbn",
+   "size": 366300,
+   "sha256": "fbd848a11c4c4b5fa01a5003db71a4ea07ec8e2c342bf98d7202e4b0158c5763"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_Mix",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_Mix.elf",
+   "size": 456188,
+   "sha256": "2cd17843189f626511219f6939e8ef1cd1857ba5cd809b6db39deb4e520dbd7e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Mi_Note_3",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Mi_Note_3.mbn",
+   "size": 344568,
+   "sha256": "cf1e0123a3fdc311ac41962c8226289998f2b2a6b067a20f0455134f8d848588"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_3",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_3.mbn",
+   "size": 100944,
+   "sha256": "50f761eca927f15fd274551ab568ec575e8dc4da21ba6daf51d16365decf90d4"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_3S",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_3S.mbn",
+   "size": 380380,
+   "sha256": "ebebd7c7a474cc9b6ba79ca793163bc01b6ef7c6abf2f8413a8652ae8997a871"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_4-GP",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_4-GP.mbn",
+   "size": 363164,
+   "sha256": "e075787ff7eedfccdb66e49daaa8880422675b9b0fa490eb1e47bc22d0f1257c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_4-PT",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_4-PT.mbn",
+   "size": 399984,
+   "sha256": "041b3047975ce193f48076af1bda45be28dd4cdaa3bf027763bf7c47ae31bd9e"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_4A",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_4A.mbn",
+   "size": 377512,
+   "sha256": "f4770cd4b2dd2c21f2dc9d6150dd3e8c09322e670bc320c04563521e6ee14798"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_5",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_5.mbn",
+   "size": 366620,
+   "sha256": "3e940f709f9beb7f93a03d4972e8c4e9967c33aec549008a8a78df3baad4aa25"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_5A",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_5A.mbn",
+   "size": 384536,
+   "sha256": "86d4aa91aa07107248ab7e3706086b345a433e3c7ee48ef8b01c9effafd78eb0"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_5_Plus",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_5_Plus.mbn",
+   "size": 364416,
+   "sha256": "505b78278779e6856b80a224c8c3c44478d4f071c1e70e54835b79733d868869"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_6",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_6.elf",
+   "size": 581376,
+   "sha256": "f801a4e57104ffafd5b4a46a7f361ac21f980504f1a109e49624c3d2a0f0a461"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_Note_4G",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_Note_4G.mbn",
+   "size": 40784,
+   "sha256": "83b4883043b082ce54cee6c519dd0ef1d98a87140c0b54bca780b98b32bcf819"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_Note_5A-GP",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_Note_5A-GP.mbn",
+   "size": 409696,
+   "sha256": "d5dc1e848c40c1a754dd406d9e0df5bf45e2666d1b4b5519ee98bc4901cfcb6a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_Note_5A-PT",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_Note_5A-PT.mbn",
+   "size": 381324,
+   "sha256": "25e4068031974ea01eac9d3c4080def223550d6fe6bbc24d80efc7d72304b4f0"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_Note_5A-Prime",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_Note_5A-Prime.mbn",
+   "size": 409696,
+   "sha256": "2d1546938cc8e97feafebc475305d81e9fde2e89099cdd4a0dfb2498af8cde04"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "Xiaomi_Redmi_Y1_Lite",
+   "path": "loaders/qualcomm/Xiaomi/Xiaomi_Redmi_Y1_Lite.mbn",
+   "size": 381324,
+   "sha256": "dafe9b882c840a51fac085449cc4564fce90a32e85838c8a1ddba74c5add20ca"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_0",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_0.elf",
+   "size": 950464,
+   "sha256": "b42ac2961ffbd2e3427a1fe1ab9c74c061c4fc190369699b68fe3f6f3b48c3b3"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_1",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_1.elf",
+   "size": 739232,
+   "sha256": "feb575e8635e857bab0fd4c20eeb56feadb4a64e842296a7a4f3b5ba174df18a"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_2",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_2.elf",
+   "size": 664524,
+   "sha256": "18609d0019c8d6d74da42f5bd813e002a66c7ba3bef46dc208e803b94e26b06b"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_3",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_3.elf",
+   "size": 672252,
+   "sha256": "7b3b7e98979fc866fdf63bed60b89828b9f514566da3b0615ed15f17d872d98c"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_5",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_5.elf",
+   "size": 722648,
+   "sha256": "58d9b3564cffe0632d3bcda692d47698194c5feb1da1ca4d02c9e84ec17b17be"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_6",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_6.elf",
+   "size": 689696,
+   "sha256": "781cdffb421cf36ad14de3a541d0da340b68a2e3867ceec20d28f9849a8d79d8"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_7",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_7.elf",
+   "size": 683264,
+   "sha256": "f005a5fa0ac7f7ff7bb81247509625575a2a957f28e2a2f09d168561946eba73"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_8",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_8.elf",
+   "size": 689824,
+   "sha256": "ddff68ef0a91f8221432525dde9393a56f58e40ed8cd5302654c26a5d06e8eeb"
+  },
+  {
+   "type": "firehose",
+   "brand": "Xiaomi",
+   "key": "xiaomi_loader_9",
+   "path": "loaders/qualcomm/Xiaomi/xiaomi_loader_9.elf",
+   "size": 445280,
+   "sha256": "a0c74b0d6321ddb7f5b01e174e94b2e15d7ce0d41e1794bb7ca2d66b8f00e82c"
+  },
+  {
+   "type": "firehose",
+   "brand": "ZTE",
+   "key": "ZTE_Lite",
+   "path": "loaders/qualcomm/ZTE/ZTE_Lite.mbn",
+   "size": 188584,
+   "sha256": "4a1c9f38a3614b963efa60eaae79706d927ec0b0b7c31f1fec5d176545107445"
+  }
+ ]
+}
