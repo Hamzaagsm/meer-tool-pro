@@ -12,13 +12,17 @@ Runtime layout (EXE ke saath, APP_ROOT ke barabar):
     engines/python/           (ikhtiyari) bundled Python, user dal sakta hai
     tools/                    user ki cheezen: loaders, firmware, backups
 
-Python engines (MTKClient / edl) chalane ke liye Python chahiye.
-Resolution tartib (task ki hidayat ke mutabiq):
-    1. engines/python/ me bundled python ho to wo
+Python engines (MTKClient / edl) chalane ke liye Python chahiye —
+round 5 se ENGINES package ke andar bundled Python 3.12 (dependencies
+ke saath tayyar) ata hai, is liye aam halat me alag Python install
+NAHI karna parta. Resolution tartib:
+    1. engines/python/ me bundled python ho to wo (round 5 se yahi
+       asal rasta hai)
     2. source mode (frozen nahi) me sys.executable — wahi Python jo app
        chala raha hai
     3. PATH par `py` launcher (-3), phir `python`, phir `python3`
-    Kuch na mile to None — op guided FAIL dega ke Python lazmi hai.
+    Kuch na mile to None — op guided FAIL dega (matlab: ENGINES
+    package is folder me theek se extract nahi hua).
 
 Purani jaghen bhi fallback rehti hain (tools/mtkclient/, PATH par `mtk`)
 taake purana setup na tore.
@@ -68,13 +72,16 @@ def python_missing_hint(engine_label="ye engine"):
     return [
         f"{engine_label} aik Python program hai aur is PC par Python "
         "nahi mila.",
-        "Guide: Python install karo (https://www.python.org/downloads/) "
-        "aur install ke doran 'Add python.exe to PATH' lazmi tick karo. "
-        "Ya phir Python ki copy app ke engines/python/ folder me rakho.",
-        "Us ke baad engine ki dependencies bhi chahiye hongi: command "
-        "prompt me ye chalao — python -m pip install -r "
-        "engines\\mtkclient\\requirements.txt (MTKClient ke liye) ya "
-        "engines\\edl\\requirements.txt (EDL ke liye).",
+        "Guide: ENGINES package ke andar bundled Python (engines/python/) "
+        "pehle se shamil hota hai — lagta hai ENGINES package is folder "
+        "me theek se extract nahi hua. MEERToolPro-Engines.zip ko dobara "
+        "download karke EXE wale folder me extract karo taake engines/ "
+        "folder EXE ke bilkul barabar me aa jaye.",
+        "Us ke baghair ye fallback hai: Python install karo "
+        "(https://www.python.org/downloads/, 'Add python.exe to PATH' "
+        "lazmi tick karke) aur phir dependencies ke liye: python -m pip "
+        "install -r engines\\mtkclient\\requirements.txt (MTKClient) ya "
+        "engines\\edl\\requirements.txt (EDL).",
     ]
 
 

@@ -110,6 +110,8 @@ def model_label(m):
     label = " — ".join(parts)
     if m.get("verified"):
         label += " ✓"
+    if m.get("a16_meta_frp"):
+        label += " ✓A16"
     return label
 
 
@@ -270,8 +272,10 @@ def meta_frp_op(model):
                 "(FRP + reset, persist ke saath).", "INFO")
         import ops.mtk_frp_reset as m
         return m.run(ctx)
-    return _op("mdm_list_meta_frp",
-               "FACTORY RESET + FRP - [TMETA]", run, engine="mtkclient")
+    name = "FACTORY RESET + FRP - [TMETA]"
+    if model.get("a16_meta_frp"):
+        name += " ✓ A16"
+    return _op("mdm_list_meta_frp", name, run, engine="mtkclient")
 
 
 def meta_security_plugin_op(model):

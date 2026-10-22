@@ -70,6 +70,50 @@ BUILTIN_PROFILES = {
             "com.microsoft.appmanager",
         ],
     },
+    "samsung_account_knox_set": {
+        "name": "Samsung Account / Knox Set",
+        "description": (
+            "Samsung account/Knox client set — KG client, KLM "
+            "agent, Knox cloud MDM, Samsung account sign-in. "
+            "Disable = BYPASS label hai, KG ki server state is "
+            "se nahi badalti. Ye TEMPLATE hai — jo package "
+            "device par installed nahi, wo op skip kar deta hai."),
+        "packages": [
+            "com.samsung.android.kgclient",
+            "com.samsung.klmsagent",
+            "com.sec.enterprise.knox.cloudmdm.smdms",
+            "com.osp.app.signin",
+        ],
+    },
+    "disable_ota_updates": {
+        "name": "Disable OTA Updates Set",
+        "description": (
+            "MDM/finance wale phones par OTA update band karne "
+            "ke liye — Samsung FOTA/software-update, Xiaomi/MIUI "
+            "updater, Transsion OTA (Fenix/Infinix wale case me "
+            "update se MDM wapas ane ka risk kam hota hai). Ye "
+            "TEMPLATE hai — jo package device par installed "
+            "nahi, wo op skip kar deta hai."),
+        "packages": [
+            "com.wssyncmldm",
+            "com.sec.android.soagent",
+            "com.android.updater",
+            "com.transsion.ota",
+        ],
+    },
+    "demo_retail_set": {
+        "name": "Demo / Retail Mode Set",
+        "description": (
+            "Shop demo/retail mode packages — Samsung retail "
+            "mode/demo aur Google retail demo. Ye TEMPLATE hai "
+            "— jo package device par installed nahi, wo op "
+            "skip kar deta hai."),
+        "packages": [
+            "com.sec.android.retailmode",
+            "com.samsung.android.demo",
+            "com.google.android.retaildemo",
+        ],
+    },
 }
 
 _TRANSSION_BRANDS = ("transsion", "infinix", "tecno", "itel")
@@ -152,6 +196,8 @@ def pick_profile_key(brand="", tools_dir=None):
     active = store.get("active")
     if active and active in store.get("custom", {}):
         return f"custom:{active}"
+    if active and active in BUILTIN_PROFILES:
+        return active
     b = (brand or "").lower()
     if "samsung" in b:
         return "samsung_it_admin"
