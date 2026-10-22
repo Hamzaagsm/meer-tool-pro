@@ -1,0 +1,214 @@
+{
+ "about": "Repair Intelligence ki error library. Har entry ka pattern vendored engines ke asal error strings/codes se liya gaya hai (source har entry me darj hai) ya public documented SP Flash Tool error list se hai. Andaze wali entry yahan NAHI jati. Runner har FAIL hue op ke aakhir me log ko in patterns se milata hai aur match par hint deta hai.",
+ "entries": [
+  {
+   "code": "0x7F1 · 2001",
+   "hal_steps": [
+    "Bilkul isi model/chipset ka DA istemal karo (Loaders Library se auto-select ya model ka apna DA)",
+    "Cable aur USB port badal kar dekho",
+    "Phone ko dobara BROM mode me lagao (band karke Volume dono dabaye hue)"
+   ],
+   "pattern": "CMD_SEND_DA_FAIL|0x7F1\\b",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "DA bhejna fail (CMD_SEND_DA_FAIL)",
+   "wajah": "BootROM ne Download Agent qabool nahi kiya — DA is chipset/model ke liye nahi hai, ya BROM handshake darmiyan me toota."
+  },
+  {
+   "code": "0x7D4 · 2004",
+   "hal_steps": [
+    "Doosra USB port/cable try karo (peeche wala port behtar)",
+    "DA file dobara check karo ke kharab/truncated to nahi",
+    "Phone dobara BROM me lagao aur battery charge ka khayal rakho"
+   ],
+   "pattern": "DOWNLOAD_DA_FAIL|0x7D4\\b",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "DA download fail (DOWNLOAD_DA_FAIL)",
+   "wajah": "BROM mode me DA ki download mukammal nahi hui — connection unstable ya DA file is device ke BROM se match nahi karti."
+  },
+  {
+   "code": "0x7D5 · 2005",
+   "hal_steps": [
+    "Phone poora band karo, phir Volume Up+Down dabaye hue cable lagao",
+    "Kuch models par test-point lazmi hota hai — MDM List ke model note me dekho",
+    "VCOM driver Device Manager me araha hai ya nahi, check karo"
+   ],
+   "pattern": "CMD_STARTCMD_FAIL|0x7D5\\b",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "BROM start command fail (CMD_STARTCMD_FAIL)",
+   "wajah": "Phone asal BROM mode me nahi aya — aksar preloader mode me atka hota hai ya button combo ghalat lagta hai."
+  },
+  {
+   "code": "0x7EF · 2031 / 0xBBA · 3002",
+   "hal_steps": [
+    "Bilkul isi model ka stock firmware/preloader istemal karo",
+    "Scatter wali mukammal firmware se flash karo, sirf aik file se nahi",
+    "Loaders Library se chipset-matched DA dobara chunno"
+   ],
+   "pattern": "EXTERNAL_DRAM_DETECTION_FAIL|SETUP_DRAM_FAIL|EXT_RAM_ERROR|0x7EF\\b|0xBBA\\b",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "DRAM / EMI setup fail",
+   "wajah": "DA phone ki DRAM shuru nahi kar saka — sab se aam wajah ghalat preloader/firmware (doosre model ki EMI settings)."
+  },
+  {
+   "code": "0xBC9 · 3017",
+   "hal_steps": [
+    "Device ke asal chipset ke mutabiq DA chuno (Read Info se chip confirm karo)",
+    "Doosre brand/model ka DA is phone par mat lagao"
+   ],
+   "pattern": "SOC_CHECK_FAIL|0xBC9\\b",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "SoC check fail (SOC_CHECK_FAIL)",
+   "wajah": "DA aur device ke chipset ka match nahi — ghalat chipset ke liye bana DA laga diya gaya hai."
+  },
+  {
+   "code": "0x3F5 · 1013",
+   "hal_steps": [
+    "UTILITY module ka 'Install Drivers' op chalao",
+    "Device Manager me MediaTek VCOM port nazar ana chahiye — na aye to driver dobara lagao",
+    "Doosre flashing tools band karke dobara try karo (port aik waqt me aik hi program kholta hai)"
+   ],
+   "pattern": "COM_PORT_OPEN_FAIL|0x3F5\\b",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "COM port khul nahi saka (COM_PORT_OPEN_FAIL)",
+   "wajah": "Serial (VCOM) port open nahi hua — driver missing hai ya port kisi aur program ke paas khula hai."
+  },
+  {
+   "code": "0x401 · 1025 / 0xBFD · 3069",
+   "hal_steps": [
+    "Is model ka Secure Boot DA (stock firmware se harvest kiya hua ya per-model DA) istemal karo",
+    "Aam generic DA is model par nahi chalega"
+   ],
+   "pattern": "SEC_INFO_NOT_FOUND|HANDSET_SEC_INFO_NOT_FOUND",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "Secure-boot info nahi mili (SEC_INFO_NOT_FOUND)",
+   "wajah": "Device ki sec-info DA ko nahi mili — ye secure-boot wale model ki nishani hai jahan model ka signed DA chahiye hota hai."
+  },
+  {
+   "code": "0x412 · 1042",
+   "hal_steps": [
+    "Cable dobara lagao aur phone ko phir se BROM mode me lao",
+    "USB hub hata kar seedha PC ke port me lagao",
+    "Driver (VCOM) ki halat Device Manager me check karo"
+   ],
+   "pattern": "0x412\\b",
+   "source": "engines/mtkclient/mtkclient/Library/error.py",
+   "title": "BROM timeout (TIMEOUT 0x412)",
+   "wajah": "BootROM ne waqt par jawab nahi diya — phone mode se nikal gaya, cable hil gayi, ya PC ne port der se khola."
+  },
+  {
+   "code": "",
+   "hal_steps": [
+    "Phone band karke sahi combo (Vol+/Vol- dabaye hue) se dobara lagao",
+    "Doosra cable/port try karo",
+    "Device Manager me BROM/VCOM port ka ana confirm karo"
+   ],
+   "pattern": "Handshake failed|Handshake attempt",
+   "source": "engines/mtkclient/mtkclient/Library/Port.py",
+   "title": "BROM handshake fail",
+   "wajah": "MTKClient ka BROM handshake mukammal nahi hua — phone sahi mode me nahi, driver masla hai, ya cable beech me hati."
+  },
+  {
+   "code": "",
+   "hal_steps": [
+    "META mode wala rasta try karo (MDM List → Transsion META) — naye models par market bhi wahi jata hai",
+    "Model ke route label (MDM List) se dekho ke is par konsa darwaza zinda hai"
+   ],
+   "pattern": "Error on bypassing security",
+   "source": "engines/mtkclient/mtkclient/Library/mtk_main.py",
+   "title": "Security bypass fail",
+   "wajah": "Bypass chain (payload/carbonara/heapbait) is device par kaam nahi ayi — naye security wale models par BROM exploit aksar band hota hai."
+  },
+  {
+   "code": "",
+   "hal_steps": [
+    "Phone power off karke dobara META mode me lagao (engine ki apni hidayat bhi yahi hai)",
+    "Cable mat hilao; doosra port try karo"
+   ],
+   "pattern": "Sync error\\. Please power off",
+   "source": "engines/mtkclient/mtkclient/Library/meta.py",
+   "title": "META mode sync fail",
+   "wajah": "META session ka sync toota — phone META me sahi nahi ghusa ya beech me mode badal gaya."
+  },
+  {
+   "code": "",
+   "hal_steps": [
+    "Loaders Library me is brand+chipset ka firehose import karo (Loaders Library Import op)",
+    "Firmware Harvest se stock firmware ke andar ka loader nikaal kar darj karo",
+    "QC EDL op ka loader note dekho — cross-brand match par tool khud rukta hai, wajah wahi likhi hoti hai"
+   ],
+   "pattern": "Couldn't find a suitable loader|Couldn't find a loader for given hwid",
+   "source": "engines/edl/edlclient/Library/sahara.py",
+   "title": "EDL loader match nahi hua",
+   "wajah": "Device ke HWID/PKHash ke mutabiq firehose loader library me nahi mila."
+  },
+  {
+   "code": "",
+   "hal_steps": [
+    "Is model ke liye auth-wala rasta brand ke authorized tareeqe se hota hai",
+    "Bina auth wale ops (Read Info waghera) pehle confirm karo ke device EDL me sahi araha hai"
+   ],
+   "pattern": "Error on EDL Authentification|Failed to authenticate",
+   "source": "engines/edl/edlclient/Library/firehose.py",
+   "title": "EDL authentication chahiye",
+   "wajah": "Ye device EDL me signed authentication mangta hai (Xiaomi/Oppo auth class) — aam public loader se session aage nahi barhta."
+  },
+  {
+   "code": "",
+   "hal_steps": [
+    "Firmware package dobara download/extract karo",
+    "Package ke andar images wali mukammal sakht mojood hai ya nahi, check karo"
+   ],
+   "pattern": "Failed to parse programmer\\.xml",
+   "source": "engines/edl/edlclient/Library/sahara.py",
+   "title": "EDL package na-mukammal (programmer.xml)",
+   "wajah": "EDL package ke andar programmer.xml/images nahi mile — package kharab ya adhoora download hai."
+  },
+  {
+   "code": "",
+   "hal_steps": [
+    "Phone band karke Volume Down dabaye hue cable lagao — Device Manager me SPRD port ana chahiye",
+    "SPRD download gadget par WinUSB/libusb driver lagao",
+    "Doosra cable/port try karo"
+   ],
+   "pattern": "libusb_open_device failed|libusb_init failed|libusb_get_device failed",
+   "source": "engines/spd_dump/spd_dump.c",
+   "title": "Unisoc download device nahi mila (libusb)",
+   "wajah": "spd_dump ko download-mode device nahi mila — SPRD gadget ka libusb/WinUSB driver nahi laga, ya phone download mode me nahi aya."
+  },
+  {
+   "code": "4032",
+   "hal_steps": [
+    "Bilkul isi model ki stock firmware download karo (model code match karo)",
+    "Format All + Download ki bajaye pehle sirf Download only try karo",
+    "Doosre (sahi) preloader ke saath dobara try karo"
+   ],
+   "pattern": "S_FT_ENABLE_DRAM_FAIL|\\b4032\\b",
+   "source": "SP Flash Tool public documented error list (Hovatek)",
+   "title": "SP Flash Tool Error 4032 — DRAM enable fail",
+   "wajah": "SP Flash Tool ko DRAM enable nahi hua — sab se aam wajah: firmware/preloader is model ka nahi hai."
+  },
+  {
+   "code": "5054",
+   "hal_steps": [
+    "Model ke exact variant ki firmware lo (storage/RAM variant bhi match karo)",
+    "Firmware ke checksum ko is Center ke record se verify karo"
+   ],
+   "pattern": "S_DL_GET_DRAM_SETTING_FAIL|\\b5054\\b",
+   "source": "SP Flash Tool public documented error list (Hovatek)",
+   "title": "SP Flash Tool Error 5054 — DRAM setting nahi mili",
+   "wajah": "Firmware ke andar ki DRAM setting device se match nahi karti — package is model/variant ka nahi hai."
+  },
+  {
+   "code": "4008",
+   "hal_steps": [
+    "Battery charge karke, cable badal kar dobara try karo",
+    "PC ke peeche wale USB port me lagao, hub mat lagao",
+    "DA dobara select karke process shuru se chalao"
+   ],
+   "pattern": "S_FT_DOWNLOAD_FAIL|\\b4008\\b",
+   "source": "SP Flash Tool public documented error list (Hovatek)",
+   "title": "SP Flash Tool Error 4008 — Download fail",
+   "wajah": "Flash ke darmiyan download ruk gaya — cable/connection unstable, battery kam, ya DA darmiyan me fail hua."
+  }
+ ]
+}
