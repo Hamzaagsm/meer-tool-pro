@@ -49,7 +49,7 @@ CHANGELOG_TEXT = """MEER TOOL PRO — Changelog
 
 v1.0 (2026-10-22) — pehli mukammal release
 - Modules: HOME / UNLOCK / PLATFORMS / UTILITY / CHANGELOG
-- UNLOCK: 52 operations (ops tree) + Fenix-style MDM List — per-model
+- UNLOCK: 75 operations (ops tree) + Fenix-style MDM List — per-model
   database (tools/mdm-models.json, 58 models), mode tabs tags ke
   hisaab se: MTK par Download / Transsion META, Unisoc par Download /
   DIAG / Network / PATCHER, dono par ADB / FASTBOOT.
@@ -93,6 +93,47 @@ v1.0 — Round 4 izafa (REPAIR-METHODS-RESEARCH ke baad, 52 ops):
   se band NAHI hote. Asal rok chipset ki server-signed auth
   (SLA/DAA) hai, Android version nahi — jahan wo lage, tool
   saaf SERVER REQUIRED kehta hai.
+
+v1.0.1 — Round 5 izafa (Pandora sweep ke baad, 75 ops):
+- Bundled Python: ENGINES package ke andar Python 3.12 tayyar
+  (dependencies ke saath) — ab MTK/EDL engines ke liye alag
+  Python install NAHI karna parta. Double-click par sab chalta
+  hai; system Python sirf fallback hai.
+- Driver Pack + Install Drivers op (Utility): UsbDk + Samsung
+  official USB driver bundle; MTK VCOM / Qualcomm 9008 / SPRD
+  ke liye sirf official raste ki guide (README-DRIVERS).
+- META basic-tier asal ops: Enter META (port verify ke saath),
+  META Read Info, META Factory Reset, META Enable ADB — har
+  SUCCESS sirf device ke verify-shuda jawab par. EFT Pro ke
+  changelog ne Android 16 META FRP 20 taaza Transsion models
+  par verify kiya hai — MDM List me 15 models par '✓A16'
+  nishan. New-algorithm/new-Auth wala hissa ab bhi
+  SERVER REQUIRED hai.
+- Samsung Download-Mode Flash (odin4): CSC (full reset) aur
+  HOME_CSC (data mehfooz) do ops. KG ab bhi display-only.
+- Xiaomi MiAssistant Sideload: Recovery ROM flash; Mi
+  Account/FRP server se bandha hai — us ka daawa nahi.
+- Fastboot Flash Pack (folder ke .img), Slot Switch (A/B
+  verify ke saath), Reboot-to-EDL (ADB + Fastboot), Samsung
+  Download reboot, Motorola FRP Erase (locked BL par bhi).
+- Unisoc Full Readback (PAC-ready folder) + MTK Restore
+  Backup one-click (IMEI gate ke saath); MTK FRP Only /
+  Reset Only alag ops; Format NVRAM+NVDATA op.
+- Firmware Front Door: ZIP/TGZ scatter seedha kholo, Oppo/
+  Realme OFP extract (bkerler oppo_decrypt), OTA payload.bin
+  extract (payload-dumper-go). OZIP ke liye upstream package
+  me script maujood nahi — wahan guided FAIL hai.
+- Reset-honesty label har reset op par (finance/MDM pehle
+  check + 'USERDATA-LEVEL RESET' natija label); naye app
+  profiles: Samsung Account/Knox Set, Disable OTA Updates
+  Set, Demo/Retail Set; Update Check op (GitHub Releases).
+- MDM List: tamam 58 models ke codes ab verify-shuda (0
+  unverified baqi).
+- Guided reh gaya (imaandari se): Samsung Exynos Odin-patch
+  FRP (AMT wala) — public verify-shuda mechanism nahi mila,
+  is liye op nahi bana; META Partition Manager aur Unisoc
+  ADL-mode (ZTE) bhi bench-verification ke baghair guided
+  hain. Jhoota button kabhi nahi.
 """
 
 
@@ -1150,6 +1191,25 @@ class App(tk.Tk):
         self._tab_ops_lazy(fb_box, [
             ("fastboot_info", "READ INFO - [FASTBOOT]"),
             ("fastboot_reboot", "REBOOT - [FASTBOOT]")])
+        row2 = tk.Frame(f, bg=BG)
+        row2.pack(fill="x", pady=(6, 0))
+        pc_box = tk.LabelFrame(row2, text=" PC TOOLS ", bg=PANEL,
+                               fg=MUTED, font=("Segoe UI", 9, "bold"),
+                               bd=1)
+        pc_box.pack(side="left", fill="both", expand=True,
+                    padx=(0, 4), pady=2)
+        self._tab_ops_lazy(pc_box, [
+            ("util_install_drivers", "INSTALL DRIVERS - [PC]"),
+            ("util_update_check", "UPDATE CHECK - [PC]")])
+        fw_box = tk.LabelFrame(row2, text=" FIRMWARE FRONT DOOR ", bg=PANEL,
+                               fg=MUTED, font=("Segoe UI", 9, "bold"),
+                               bd=1)
+        fw_box.pack(side="left", fill="both", expand=True,
+                    padx=(4, 0), pady=2)
+        self._tab_ops_lazy(fw_box, [
+            ("fw_archive_extract", "ARCHIVE KHOLO (ZIP/TGZ → SCATTER)"),
+            ("fw_ofp_extract", "OFP / OZIP EXTRACT (OPPO/REALME)"),
+            ("fw_payload_extract", "PAYLOAD.BIN EXTRACT (OTA)")])
         fm = tk.LabelFrame(f, text=" FILE MANAGER (ADB) ", bg=PANEL,
                            fg=MUTED, font=("Segoe UI", 9, "bold"), bd=1)
         fm.pack(fill="both", expand=True, pady=(6, 0))
