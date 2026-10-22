@@ -93,7 +93,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path pkg | Out-Null
           Copy-Item dist/MEERToolPro.exe pkg/
           Copy-Item tools pkg/tools -Recurse
-          Copy-Item engines pkg/engines -Recurse
+          if (Test-Path engines) { Copy-Item engines pkg/engines -Recurse } else { New-Item -ItemType Directory -Force -Path pkg/engines | Out-Null; "Engines is package me NAHI hain — wo alag ENGINES package me milte hain. Us package ko isi folder me extract karen taake engines folder MEERToolPro.exe ke barabar me aa jaye." | Out-File -Encoding utf8 pkg/engines/ENGINES-YAHAN-EXTRACT-KAREN.txt }
           Copy-Item README.md pkg/
           Compress-Archive -Path pkg/* -DestinationPath MEERToolPro-Windows.zip -Force
           Get-ChildItem dist, MEERToolPro-Windows.zip
