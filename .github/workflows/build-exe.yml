@@ -104,6 +104,29 @@ jobs:
           --hidden-import ops.spd_reset
           --hidden-import ops.stubs
           --hidden-import serial.tools.list_ports
+          --hidden-import ops.adb_reboot_download
+          --hidden-import ops.adb_reboot_edl
+          --hidden-import ops.fastboot_flash
+          --hidden-import ops.fastboot_reboot_edl
+          --hidden-import ops.fastboot_slot
+          --hidden-import ops.fw_archive_extract
+          --hidden-import ops.fw_ofp_extract
+          --hidden-import ops.fw_payload_extract
+          --hidden-import ops.meta_enable_adb
+          --hidden-import ops.meta_enter
+          --hidden-import ops.meta_factory_reset
+          --hidden-import ops.meta_read_info
+          --hidden-import ops.moto_fastboot_frp
+          --hidden-import ops.mtk_frp_only
+          --hidden-import ops.mtk_nv_format
+          --hidden-import ops.mtk_reset_only
+          --hidden-import ops.mtk_restore_backup
+          --hidden-import ops.samsung_flash
+          --hidden-import ops.samsung_flash_keepdata
+          --hidden-import ops.spd_readback
+          --hidden-import ops.util_install_drivers
+          --hidden-import ops.util_update_check
+          --hidden-import ops.xiaomi_miassistant
           src/main.py
 
       - name: Package (EXE + tools folder aik ZIP me)
