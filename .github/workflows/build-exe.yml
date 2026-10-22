@@ -52,14 +52,20 @@ jobs:
           pyinstaller --noconfirm --clean
           --onefile --windowed
           --name MEERToolPro
+          --paths src
+          --hidden-import demo
           --hidden-import ops.adb_info
           --hidden-import ops.adb_reboot
           --hidden-import ops.adb_reboot_bootloader
           --hidden-import ops.adb_reboot_recovery
           --hidden-import ops.demo_session
           --hidden-import ops.fastboot_info
+          --hidden-import ops.fastboot_frp
+          --hidden-import ops.fastboot_reset
           --hidden-import ops.fastboot_reboot
           --hidden-import ops.mdm_adb_check
+          --hidden-import ops.mdm_app_profiles
+          --hidden-import ops.mdm_finance_check
           --hidden-import ops.mdm_library
           --hidden-import ops.mdm_meta_guide
           --hidden-import ops.mdm_payjoy
@@ -73,16 +79,29 @@ jobs:
           --hidden-import ops.mtk_flash
           --hidden-import ops.mtk_frp_reset
           --hidden-import ops.mtk_info
+          --hidden-import ops.mtk_nv_backup
+          --hidden-import ops.mtk_nv_restore
+          --hidden-import ops.mtk_scatter_creator
+          --hidden-import ops.mtk_sn_writer
           --hidden-import ops.qc_edl_backup
           --hidden-import ops.qc_edl_flash
           --hidden-import ops.qc_edl_frp
           --hidden-import ops.qc_edl_info
           --hidden-import ops.qc_edl_reset
+          --hidden-import ops.qc_efs_backup
+          --hidden-import ops.qc_efs_restore
           --hidden-import ops.qc_loader_library
+          --hidden-import ops.qc_qcn_backup
+          --hidden-import ops.qc_qcn_restore
           --hidden-import ops.samsung_firmware_info
+          --hidden-import ops.samsung_kg_status
           --hidden-import ops.samsung_frp_router
+          --hidden-import ops.spd_cert_backup
+          --hidden-import ops.spd_frp
           --hidden-import ops.spd_frp_pac_guide
           --hidden-import ops.spd_launcher
+          --hidden-import ops.spd_pac_builder
+          --hidden-import ops.spd_reset
           --hidden-import ops.stubs
           --hidden-import serial.tools.list_ports
           src/main.py
