@@ -193,6 +193,54 @@ v1.0.1 — Round 6 izafa (TSM/UAT sweep ke baad, 86 ops):
   release 1.20260403 hi hai — hamari vendored copy wahi
   hai, is liye koi tabdeeli nahi ki gayi (provenance
   engines/spd_dump/README-MEER.md me darj hai).
+
+v1.0.1 — Round 7 izafa (September-security research ke
+baad, 96 ops): Fenix ke 'September security' daway ka
+asal medan META mode hai — ye izafa wahi META tier wasee
+karta hai (sab public FT protocol par; SUCCESS hamesha
+sirf verified FT jawab — status 0x00 — par):
+- META FRP Erase: FT se sirf 'frp' partition erase —
+  userdata nahi mit-ta. Pandora/Octoplus/EFT ka META-FRP
+  wala hi rasta, jahan META entry khuli ho.
+- META UBL (LK Patch) + Restore LK: GPT check → poora
+  LK backup → per-model patch-data se patch → read-back
+  verify. Restore poora stock LK wapas karta hai.
+  DESTRUCTIVE — danger gate + backup-first lazmi.
+- META Security Plugin Patch + Restore MDM (META):
+  proinfo/state ka per-model patch, backup record se
+  asal halat wapas. Dono danger gate ke saath.
+- Patch-data imaandari: byte-pattern sirf
+  tools/meta-patch-data.json library se ate hain — jis
+  model ka VERIFIED data library me nahi, wahan tool
+  guided STOP deta hai. Guessed offset par kabhi NAHI
+  likha jata (galat offset = brick).
+- META GPT / Partition Table Read: patch ops se pehle
+  compatibility check ki deewar — partition maujood na
+  ho to patch op aage hi nahi barhta.
+- Session completion set: Disable ADB (META), Reboot
+  to Normal, Power Off, Reboot to Fastboot — Fenix ke
+  TMETA tab se mukammal parity.
+- New-Auth guard ab LADDER hai: Dimensity 6300/6400/
+  7300/9000 class par META rukne ke saath wajah + doosra
+  zinda darwaza khud samne ata hai — DA/Heapbait chain
+  (vendored MTKClient me heapbait + carbonara pehle se
+  shamil, bypass chain me wired), test-point guidance,
+  ADB rasta. META entry ki signed 'new Auth' ab bhi
+  server-wali hai — wahan imaandar 🔒 hi rahega.
+- MDM List: har model ke label me us ka ROUTE nazar ata
+  hai — META (33) / META+DA (7) / new-Auth (8) /
+  Kamakiri (1) / DIAG/FDL (9) — aur META tab par 6 naye
+  Round-7 buttons (FRP Erase, UBL LK Patch, Restore LK,
+  Plugin Patch, Restore MDM (META), GPT).
+- Test-point library: tools/testpoints.json — per-model
+  TP note ka saaf structure; location sirf verified
+  source se bharegi (andaze wali location board kharab
+  kar sakti hai).
+- Bench note (imaandari): Round-7 ke naye FT message ids
+  public FT table se hain, codec software-tested hai —
+  asal phone par in ki verification pehle asal test ke
+  saath hogi. Galat jawab par ops nakli success ki
+  bajaye saaf FAIL dete hain — yahi design hai.
 """
 
 
