@@ -54,9 +54,35 @@ jobs:
           --name MEERToolPro
           --hidden-import ops.adb_info
           --hidden-import ops.adb_reboot
+          --hidden-import ops.adb_reboot_bootloader
+          --hidden-import ops.adb_reboot_recovery
           --hidden-import ops.demo_session
           --hidden-import ops.fastboot_info
+          --hidden-import ops.fastboot_reboot
+          --hidden-import ops.mdm_adb_check
+          --hidden-import ops.mdm_library
+          --hidden-import ops.mdm_meta_guide
+          --hidden-import ops.mdm_payjoy
+          --hidden-import ops.mdm_proinfo_backup
+          --hidden-import ops.mdm_proinfo_write
+          --hidden-import ops.mdm_security_plugin
+          --hidden-import ops.mtk_backup
+          --hidden-import ops.mtk_bl_lock
+          --hidden-import ops.mtk_bl_unlock
+          --hidden-import ops.mtk_bypass_chain
+          --hidden-import ops.mtk_flash
+          --hidden-import ops.mtk_frp_reset
           --hidden-import ops.mtk_info
+          --hidden-import ops.qc_edl_backup
+          --hidden-import ops.qc_edl_flash
+          --hidden-import ops.qc_edl_frp
+          --hidden-import ops.qc_edl_info
+          --hidden-import ops.qc_edl_reset
+          --hidden-import ops.qc_loader_library
+          --hidden-import ops.samsung_firmware_info
+          --hidden-import ops.samsung_frp_router
+          --hidden-import ops.spd_frp_pac_guide
+          --hidden-import ops.spd_launcher
           --hidden-import ops.stubs
           --hidden-import serial.tools.list_ports
           src/main.py
@@ -67,6 +93,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path pkg | Out-Null
           Copy-Item dist/MEERToolPro.exe pkg/
           Copy-Item tools pkg/tools -Recurse
+          Copy-Item engines pkg/engines -Recurse
           Copy-Item README.md pkg/
           Compress-Archive -Path pkg/* -DestinationPath MEERToolPro-Windows.zip -Force
           Get-ChildItem dist, MEERToolPro-Windows.zip
