@@ -60,6 +60,31 @@ FT_VERSION_INFO = 0x0001   # Read Info query — version/device maloomat
 FT_FACTORY_RESET = 0x0002  # Factory Reset (userdata-level META reset)
 FT_SET_ADB = 0x0003        # Enable ADB — payload 1 byte set-value (0x01 = on)
 
+# --- Round-7 izafa (SEPT-SEC-RESEARCH §4-B) -------------------------------
+# Ye msg-ids usi public FT table ki agli class se hain jo upar wale
+# teen ids se shuru hoti hai. IMAANDARI (module docstring wala hi
+# usool): codec software-tested hai, lekin in naye ids ki asal phone
+# par bench-verification abhi baqi hai — is liye in par mabni har op
+# jawab ki sakht tasdeeq (checksum + msg echo + status 0x00) ke
+# baghair SUCCESS nahi deta; firmware in ids ko support na kare to
+# op saaf FAIL dega, nakli success kabhi nahi.
+FT_ERASE_PARTITION = 0x0004  # FRP Erase (B1) — payload: partition naam
+                             # ASCII + NUL (masalan b"frp\x00"). Pandora
+                             # 9.24 ke "META FRP new algorithm" wali
+                             # class; entry khuli ho to local kaam hai.
+FT_REBOOT = 0x0005           # Session completion (B5) — payload 1 byte:
+                             # neeche wale REBOOT_* targets
+FT_PART_READ = 0x0006        # Partition read (B3 framework) — payload:
+                             # naam ASCII+NUL + offset u32 LE + len u32 LE;
+                             # jawab ka payload = parha hua data
+FT_PART_WRITE = 0x0007       # Partition write (B3 framework) — payload:
+                             # naam ASCII+NUL + offset u32 LE + data
+
+# FT_REBOOT ke targets
+REBOOT_NORMAL = 0x00         # normal Android boot
+REBOOT_FASTBOOT = 0x01       # fastboot mode me reboot
+REBOOT_POWEROFF = 0x02       # power off
+
 _FRAME_HEADER_LEN = 7    # STX + src + dest + msg_id(2) + length(2)
 _FRAME_MIN_LEN = _FRAME_HEADER_LEN + 1  # + checksum (payload khali ho to)
 
@@ -323,3 +348,32 @@ def open_session(ctx):
         return None
     ctx.log(f"META session khul gaya: {port.device}", "OK")
     return session
+
+
+def ft_checked(ctx, msg_id, payload=b"", timeout=15, what="FT request"):
+    """Aik FT request bhejo aur verified jawab par hi True do.
+
+    Round-7 ke chhote session ops (B5 completion set waghera) ka
+    mushtaraka rasta: session kholo → request → status token 0x00
+    ho tabhi True. Timeout / ghalat status / port ki nakami par
+    wajah log karke False — nakli success ka koi rasta nahi.
+    """
+    session = open_session(ctx)
+    if session is None:
+        return False
+    try:
+        with session:
+            status, _payload = session.request(msg_id, payload=payload,
+                                               timeout=timeout)
+    except MetaError as e:
+        ctx.log(str(e), "ERROR")
+        return False
+    if ctx.is_cancelled():
+        return False
+    if status != FT_STATUS_OK:
+        ctx.log(f"{what}: FT jawab aya lekin status token theek nahi "
+                f"(status=0x{status & 0xFF:02X}) — amal qabool nahi hua "
+                "mana jayega. Kuch firmwares ye FT command support hi "
+                "nahi karte.", "ERROR")
+        return False
+    return True

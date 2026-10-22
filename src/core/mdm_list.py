@@ -46,22 +46,28 @@ BACKUP_DIR = TOOLS_DIR / "mdm-backups"
 SEED_MODELS = [
     {"brand": "Infinix", "model": "GT 20 Pro", "code": "X6871",
      "chipset": "MT6895 Dimensity 8200 Ultimate",
-     "tags": ["MediaTek", "MDL", "PL", "DA", "TMETA", "MDM", "UBL"], "verified": False},
+     "tags": ["MediaTek", "MDL", "PL", "DA", "TMETA", "MDM", "UBL"],
+     "verified": False, "route": "META+DA"},
     {"brand": "Infinix", "model": "GT 30 5G", "code": "X6876",
      "chipset": "MT7400-class Dimensity",
-     "tags": ["MediaTek", "MDL", "PL", "DA"], "verified": False},
+     "tags": ["MediaTek", "MDL", "PL", "DA"], "verified": False,
+     "route": "new-Auth"},
     {"brand": "Infinix", "model": "GT 30 Pro 5G", "code": "X6873",
      "chipset": "MT6833 Dimensity 700-class",
-     "tags": ["MediaTek", "MDL", "PL", "DA"], "verified": False},
+     "tags": ["MediaTek", "MDL", "PL", "DA"], "verified": False,
+     "route": "META+DA"},
     {"brand": "Infinix", "model": "Hot 10", "code": "X682C",
      "chipset": "MT6768 Helio G70",
-     "tags": ["MediaTek", "MDL", "PL", "DA"], "verified": False},
+     "tags": ["MediaTek", "MDL", "PL", "DA"], "verified": False,
+     "route": "Kamakiri"},
     {"brand": "Infinix", "model": "HOT 70", "code": "X6895B",
      "chipset": "Helio G100",
-     "tags": ["MediaTek", "TMETA", "MDM", "UBL"], "verified": False},
+     "tags": ["MediaTek", "TMETA", "MDM", "UBL"], "verified": False,
+     "route": "META"},
     {"brand": "Tecno", "model": "Spark Go 3", "code": "KN3",
      "chipset": "Unisoc T606_64",
-     "tags": ["Unisoc", "FDL", "Diag", "MDM", "Exploit"], "verified": False},
+     "tags": ["Unisoc", "FDL", "Diag", "MDM", "Exploit"],
+     "verified": False, "route": "DIAG/FDL"},
 ]
 
 
@@ -102,6 +108,41 @@ def load_models():
         return [dict(m) for m in SEED_MODELS], f"seed (JSON parh nahi saka: {e})"
 
 
+# ---------------------------------------------------------------------------
+# Per-model ROUTE (Round 7, B8 — SEPT-SEC-RESEARCH §4-A ki grouping):
+# har model ke samne us ka ZINDA darwaza — META khula hai, META+DA
+# dono, META entry new-Auth se gated hai (DA ladder baqi), Kamakiri
+# (MT6768 — patch-proof ROM exploit), ya Unisoc ka DIAG/FDL medan.
+# Route tools/mdm-models.json me 'route' field me mehfooz hai; field
+# na ho to yahi function chipset/tags se hisaab lagata hai (purani /
+# user ki jama ki hui entries par bhi label hamesha nazar aye).
+# ---------------------------------------------------------------------------
+
+_NEW_AUTH_CHIPSETS = ("Dimensity 6300", "Dimensity 7300",
+                      "Dimensity 7100")
+
+
+def model_route(m):
+    """Model ka zinda darwaza: 'META' / 'META+DA' / 'new-Auth' /
+    'Kamakiri' / 'DIAG/FDL'."""
+    saved = str(m.get("route", "") or "").strip()
+    if saved:
+        return saved
+    tags = {str(t).upper() for t in m.get("tags", [])}
+    chipset = str(m.get("chipset", "") or "")
+    if "UNISOC" in tags or chipset.lower().startswith("unisoc"):
+        return "DIAG/FDL"
+    if any(tok in chipset for tok in _NEW_AUTH_CHIPSETS):
+        return "new-Auth"
+    if "MT6768" in chipset:
+        return "Kamakiri"
+    if "TMETA" in tags and (tags & {"MDL", "PL", "DA"}):
+        return "META+DA"
+    if "TMETA" in tags:
+        return "META"
+    return "DA"
+
+
 def model_label(m):
     parts = [m.get("name", "")]
     tail = " - ".join(x for x in (m.get("code", ""), m.get("chipset", "")) if x)
@@ -112,6 +153,7 @@ def model_label(m):
         label += " ✓"
     if m.get("a16_meta_frp"):
         label += " ✓A16"
+    label += f" · {model_route(m)}"
     return label
 
 
@@ -149,11 +191,13 @@ def da_files():
 # Action factories — har factory aik runner-compatible op object deta hai
 # (OP dict + run(ctx)); execution hamesha runner ke through hoti hai.
 # --------------------------------------------------------------------------
-def _op(op_id, name, run, engine="mdm-list", imei_write=False):
+def _op(op_id, name, run, engine="mdm-list", imei_write=False,
+        danger_write=False):
     return SimpleNamespace(OP={
         "id": op_id, "category": "MDM / Transsion", "name": name,
         "engine": engine, "modes": (), "server_required": False,
         "imei_write": bool(imei_write),
+        "danger_write": bool(danger_write),
     }, run=run)
 
 
@@ -193,19 +237,15 @@ NEW_AUTH_TOKENS = ("MT6835", "MT6878", "MT6983",
 
 
 def _new_auth_guard(ctx, model):
-    """True = aage barho; False = guided fail ho chuka."""
-    hay = " ".join([str(model.get("chipset", "")), str(ctx.device.chip or "")])
-    hit = next((x for x in NEW_AUTH_TOKENS if x.lower() in hay.lower()), None)
-    if not hit:
-        return True
-    ctx.log("Chip pehchana gaya: %s — is class par META entry ke liye 'new "
-            "Auth' darkar ho sakta hai (research §4.3)." % hit, "WARN")
-    ctx.log("Ye auth server-assisted ho sakti hai aur public tor par "
-            "documented nahi — is liye TMETA route yahan ruk raha hai.",
-            "ERROR")
-    ctx.log("Doosra darwaza: Download/BROM route (agar tags me MDL/DA ho) "
-            "ya ADB tab ke ops try karen.", "INFO")
-    return False
+    """True = aage barho; False = guided fail ho chuka.
+
+    Round 7 (B7): ye ab LADDER hai — asal amal core.meta_guard
+    me hai. New-Auth class par rukne ke saath exact wajah +
+    doosra zinda darwaza (DA/Heapbait chain, test-point
+    guidance, ADB) khud offer hota hai. Contract wahi purana:
+    hit na ho to True, ho to ladder ke baad False."""
+    from core import meta_guard
+    return meta_guard.guard_or_ladder(ctx, model)
 
 
 def download_frp_op(model, da_path):
@@ -432,7 +472,67 @@ def meta_restore_mdm_op(model):
                "RESTORE MDM - [TMETA]", run, engine="mtkclient")
 
 
-# META tab ke buttons ki tartib (Fenix screens ke mutabiq)
+# ---------------------------------------------------------------------------
+# Round-7 META factories (SEPT-SEC §4-B): registry wale naye META ops
+# ko muntakhib model ke saath chalane wale jora — asal amal ops/meta_*
+# modules me hai; yahan sirf model context judta hai. Ladder guard
+# un ops ke andar hi hai (core.meta_guard), is liye yahan dobara
+# guard NAHI lagaya gaya (double log se bachne ke liye).
+# ---------------------------------------------------------------------------
+def meta_frp_erase_op(model):
+    def run(ctx):
+        import ops.meta_frp_erase as m
+        return m.run(ctx, model)
+    return _op("mdm_list_meta_frp_erase", "FRP ERASE (META) - [TMETA]",
+               run, engine="meta")
+
+
+def meta_gpt_read_op(model):
+    def run(ctx):
+        ctx.log(f"Model: {model_label(model)}", "INFO")
+        import ops.meta_gpt_read as m
+        return m.run(ctx)
+    return _op("mdm_list_meta_gpt", "GPT / PARTITION TABLE - [TMETA]",
+               run, engine="meta")
+
+
+def meta_ubl_lk_op(model):
+    def run(ctx):
+        import ops.meta_ubl_unlock as m
+        return m.run(ctx, model)
+    return _op("mdm_list_meta_ubl_lk",
+               "UBL LK PATCH - [TMETA]", run, engine="meta",
+               danger_write=True)
+
+
+def meta_restore_lk_op(model):
+    def run(ctx):
+        import ops.meta_ubl_restore as m
+        return m.run(ctx, model)
+    return _op("mdm_list_meta_restore_lk",
+               "RESTORE LK - [TMETA]", run, engine="meta",
+               danger_write=True)
+
+
+def meta_plugin_patch_op(model):
+    def run(ctx):
+        import ops.meta_plugin_patch as m
+        return m.run(ctx, model)
+    return _op("mdm_list_meta_plugin_patch",
+               "SECURITY PLUGIN PATCH (META) - [TMETA]", run,
+               engine="meta", danger_write=True)
+
+
+def meta_restore_patch_op(model):
+    def run(ctx):
+        import ops.meta_restore_patch as m
+        return m.run(ctx, model)
+    return _op("mdm_list_meta_restore_patch",
+               "RESTORE MDM (META BACKUP) - [TMETA]", run,
+               engine="meta", danger_write=True)
+
+
+# META tab ke buttons ki tartib (Fenix screens ke mutabiq + Round-7)
 META_ACTIONS = [
     ("UNLOCK BOOTLOADER NEW SEC - [TMETA]", meta_unlock_op),
     ("SECURITY PLUGIN NEW SEC - [TMETA]", meta_security_plugin_op),
@@ -441,6 +541,12 @@ META_ACTIONS = [
     ("ENABLE ADB - [TMETA]", meta_enable_adb_op),
     ("DISABLE ADB - [TMETA]", meta_disable_adb_op),
     ("RESTORE MDM - [TMETA]", meta_restore_mdm_op),
+    ("FRP ERASE (META) - [TMETA]", meta_frp_erase_op),
+    ("UBL LK PATCH - [TMETA]", meta_ubl_lk_op),
+    ("RESTORE LK - [TMETA]", meta_restore_lk_op),
+    ("SECURITY PLUGIN PATCH (META) - [TMETA]", meta_plugin_patch_op),
+    ("RESTORE MDM (META BACKUP) - [TMETA]", meta_restore_patch_op),
+    ("GPT / PARTITION TABLE - [TMETA]", meta_gpt_read_op),
 ]
 
 
