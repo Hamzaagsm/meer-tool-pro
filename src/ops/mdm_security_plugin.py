@@ -191,6 +191,20 @@ def run(ctx) -> bool:
             _add(pkg, "candidate — keyword pehchan: %s (confirmed NAHI)"
                  % ", ".join(hits))
 
+    # AppTool profile wiring (P1): built-in Transsion profile ke
+    # packages bhi targets me shamil hain — jo keyword pehchan se
+    # reh jaye, use profile ki tayyar list pakar leti hai.
+    try:
+        from core import app_profiles as _app_profiles
+        _prof = _app_profiles.BUILTIN_PROFILES.get(
+            "transsion_security_plugin", {})
+        for pkg in _prof.get("packages", []):
+            if pkg.lower() in installed_lower:
+                _add(pkg, "AppTool profile — Transsion Security "
+                          "Plugin Set (template)")
+    except Exception:  # noqa: BLE001 — profile na mile to flow waisa hi
+        pass
+
     if not targets:
         ctx.log("Koi security plugin jaisa package nahi mila (na "
                 "device-owner/admin list me, na keyword pehchan me) — "

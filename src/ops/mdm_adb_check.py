@@ -14,7 +14,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from core import engines
+from core import engines, finance_locks
 
 OP = {
     "id": "mdm_adb_check",
@@ -109,6 +109,18 @@ def run(ctx) -> bool:
         ctx.log(f"MDM-shuba wala package mila: {pkg}", "WARN")
     for line in findings:
         ctx.log(f"device_policy: {line}", "DATA")
+
+    # Finance-lock pehchan (P1): PayJoy / Easybuy / NuovoPay /
+    # d.light / Knox Guard / Google DLC — verdict lines ke saath.
+    finance = finance_locks.classify_finance_locks(packages, dumpsys_text)
+    for f in finance:
+        ctx.log(f"FINANCE LOCK mila: {f['name']} ({f['package']})"
+                + (" (device-owner bhi hai)" if f["is_device_owner"] else ""),
+                "WARN")
+        ctx.log(f"   Verdict: {f['verdict']}", "INFO")
+    if finance:
+        ctx.log("Tafseeli finance report ke liye 'Finance Lock "
+                "Detector (ADB)' op bhi maujood hai.", "INFO")
 
     owner_found = any(
         any(key in line.lower() for key in _OWNER_KEYS) for line in findings
