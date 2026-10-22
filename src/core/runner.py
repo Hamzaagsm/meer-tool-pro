@@ -124,6 +124,57 @@ class OpResult:
     message: str = ""
 
 
+# ---------------------------------------------------------------------------
+# FAIL ke aakhir wali rehnumai (Phase 2): driver hint + Repair Intelligence
+# ---------------------------------------------------------------------------
+# Device/port na milne ki aam suraton ke jumle — ops ke apne log
+# alfaz se liye gaye hain. In me se koi mile aur op FAIL ho to
+# aakhir me aik saaf driver rehnumai line jorti hai (UTILITY ke
+# Install Drivers op ki taraf ishara ke saath).
+_DEVICE_MISSING_HINTS = (
+    "mode me nahi mila", "mode me nahi hai", "device nahi mila",
+    "port nahi mila", "koi device nahi", "spd mode me nahi",
+    "brom/preloader mode me nahi", "adb mode me nahi",
+)
+
+DRIVER_GUIDANCE = (
+    "🔌 Driver/Mode rehnumai: device ya port na milna aam tor "
+    "par mode ya driver ka masla hota hai — phone bilkul sahi "
+    "mode me lagao (BROM: phone band, Volume + aur − dono "
+    "dabaye hue cable; EDL: 9008 mode; SPRD: Volume Down "
+    "dabaye hue; META: band phone META combo ke saath). Agar "
+    "port Device Manager me nazar hi nahi ata to driver "
+    "missing hai — UTILITY module ka 'Install Drivers (UsbDk "
+    "+ Vendor Pack)' op chalao, phir phone dobara lagao."
+)
+
+
+def fail_hints(lines):
+    """FAIL hue op ke log lines par rehnumai ki fehrist.
+
+    lines: [(msg, level), ...] — return: [hint strings]
+    (pehle driver rehnumai agar device/port wala masla lage,
+    phir Repair Intelligence ke matches — zyada se zyada 2).
+    Koi match na ho to khaali list (khamoshi pakki hai).
+    kabhi raise nahi karta.
+    """
+    hints = []
+    try:
+        text = "\n".join(str(m) for m, _lvl in lines)
+        low = text.lower()
+        if any(h in low for h in _DEVICE_MISSING_HINTS):
+            hints.append(DRIVER_GUIDANCE)
+        try:
+            from core import repair_intel
+            for entry in repair_intel.match_text(text):
+                hints.append(repair_intel.hint_line(entry))
+        except Exception:  # noqa: BLE001 — hint kabhi rukawat nahi
+            pass
+    except Exception:  # noqa: BLE001
+        return hints
+    return hints
+
+
 class Runner:
     """GUI se istemal: runner.start(op_module, device) — callback based."""
 
@@ -134,6 +185,11 @@ class Runner:
         self._update_device = update_device_fn
         self._thread = None
         self._ctx = None
+        self._run_lines = []        # is run ke log lines (hint scan ke liye)
+
+    def _capture_log(self, msg, level):
+        self._run_lines.append((str(msg), level))
+        self._log(msg, level)
 
     @property
     def busy(self):
@@ -145,12 +201,13 @@ class Runner:
             self._log("Aik operation pehle se chal raha hai — pehle usay "
                       "khatam ya STOP karo.", "WARN")
             return False
+        self._run_lines = []
         self._ctx = OpContext(
             device=device,
             imei_write_confirmed=bool(imei_write_confirmed),
             danger_confirmed=bool(danger_confirmed),
             params=dict(params or {}),
-            _log_fn=self._log,
+            _log_fn=self._capture_log,
             _progress_fn=self._progress,
             update_device=self._update_device,
         )
@@ -196,5 +253,12 @@ class Runner:
         else:
             self._log(f"✖ FAIL — {name} mukammal nahi hua. "
                       "Upar ke log me wajah dekho.", "ERROR")
+            # FAIL par rehnumai: driver hint + Repair Intelligence
+            # (match ho tab hi; warna khamosh). Kabhi rukawat nahi.
+            try:
+                for hint in fail_hints(self._run_lines):
+                    self._log(hint, "WARN")
+            except Exception:  # noqa: BLE001
+                pass
         if self._done:
             self._done(OpResult(ok=ok, op_id=op_id, message=msg))

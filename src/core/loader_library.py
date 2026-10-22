@@ -40,6 +40,14 @@ LIB_SUBDIR = "loaders"
 
 MTK = "mtk-da"
 FIREHOSE = "firehose"
+# Phase 2 (firmware harvest) ke izafi khane — ye match() ke MTK /
+# FIREHOSE raston se BAHIR hain: FDL sirf Unisoc FDL khane ke liye
+# record hota hai, preloader/lk sirf harvest ke record ke tor par
+# (auto-select inhe DA/firehose samajh kar KABHI nahi chunta —
+# match() sirf MTK/FIREHOSE kinds par chalta hai).
+FDL = "fdl"
+PRELOADER = "preloader"
+LK = "lk"
 
 # ---------------------------------------------------------------------------
 # Magic bytes (staging ke 465-file corpus se sabit):
@@ -154,6 +162,7 @@ def library_state(tools_dir=None) -> dict:
         "installed_count": len(inst),
         "mtk_installed": sum(1 for e in inst if e.get("type") == MTK),
         "qc_installed": sum(1 for e in inst if e.get("type") == FIREHOSE),
+        "fdl_installed": sum(1 for e in inst if e.get("type") == FDL),
     }
 
 
@@ -388,7 +397,8 @@ def record_local_entry(entry, tools_dir=None) -> None:
     existing = _read_entries(path)
     existing = [e for e in existing if e.get("path") != entry["path"]]
     clean = {k: entry[k] for k in
-             ("type", "brand", "key", "path", "size", "sha256")
+             ("type", "brand", "key", "path", "size", "sha256",
+              "source")
              if k in entry}
     clean["local"] = True
     existing.append(clean)
