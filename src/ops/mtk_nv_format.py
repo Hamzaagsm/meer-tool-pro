@@ -9,6 +9,10 @@ ho. Isi liye:
 
   - Shuru me bhaari warnings log hoti hain: pehle 'NV Backup
     (nvram + nvdata)' wala op chala kar backup lazmi lo.
+  - DANGER GATE (Phase 2 backup-first audit ka fix): pehle ye
+    op sirf warning deta tha — ab tasdeeq (neeche wale bar ki
+    khatarnaak-write checkbox) ke baghair AIK bhi erase
+    koshish nahi hoti, bilkul RPMB/sector wale gate ki tarah.
   - Dono erase FATAL hain — aik bhi fail ho to FAIL; aadha format
     success NAHI kaha jata (warna phone na idhar ka na udhar ka).
   - Wapas lane ka rasta bhi log me saaf likha hai: NV Restore
@@ -16,6 +20,7 @@ ho. Isi liye:
 """
 
 from core import engines
+from core.danger_gate import danger_gate
 from ops.mtk_frp_reset import _engine, _guard
 
 OP = {
@@ -25,10 +30,15 @@ OP = {
     "engine": "mtkclient",
     "modes": ("BROM", "PRELOADER"),
     "server_required": False,
+    "danger_write": True,
 }
 
 
 def run(ctx) -> bool:
+    # DANGER GATE SAB SE PEHLE — tasdeeq ke baghair zero koshish
+    # (Phase 2 audit fix: pehle ye op warning-only tha).
+    if not danger_gate(ctx, "NVRAM + NVDATA FORMAT"):
+        return False
     if not _guard(ctx):
         return False
     cmd, cwd = _engine(ctx)

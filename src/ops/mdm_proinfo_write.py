@@ -8,11 +8,16 @@ warna sab se nayi backup file. Ghalat model ki proinfo likhne se
 phone kharab ho sakta hai — is liye chunav aur warning log me saaf
 dikhaye jate hain. Tool kisi model ko pehle se supported nahi kehta;
 likhi jane wali file tumhare apne liye hue backup se hi ati hai.
+
+DANGER GATE (Phase 2 backup-first audit ka fix): pehle ye op
+warning-only tha — ab tasdeeq (neeche wale bar ki khatarnaak-write
+checkbox) ke baghair AIK bhi write koshish nahi hoti.
 """
 
 import re
 
 from core import engines
+from core.danger_gate import danger_gate
 from core.runner import TOOLS_DIR
 
 OP = {
@@ -22,6 +27,7 @@ OP = {
     "engine": "mtkclient",
     "modes": ("BROM", "PRELOADER"),
     "server_required": False,
+    "danger_write": True,
 }
 
 
@@ -82,6 +88,10 @@ def _pick_candidate(candidates, dev):
 
 
 def run(ctx) -> bool:
+    # DANGER GATE SAB SE PEHLE — tasdeeq ke baghair zero koshish
+    # (Phase 2 audit fix: pehle ye op warning-only tha).
+    if not danger_gate(ctx, "PROINFO WRITE"):
+        return False
     candidates = _find_candidates()
     if not candidates:
         ctx.log("MDM library me koi proinfo backup file nahi mili — "
