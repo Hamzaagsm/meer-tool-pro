@@ -1,857 +1,915 @@
 {
- "version": 1,
- "note": "MDM List — per-model database. Ye file user-editable hai: naya model jorne ke liye models me aik entry jor do (name, code, chipset, tags). Tags se mode tabs bante hain: MTK par MDL/PL/DA -> Download, TMETA -> Transsion META; Unisoc tag par Download/DIAG/Network/PATCHER + FDL Exploit checkbox. ADB aur FASTBOOT tabs hamesha ate hain. Asal per-model data (DA files tools/loaders/ me, proinfo/prodnv backups tools/mdm-backups/ me) tumhare apne kaam se jama hota hai.",
- "models": [
-  {
-   "brand": "Infinix",
-   "model": "HOT 70",
-   "name": "Infinix HOT 70",
-   "code": "X6895B",
-   "chipset": "Helio G100",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "HOT 70 Pro 5G",
-   "name": "Infinix HOT 70 Pro 5G",
-   "code": "X6896",
-   "chipset": "Dimensity 7100",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 60 Pro+",
-   "name": "Infinix Hot 60 Pro+",
-   "code": "X6886",
-   "chipset": "Helio G200",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 60 Pro",
-   "name": "Infinix Hot 60 Pro",
-   "code": "X6885",
-   "chipset": "Helio G200",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 60 5G",
-   "name": "Infinix Hot 60 5G",
-   "code": "X6726",
-   "chipset": "Dimensity 7020",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 60i",
-   "name": "Infinix Hot 60i",
-   "code": "X6728",
-   "chipset": "Helio G81 Ultimate",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA",
-    "TMETA",
-    "MDM"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 50 Pro+",
-   "name": "Infinix Hot 50 Pro+",
-   "code": "X6880",
-   "chipset": "Helio G100",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 50 Pro",
-   "name": "Infinix Hot 50 Pro",
-   "code": "X6881",
-   "chipset": "Helio G100",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 50",
-   "name": "Infinix Hot 50",
-   "code": "X6882",
-   "chipset": "Helio G100",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 50 5G",
-   "name": "Infinix Hot 50 5G",
-   "code": "X6720",
-   "chipset": "Dimensity 6300",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 50i",
-   "name": "Infinix Hot 50i",
-   "code": "X6531",
-   "chipset": "Helio G81",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA",
-    "TMETA",
-    "MDM"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 50 Pro+ 5G",
-   "name": "Infinix Note 50 Pro+ 5G",
-   "code": "X6856",
-   "chipset": "Dimensity 8350",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 50 Pro",
-   "name": "Infinix Note 50 Pro",
-   "code": "X6855",
-   "chipset": "Helio G100 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 50s 5G",
-   "name": "Infinix Note 50s 5G",
-   "code": "X6870",
-   "chipset": "Dimensity 7300 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 50x 5G",
-   "name": "Infinix Note 50x 5G",
-   "code": "X6857B",
-   "chipset": "Dimensity 7300 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 50",
-   "name": "Infinix Note 50",
-   "code": "X6858",
-   "chipset": "Helio G100 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 40 Pro+ 5G",
-   "name": "Infinix Note 40 Pro+ 5G",
-   "code": "X6851B",
-   "chipset": "Dimensity 7020",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 40 Pro 5G",
-   "name": "Infinix Note 40 Pro 5G",
-   "code": "X6851",
-   "chipset": "Dimensity 7020",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 40 Pro",
-   "name": "Infinix Note 40 Pro",
-   "code": "X6850",
-   "chipset": "Helio G99 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 40",
-   "name": "Infinix Note 40",
-   "code": "X6853",
-   "chipset": "Helio G99 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Note 40X 5G",
-   "name": "Infinix Note 40X 5G",
-   "code": "X6838",
-   "chipset": "Dimensity 6300",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "GT 30 Pro 5G",
-   "name": "Infinix GT 30 Pro 5G",
-   "code": "X6873",
-   "chipset": "Dimensity 8350 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "GT 30 5G",
-   "name": "Infinix GT 30 5G",
-   "code": "X6876",
-   "chipset": "Dimensity 7300 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "GT 20 Pro",
-   "name": "Infinix GT 20 Pro",
-   "code": "X6871",
-   "chipset": "Dimensity 8200 Ultimate",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Zero 40 5G",
-   "name": "Infinix Zero 40 5G",
-   "code": "X6861",
-   "chipset": "Dimensity 8200 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Zero 40 4G",
-   "name": "Infinix Zero 40 4G",
-   "code": "X6860",
-   "chipset": "Helio G100",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Smart 10",
-   "name": "Infinix Smart 10",
-   "code": "X6725",
-   "chipset": "Unisoc T7250",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Smart 10 Plus",
-   "name": "Infinix Smart 10 Plus",
-   "code": "X6725B",
-   "chipset": "Unisoc T7250",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Smart 9",
-   "name": "Infinix Smart 9",
-   "code": "X6532",
-   "chipset": "Helio G81",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA",
-    "TMETA",
-    "MDM"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Smart 8",
-   "name": "Infinix Smart 8",
-   "code": "X6525",
-   "chipset": "Unisoc T606",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Infinix",
-   "model": "Hot 10",
-   "name": "Infinix Hot 10",
-   "code": "X682C",
-   "chipset": "MT6768 Helio G70",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark Go 3",
-   "name": "Tecno Spark Go 3",
-   "code": "KN3",
-   "chipset": "Unisoc T606",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark Go 2",
-   "name": "Tecno Spark Go 2",
-   "code": "KM4",
-   "chipset": "Unisoc T7250",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark Go 1",
-   "name": "Tecno Spark Go 1",
-   "code": "KL4",
-   "chipset": "Unisoc T615",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark 30C",
-   "name": "Tecno Spark 30C",
-   "code": "KL5",
-   "chipset": "Helio G81",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA",
-    "TMETA",
-    "MDM"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark 30",
-   "name": "Tecno Spark 30",
-   "code": "KL6",
-   "chipset": "Helio G91",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA",
-    "TMETA",
-    "MDM"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark 30 Pro",
-   "name": "Tecno Spark 30 Pro",
-   "code": "KL7",
-   "chipset": "Helio G100",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark 20 Pro 5G",
-   "name": "Tecno Spark 20 Pro 5G",
-   "code": "KJ8",
-   "chipset": "Dimensity 6080",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark 20 Pro+",
-   "name": "Tecno Spark 20 Pro+",
-   "code": "KJ7",
-   "chipset": "Helio G99 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark 20 Pro",
-   "name": "Tecno Spark 20 Pro",
-   "code": "KJ6",
-   "chipset": "Helio G99",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Spark 20",
-   "name": "Tecno Spark 20",
-   "code": "KJ5",
-   "chipset": "Helio G85",
-   "tags": [
-    "MediaTek",
-    "MDL",
-    "PL",
-    "DA",
-    "TMETA",
-    "MDM"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 40 Premier 5G",
-   "name": "Tecno Camon 40 Premier 5G",
-   "code": "CM8",
-   "chipset": "Dimensity 8350",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 40 Pro 5G",
-   "name": "Tecno Camon 40 Pro 5G",
-   "code": "CM7",
-   "chipset": "Dimensity 7300",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 40 Pro",
-   "name": "Tecno Camon 40 Pro",
-   "code": "CM6",
-   "chipset": "Helio G100 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 40",
-   "name": "Tecno Camon 40",
-   "code": "CM5",
-   "chipset": "Helio G100 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 30 Premier 5G",
-   "name": "Tecno Camon 30 Premier 5G",
-   "code": "CL9",
-   "chipset": "Dimensity 8200",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 30 Pro 5G",
-   "name": "Tecno Camon 30 Pro 5G",
-   "code": "CL8",
-   "chipset": "Dimensity 8200 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 30 5G",
-   "name": "Tecno Camon 30 5G",
-   "code": "CL7",
-   "chipset": "Dimensity 7020",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Camon 30",
-   "name": "Tecno Camon 30",
-   "code": "CL6",
-   "chipset": "Helio G99 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Pova 7 5G",
-   "name": "Tecno Pova 7 5G",
-   "code": "LJ7",
-   "chipset": "Dimensity 7300 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Pova 7",
-   "name": "Tecno Pova 7",
-   "code": "LJ6",
-   "chipset": "Helio G100 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true,
-   "a16_meta_frp": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Pova 6 Pro 5G",
-   "name": "Tecno Pova 6 Pro 5G",
-   "code": "LI9",
-   "chipset": "Dimensity 6080",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Pova 6 Neo",
-   "name": "Tecno Pova 6 Neo",
-   "code": "LI6",
-   "chipset": "Helio G99 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Tecno",
-   "model": "Pova 6",
-   "name": "Tecno Pova 6",
-   "code": "LI7",
-   "chipset": "Helio G99 Ultimate",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Itel",
-   "model": "S25",
-   "name": "Itel S25",
-   "code": "S685LN",
-   "chipset": "Unisoc T620",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Itel",
-   "model": "A90",
-   "name": "Itel A90",
-   "code": "A6610L",
-   "chipset": "Unisoc T7100",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Itel",
-   "model": "A80",
-   "name": "Itel A80",
-   "code": "A671LC",
-   "chipset": "Unisoc T603",
-   "tags": [
-    "Unisoc",
-    "FDL",
-    "Diag",
-    "MDM",
-    "Exploit"
-   ],
-   "verified": true
-  },
-  {
-   "brand": "Itel",
-   "model": "P55 5G",
-   "name": "Itel P55 5G",
-   "code": "P661N",
-   "chipset": "Dimensity 6080",
-   "tags": [
-    "MediaTek",
-    "TMETA",
-    "MDM",
-    "UBL"
-   ],
-   "verified": true
-  }
- ]
+  "version": 1,
+  "note": "MDM List — per-model database. Ye file user-editable hai: naya model jorne ke liye models me aik entry jor do (name, code, chipset, tags). Tags se mode tabs bante hain: MTK par MDL/PL/DA -> Download, TMETA -> Transsion META; Unisoc tag par Download/DIAG/Network/PATCHER + FDL Exploit checkbox. ADB aur FASTBOOT tabs hamesha ate hain. Asal per-model data (DA files tools/loaders/ me, proinfo/prodnv backups tools/mdm-backups/ me) tumhare apne kaam se jama hota hai. 'route' field (Round 7) har model ka zinda darwaza batata hai: META / META+DA / new-Auth (META entry server-gated, DA ladder baqi) / Kamakiri / DIAG/FDL — MDM List ke label me nazar ata hai.",
+  "models": [
+    {
+      "brand": "Infinix",
+      "model": "HOT 70",
+      "name": "Infinix HOT 70",
+      "code": "X6895B",
+      "chipset": "Helio G100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "HOT 70 Pro 5G",
+      "name": "Infinix HOT 70 Pro 5G",
+      "code": "X6896",
+      "chipset": "Dimensity 7100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 60 Pro+",
+      "name": "Infinix Hot 60 Pro+",
+      "code": "X6886",
+      "chipset": "Helio G200",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 60 Pro",
+      "name": "Infinix Hot 60 Pro",
+      "code": "X6885",
+      "chipset": "Helio G200",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 60 5G",
+      "name": "Infinix Hot 60 5G",
+      "code": "X6726",
+      "chipset": "Dimensity 7020",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 60i",
+      "name": "Infinix Hot 60i",
+      "code": "X6728",
+      "chipset": "Helio G81 Ultimate",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": true,
+      "route": "META+DA"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 50 Pro+",
+      "name": "Infinix Hot 50 Pro+",
+      "code": "X6880",
+      "chipset": "Helio G100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 50 Pro",
+      "name": "Infinix Hot 50 Pro",
+      "code": "X6881",
+      "chipset": "Helio G100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 50",
+      "name": "Infinix Hot 50",
+      "code": "X6882",
+      "chipset": "Helio G100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 50 5G",
+      "name": "Infinix Hot 50 5G",
+      "code": "X6720",
+      "chipset": "Dimensity 6300",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 50i",
+      "name": "Infinix Hot 50i",
+      "code": "X6531",
+      "chipset": "Helio G81",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": true,
+      "route": "META+DA"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 50 Pro+ 5G",
+      "name": "Infinix Note 50 Pro+ 5G",
+      "code": "X6856",
+      "chipset": "Dimensity 8350",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 50 Pro",
+      "name": "Infinix Note 50 Pro",
+      "code": "X6855",
+      "chipset": "Helio G100 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 50s 5G",
+      "name": "Infinix Note 50s 5G",
+      "code": "X6870",
+      "chipset": "Dimensity 7300 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 50x 5G",
+      "name": "Infinix Note 50x 5G",
+      "code": "X6857B",
+      "chipset": "Dimensity 7300 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 50",
+      "name": "Infinix Note 50",
+      "code": "X6858",
+      "chipset": "Helio G100 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 40 Pro+ 5G",
+      "name": "Infinix Note 40 Pro+ 5G",
+      "code": "X6851B",
+      "chipset": "Dimensity 7020",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 40 Pro 5G",
+      "name": "Infinix Note 40 Pro 5G",
+      "code": "X6851",
+      "chipset": "Dimensity 7020",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 40 Pro",
+      "name": "Infinix Note 40 Pro",
+      "code": "X6850",
+      "chipset": "Helio G99 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 40",
+      "name": "Infinix Note 40",
+      "code": "X6853",
+      "chipset": "Helio G99 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note 40X 5G",
+      "name": "Infinix Note 40X 5G",
+      "code": "X6838",
+      "chipset": "Dimensity 6300",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Infinix",
+      "model": "GT 30 Pro 5G",
+      "name": "Infinix GT 30 Pro 5G",
+      "code": "X6873",
+      "chipset": "Dimensity 8350 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "GT 30 5G",
+      "name": "Infinix GT 30 5G",
+      "code": "X6876",
+      "chipset": "Dimensity 7300 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Infinix",
+      "model": "GT 20 Pro",
+      "name": "Infinix GT 20 Pro",
+      "code": "X6871",
+      "chipset": "Dimensity 8200 Ultimate",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META+DA"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Zero 40 5G",
+      "name": "Infinix Zero 40 5G",
+      "code": "X6861",
+      "chipset": "Dimensity 8200 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Zero 40 4G",
+      "name": "Infinix Zero 40 4G",
+      "code": "X6860",
+      "chipset": "Helio G100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Smart 10",
+      "name": "Infinix Smart 10",
+      "code": "X6725",
+      "chipset": "Unisoc T7250",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Smart 10 Plus",
+      "name": "Infinix Smart 10 Plus",
+      "code": "X6725B",
+      "chipset": "Unisoc T7250",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Smart 9",
+      "name": "Infinix Smart 9",
+      "code": "X6532",
+      "chipset": "Helio G81",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": true,
+      "route": "META+DA"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Smart 8",
+      "name": "Infinix Smart 8",
+      "code": "X6525",
+      "chipset": "Unisoc T606",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot 10",
+      "name": "Infinix Hot 10",
+      "code": "X682C",
+      "chipset": "MT6768 Helio G70",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA"
+      ],
+      "verified": true,
+      "route": "Kamakiri"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark Go 3",
+      "name": "Tecno Spark Go 3",
+      "code": "KN3",
+      "chipset": "Unisoc T606",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark Go 2",
+      "name": "Tecno Spark Go 2",
+      "code": "KM4",
+      "chipset": "Unisoc T7250",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark Go 1",
+      "name": "Tecno Spark Go 1",
+      "code": "KL4",
+      "chipset": "Unisoc T615",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 30C",
+      "name": "Tecno Spark 30C",
+      "code": "KL5",
+      "chipset": "Helio G81",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": true,
+      "route": "META+DA"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 30",
+      "name": "Tecno Spark 30",
+      "code": "KL6",
+      "chipset": "Helio G91",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": true,
+      "route": "META+DA"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 30 Pro",
+      "name": "Tecno Spark 30 Pro",
+      "code": "KL7",
+      "chipset": "Helio G100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 20 Pro 5G",
+      "name": "Tecno Spark 20 Pro 5G",
+      "code": "KJ8",
+      "chipset": "Dimensity 6080",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 20 Pro+",
+      "name": "Tecno Spark 20 Pro+",
+      "code": "KJ7",
+      "chipset": "Helio G99 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 20 Pro",
+      "name": "Tecno Spark 20 Pro",
+      "code": "KJ6",
+      "chipset": "Helio G99",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 20",
+      "name": "Tecno Spark 20",
+      "code": "KJ5",
+      "chipset": "Helio G85",
+      "tags": [
+        "MediaTek",
+        "MDL",
+        "PL",
+        "DA",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": true,
+      "route": "META+DA"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 40 Premier 5G",
+      "name": "Tecno Camon 40 Premier 5G",
+      "code": "CM8",
+      "chipset": "Dimensity 8350",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 40 Pro 5G",
+      "name": "Tecno Camon 40 Pro 5G",
+      "code": "CM7",
+      "chipset": "Dimensity 7300",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 40 Pro",
+      "name": "Tecno Camon 40 Pro",
+      "code": "CM6",
+      "chipset": "Helio G100 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 40",
+      "name": "Tecno Camon 40",
+      "code": "CM5",
+      "chipset": "Helio G100 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 30 Premier 5G",
+      "name": "Tecno Camon 30 Premier 5G",
+      "code": "CL9",
+      "chipset": "Dimensity 8200",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 30 Pro 5G",
+      "name": "Tecno Camon 30 Pro 5G",
+      "code": "CL8",
+      "chipset": "Dimensity 8200 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 30 5G",
+      "name": "Tecno Camon 30 5G",
+      "code": "CL7",
+      "chipset": "Dimensity 7020",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon 30",
+      "name": "Tecno Camon 30",
+      "code": "CL6",
+      "chipset": "Helio G99 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Pova 7 5G",
+      "name": "Tecno Pova 7 5G",
+      "code": "LJ7",
+      "chipset": "Dimensity 7300 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "new-Auth"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Pova 7",
+      "name": "Tecno Pova 7",
+      "code": "LJ6",
+      "chipset": "Helio G100 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "a16_meta_frp": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Pova 6 Pro 5G",
+      "name": "Tecno Pova 6 Pro 5G",
+      "code": "LI9",
+      "chipset": "Dimensity 6080",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Pova 6 Neo",
+      "name": "Tecno Pova 6 Neo",
+      "code": "LI6",
+      "chipset": "Helio G99 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Pova 6",
+      "name": "Tecno Pova 6",
+      "code": "LI7",
+      "chipset": "Helio G99 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    },
+    {
+      "brand": "Itel",
+      "model": "S25",
+      "name": "Itel S25",
+      "code": "S685LN",
+      "chipset": "Unisoc T620",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Itel",
+      "model": "A90",
+      "name": "Itel A90",
+      "code": "A6610L",
+      "chipset": "Unisoc T7100",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Itel",
+      "model": "A80",
+      "name": "Itel A80",
+      "code": "A671LC",
+      "chipset": "Unisoc T603",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": true,
+      "route": "DIAG/FDL"
+    },
+    {
+      "brand": "Itel",
+      "model": "P55 5G",
+      "name": "Itel P55 5G",
+      "code": "P661N",
+      "chipset": "Dimensity 6080",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM",
+        "UBL"
+      ],
+      "verified": true,
+      "route": "META"
+    }
+  ]
 }
