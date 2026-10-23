@@ -4,9 +4,64 @@ qc_edl_info.py — EDL (9008) mode me bkerler edl se GPT / partition info parhna
 Device EDL mode me hona lazmi hai, edl client engines/edl/ se milta hai
 aur firehose loader user ki apni library (tools/loaders/qualcomm/) se
 uthaya jata hai — koi loader bundle nahi kiya gaya.
+
+Driver pre-check (Windows): engine chalane se pehle PC par purana
+UsbDk laga hua mile to saaf WARN ajata hai — Windows ke naye builds
+(24H2 / 26200) par UsbDk USB engines ko native crash (0xC0000005)
+kar deta hai. Wahee exit code aye to generic error ki jagah khaas
+driver wali line ati hai.
 """
 
+import sys
+from pathlib import Path
+
 from core import engines
+
+_CRASH_CODES = (3221225477, -1073741819)  # 0xC0000005 dono suraton me
+
+_CRASH_LINE = (
+    "Engine crash hua (0xC0000005) — ye phone ka masla nahi, PC ke "
+    "USB driver layer ka hai: UsbDk hatao + VCOM/filter setup karo "
+    "(UTILITY → Install Drivers)."
+)
+
+_USBDK_WARN = (
+    "Is PC par purana UsbDk laga hai — naye Windows par ye USB "
+    "engines (edl) ko crash karta hai. Naye pack ke drivers me "
+    "UsbDk nahi hai; 'Install Drivers' chalao aur UsbDk Control "
+    "Panel se uninstall kar do."
+)
+
+
+def _usbdk_installed() -> bool:
+    """PC par UsbDk mojood hai ya nahi (best-effort, kabhi raise nahi).
+
+    Nishaan: 'UsbDk Runtime Library' folder (Program Files dono
+    suraton me) ya UsbDk service ki registry key. Sirf Windows
+    par check hota hai."""
+    if not sys.platform.startswith("win"):
+        return False
+    for base in (r"C:\Program Files", r"C:\Program Files (x86)"):
+        try:
+            if (Path(base) / "UsbDk Runtime Library").is_dir():
+                return True
+        except Exception:  # noqa: BLE001 — check kabhi rukawat nahi
+            pass
+    try:
+        import winreg
+        key = winreg.OpenKey(
+            winreg.HKEY_LOCAL_MACHINE,
+            r"SYSTEM\CurrentControlSet\Services\UsbDk")
+        key.Close()
+        return True
+    except Exception:  # noqa: BLE001 — key na mile to yehi jawab hai
+        return False
+
+
+def _driver_precheck(ctx):
+    """Engine se pehle driver ki halat — UsbDk mile to WARN."""
+    if _usbdk_installed():
+        ctx.log(_USBDK_WARN, "WARN")
 
 OP = {
     "id": "qc_edl_info",
@@ -57,6 +112,7 @@ def run(ctx) -> bool:
     if resolved is None:
         return False
     cmd, cwd, loader = resolved
+    _driver_precheck(ctx)
     ctx.progress(20, "GPT parhi ja rahi hai...")
     code = ctx.stream(cmd + ["printgpt", f"--loader={loader}"],
                       timeout=300, cwd=cwd)
@@ -65,6 +121,9 @@ def run(ctx) -> bool:
     if code == 0:
         ctx.progress(95, "GPT parh li gayi")
         return True
+    if code in _CRASH_CODES:
+        ctx.log(_CRASH_LINE, "ERROR")
+        return False
     ctx.log(f"edl printgpt fail hua (exit code {code}). Aam wajahen: "
             "loader is model/chip ka nahi hai; 9008 driver (Qualcomm "
             "HS-USB) nahi laga; ya cable/port ka masla hai.", "ERROR")

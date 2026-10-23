@@ -1,15 +1,25 @@
 """
-util_install_drivers.py — Install Drivers (UsbDk + Vendor Pack).
+util_install_drivers.py — Install Drivers (VCOM + Filter + Vendor Pack).
 
-engines/drivers/ ke andar jo driver packages bundle hain (UsbDk
-.msi, Samsung USB driver .exe, aur jo vendor pack aage rakha
-jaye) un ki pehle poori inventory log hoti hai, phir Windows par
-har package us ki qisam ke mutabiq install hota hai:
+engines/drivers/ ke andar jo driver packages bundle hain un ki
+pehle poori inventory log hoti hai, phir Windows par har package
+tarteeb se install hota hai:
+
+    Tarteeb: (1) MediaTek VCOM (.inf → pnputil /add-driver),
+    (2) libusb-win32 filter installer (.exe, wizard hidayat
+    log me pehle se), (3) Zadig (.exe — dusra WinUSB rasta,
+    sirf zarurat par), (4) vendor packs (.msi → msiexec,
+    .exe → vendor installer interactive).
 
     .msi → msiexec /i <file> /qb /norestart
     .exe → seedha chalaya jata hai (vendor installers interactive
            hote hain — screen par un ke apne sawal ayenge)
     .inf → pnputil /add-driver <file> /install
+
+UsbDk ab bundle NAHI hai: Windows ke naye builds (24H2 /
+26200) par wo MTKClient ko crash kar deta hai — is ki jagah
+MediaTek VCOM + libusb filter wala rasta hai (tafseel
+engines/drivers/README-DRIVERS.md me).
 
 Imaandari:
   - Koi package na mile to guided FAIL — saath me official
@@ -32,7 +42,7 @@ from core.runner import ENGINES_DIR
 OP = {
     "id": "util_install_drivers",
     "category": "Utility",
-    "name": "Install Drivers (UsbDk + Vendor Pack)",
+    "name": "Install Drivers (VCOM + Filter + Vendor Pack)",
     "engine": "drivers",
     "modes": (),
     "server_required": False,
@@ -49,14 +59,32 @@ def _human_size(n) -> str:
     return f"{n} B"
 
 
+def _group(pkg):
+    """Install tarteeb ka group — VCOM pehle, filter dusra,
+    Zadig teesra, baqi vendor packs aakhir me."""
+    parent = pkg.parent.name.lower()
+    name = pkg.name.lower()
+    if parent == "mediatek-vcom" or name == "cdc-acm.inf":
+        return 0
+    if parent == "libusb-filter" or ("libusb" in name
+                                     and "filter" in name):
+        return 1
+    if parent == "zadig" or name.startswith("zadig"):
+        return 2
+    return 3
+
+
 def _scan_packages():
-    """engines/drivers/** ke tamam .msi/.exe/.inf (Path list, sorted)."""
+    """engines/drivers/** ke tamam .msi/.exe/.inf — install
+    tarteeb me sorted (VCOM → filter → Zadig → vendor packs)."""
     base = ENGINES_DIR / "drivers"
     if not base.is_dir():
         return []
-    return sorted(p for p in base.rglob("*")
-                  if p.is_file()
-                  and p.suffix.lower() in _INSTALLABLE)
+    found = [p for p in base.rglob("*")
+             if p.is_file()
+             and p.suffix.lower() in _INSTALLABLE]
+    return sorted(found, key=lambda p: (_group(p),
+                                        str(p).lower()))
 
 
 def _install_cmd(path):
@@ -68,6 +96,44 @@ def _install_cmd(path):
         return ["pnputil", "/add-driver", str(path), "/install"]
     # .exe — vendor installer interactive hota hai, plain chalao
     return [str(path)]
+
+
+def _pre_launch_lines(pkg):
+    """Filter / Zadig se pehle ki khaas hidayat (log lines).
+
+    Baqi packages ke liye khaali list — un par aam vendor wali
+    line hi kaafi hai."""
+    name = pkg.name.lower()
+    parent = pkg.parent.name.lower()
+    if parent == "libusb-filter" or ("libusb" in name
+                                     and "filter" in name):
+        return [
+            "⚠ Filter installer — pehle ye hidayat parh lo: ye "
+            "libusb-win32 ka setup hai. Setup mukammal ho jaye "
+            "to is ke saath aya 'Filter Installation Wizard' "
+            "chalao — wahan:",
+            "  1) 'Install a device filter' select karo.",
+            "  2) Phone BROM mode me lagao (band phone, Volume + "
+            "aur − dono dabaye hue cable) — MediaTek VCOM "
+            "driver is se pehle lag chuka hona chahiye (is op "
+            "ki tarteeb me wo pehle ata hai).",
+            "  3) List me 'MediaTek USB Port' select karke "
+            "Install dabao. Yehi filter MTKClient ko us port ko "
+            "kholne deta hai — MTK kaam ki asal kunji yehi hai.",
+        ]
+    if parent == "zadig" or name.startswith("zadig"):
+        return [
+            "⚠ Zadig SIRF zarurat par chalao — ye dusra rasta "
+            "hai (WinUSB), pehla rasta filter wala hi rakho. "
+            "Zadig aik device par WinUSB driver lagata hai; har "
+            "PID alag device hai (BROM 0003, PreLoader 2000 "
+            "waghera) — har aik par alag lagana parta hai. Aur "
+            "jis PID par WinUSB lag gaya wo COM (serial) port "
+            "NAHI rehta — SP Flash Tool jaise tools usay nahi "
+            "dekh sakenge. Filter theek chal raha ho to Zadig "
+            "mat chalao.",
+        ]
+    return []
 
 
 def run(ctx) -> bool:
@@ -87,16 +153,24 @@ def run(ctx) -> bool:
     else:
         ctx.log("  (koi .msi / .exe / .inf nahi mila)", "WARN")
         ctx.log("Driver package bundle nahi hai — guided FAIL. "
-                "Official download links aur har vendor ki hidayat "
-                "is file me hai: engines/drivers/README-DRIVERS.md "
+                "Lagta hai engines/drivers/ folder hi theek se "
+                "nahi aya — MEER Tool Pro ka pack dobara download "
+                "karke mukammal extract karo (drivers usi ke andar "
+                "hain: MediaTek VCOM, libusb filter, Zadig, "
+                "Samsung). Tafseel aur official sources is file "
+                "me hain: engines/drivers/README-DRIVERS.md "
                 "(app ke folder se engines\\drivers\\"
-                "README-DRIVERS.md). Wahan se sirf OFFICIAL sources "
-                "se driver lo — MediaTek VCOM/Preloader, Qualcomm "
-                "QDLoader 9008 aur SPRD/Unisoc drivers aksar vendor "
-                "ke apne tools (SP Flash Tool / ResearchDownload) ke "
-                "saath ate hain, kisi ajnabi driver site se mat lena.",
-                "ERROR")
+                "README-DRIVERS.md). Kisi ajnabi driver site se "
+                "driver mat lena.", "ERROR")
         return False
+
+    ctx.log("Install ki tarteeb: (1) MediaTek VCOM driver "
+            "(.inf — phone ke BROM/PreLoader/DA ports), "
+            "(2) libusb-win32 filter (MTKClient ko port kholne "
+            "ki kunji), (3) Zadig sirf zarurat par (dusra WinUSB "
+            "rasta), (4) vendor packs (Samsung waghera). "
+            "UsbDk is pack me NAHI hai — naye Windows builds par "
+            "wo MTKClient ko crash karta hai.", "INFO")
 
     if not sys.platform.startswith("win"):
         ctx.log(f"Ye system Windows nahi hai (sys.platform = "
@@ -121,7 +195,10 @@ def run(ctx) -> bool:
         ctx.progress(pct, f"Driver install ho raha hai: {pkg.name}")
         ctx.log(f"[{idx}/{total}] Install: {pkg.name} "
                 f"({pkg.suffix.lower()})", "INFO")
-        if pkg.suffix.lower() == ".exe":
+        pre = _pre_launch_lines(pkg)
+        for line in pre:
+            ctx.log(line, "WARN")
+        if pkg.suffix.lower() == ".exe" and not pre:
             ctx.log("Ye vendor .exe installer hai — interactive "
                     "chalega, us ki apni screen par Next/Install "
                     "wala flow mukammal karo.", "INFO")
@@ -157,5 +234,8 @@ def run(ctx) -> bool:
     ctx.log(f"Tamam {total} driver package(s) exit code 0 ke "
             "saath install hue. Kisi installer ne reboot manga ho "
             "to phone lagane se pehle PC restart kar lo — driver "
-            "reboot ke baad hi asal me load hota hai.", "OK")
+            "reboot ke baad hi asal me load hota hai. MTK ke liye "
+            "yaad rakho: VCOM ke baad libusb filter 'MediaTek "
+            "USB Port' par lagana baqi ho to Filter Wizard wala "
+            "step mukammal karo (upar hidayat di gayi hai).", "OK")
     return True

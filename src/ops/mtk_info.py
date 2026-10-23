@@ -9,7 +9,17 @@ aur FAIL return hota hai (nakli success kabhi nahi).
 Device mode ghalat ho to bhi ye op koshish karta hai: sirf WARN deta
 hai, kyun ke MTKClient khud device ka intezaar karta hai — user ko
 mauqa milna chahiye ke phone BROM me laga kar operation chala sake.
+
+Driver pre-check (Windows): engine chalane se pehle PC par purana
+UsbDk laga hua mile to saaf WARN ajata hai — Windows ke naye builds
+(24H2 / 26200) par UsbDk MTKClient ko native crash (0xC0000005)
+kar deta hai. Wahee exit code aye to generic error ki jagah khaas
+driver wali line ati hai — phone par shak nahi, driver par seedha
+ishara.
 """
+
+import sys
+from pathlib import Path
 
 from core import engines
 from core.runner import APP_ROOT, BACKUPS_DIR, TOOLS_DIR  # noqa: F401
@@ -22,6 +32,53 @@ OP = {
     "modes": ("BROM", "PRELOADER"),
     "server_required": False,
 }
+
+
+_CRASH_CODES = (3221225477, -1073741819)  # 0xC0000005 dono suraton me
+
+_CRASH_LINE = (
+    "Engine crash hua (0xC0000005) — ye phone ka masla nahi, PC ke "
+    "USB driver layer ka hai: UsbDk hatao + VCOM/filter setup karo "
+    "(UTILITY → Install Drivers)."
+)
+
+_USBDK_WARN = (
+    "Is PC par purana UsbDk laga hai — naye Windows par ye "
+    "MTKClient ko crash karta hai. Naye pack ke drivers me UsbDk "
+    "nahi hai; 'Install Drivers' chalao aur UsbDk Control Panel "
+    "se uninstall kar do."
+)
+
+
+def _usbdk_installed() -> bool:
+    """PC par UsbDk mojood hai ya nahi (best-effort, kabhi raise nahi).
+
+    Nishaan: 'UsbDk Runtime Library' folder (Program Files dono
+    suraton me) ya UsbDk service ki registry key. Sirf Windows
+    par check hota hai."""
+    if not sys.platform.startswith("win"):
+        return False
+    for base in (r"C:\Program Files", r"C:\Program Files (x86)"):
+        try:
+            if (Path(base) / "UsbDk Runtime Library").is_dir():
+                return True
+        except Exception:  # noqa: BLE001 — check kabhi rukawat nahi
+            pass
+    try:
+        import winreg
+        key = winreg.OpenKey(
+            winreg.HKEY_LOCAL_MACHINE,
+            r"SYSTEM\CurrentControlSet\Services\UsbDk")
+        key.Close()
+        return True
+    except Exception:  # noqa: BLE001 — key na mile to yehi jawab hai
+        return False
+
+
+def _driver_precheck(ctx):
+    """Engine se pehle driver ki halat — UsbDk mile to WARN."""
+    if _usbdk_installed():
+        ctx.log(_USBDK_WARN, "WARN")
 
 
 def _engine(ctx):
@@ -46,6 +103,7 @@ def run(ctx) -> bool:
     cmd, cwd = _engine(ctx)
     if cmd is None:
         return False
+    _driver_precheck(ctx)
     dev = ctx.device
     if not dev or dev.mode not in OP["modes"]:
         ctx.log("Device BROM/Preloader mode me nahi mila. Phone band karke "
@@ -64,6 +122,9 @@ def run(ctx) -> bool:
     if code == 0:
         ctx.progress(95, "GPT parh li gayi")
         return True
+    if code in _CRASH_CODES:
+        ctx.log(_CRASH_LINE, "ERROR")
+        return False
     ctx.log(f"MTKClient exit code {code} ke saath band hua. Aam wajahen: "
             "device BROM me nahi aya; DA/auth is chipset ke liye server-"
             "required ho sakta hai (DESIGN.md ki matrix dekho); ya USB "
