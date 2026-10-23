@@ -55,6 +55,7 @@ jobs:
           --paths src
           --hidden-import demo
           --hidden-import ops.adb_info
+          --hidden-import ops.adb_mdm_bypass
           --hidden-import ops.adb_reboot
           --hidden-import ops.adb_reboot_bootloader
           --hidden-import ops.adb_reboot_recovery
@@ -78,6 +79,7 @@ jobs:
           --hidden-import ops.mtk_bypass_chain
           --hidden-import ops.mtk_flash
           --hidden-import ops.mtk_frp_reset
+          --hidden-import ops.mtk_identify_backup
           --hidden-import ops.mtk_info
           --hidden-import ops.mtk_nv_backup
           --hidden-import ops.mtk_nv_restore
@@ -97,6 +99,7 @@ jobs:
           --hidden-import ops.samsung_kg_status
           --hidden-import ops.samsung_frp_router
           --hidden-import ops.spd_cert_backup
+          --hidden-import ops.spd_cert_restore
           --hidden-import ops.spd_frp
           --hidden-import ops.spd_frp_pac_guide
           --hidden-import ops.spd_launcher
@@ -124,7 +127,9 @@ jobs:
           --hidden-import ops.samsung_flash
           --hidden-import ops.samsung_flash_keepdata
           --hidden-import ops.spd_readback
+          --hidden-import ops.util_dump_analyser
           --hidden-import ops.util_install_drivers
+          --hidden-import ops.util_transsion_rom_patcher
           --hidden-import ops.util_update_check
           --hidden-import ops.xiaomi_miassistant
           --hidden-import ops.mtk_rpmb_read
@@ -157,6 +162,7 @@ jobs:
           --hidden-import core.repair_intel
           --hidden-import core.server
           --hidden-import core.shop_sync
+          --hidden-import core.spd_chips
           --hidden-import ops.util_server_status
           src/main.py
 
