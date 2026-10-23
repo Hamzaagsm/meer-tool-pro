@@ -284,7 +284,9 @@ Intelligence; 99 ops):
 v1.0.1 — Suite Phase 3 izafa (SERVER: login + trial +
 sync + Update Center + admin; 100 ops):
 - LOGIN GATE: tool start par Supabase login (email +
-  password; Login / Sign Up tabs). Login ke baad trial
+  password; SIRF Login — Sign Up tool me nahi hai,
+  account sirf dukaan ki taraf se banta hai). Login ke
+  baad trial
   ka faisla SERVER ke time par hota hai (trial_status
   RPC) — PC ki ghari badalne se trial nahi barhta.
   Blocked / trial-expired par band screen saaf wajah
@@ -2750,16 +2752,12 @@ class App(tk.Tk):
         self.gate_login_btn = tk.Button(
             brow, text="LOGIN", bg=ACCENT, fg="#111", relief="flat",
             font=("Segoe UI", 11, "bold"), padx=22, pady=5,
-            command=lambda: self._gate_auth("login"))
-        self.gate_login_btn.pack(side="left", padx=4)
-        self.gate_signup_btn = tk.Button(
-            brow, text="SIGN UP (naya account)", bg=PANEL2, fg=FG,
-            relief="flat", font=("Segoe UI", 11, "bold"), padx=14,
-            pady=5, command=lambda: self._gate_auth("signup"))
-        self.gate_signup_btn.pack(side="left", padx=4)
-        tk.Label(lf, text="Naya account: Sign Up dabate hi trial "
-                          "khud shuru ho jata hai (din server "
-                          "setting se).",
+            command=self._gate_auth)
+        self.gate_login_btn.pack(pady=2)
+        tk.Label(lf, text="Account ke liye rabta karen — accounts "
+                          "sirf dukaan ki taraf se bante hain. "
+                          "Naya account dukaan se milta hai; trial "
+                          "account bante hi shuru ho jata hai.",
                  bg=PANEL, fg=MUTED, wraplength=440,
                  justify="center",
                  font=("Segoe UI", 8)).pack(padx=16, pady=(2, 4))
@@ -2848,8 +2846,10 @@ class App(tk.Tk):
             self.gate_login_frame.pack_forget()
             self.gate_locked_frame.pack(fill="x")
 
-    def _gate_auth(self, mode):
-        """Login / Sign Up — network thread, natija _apply_access."""
+    def _gate_auth(self):
+        """Sirf Login — network thread, natija _apply_access.
+        Sign Up tool me NAHI hai: accounts sirf dukaan (admin)
+        ki taraf se Supabase dashboard me bante hain."""
         email = self.gate_email_var.get().strip()
         pw = self.gate_pass_var.get()
         if not email or "@" not in email:
@@ -2860,31 +2860,11 @@ class App(tk.Tk):
                 text="Password kam az kam 6 characters ka ho.")
             return
         self.gate_err.configure(text="")
-        for b in (self.gate_login_btn, self.gate_signup_btn):
-            b.configure(state="disabled")
+        self.gate_login_btn.configure(state="disabled")
 
         def work():
             try:
                 client = self._client()
-                if mode == "signup":
-                    resp = client.signup(email, pw)
-                    if resp and resp.get("access_token"):
-                        server_mod.save_session(
-                            server_mod.session_from_auth(resp))
-                        result = server_mod.evaluate_access(client)
-                        self.ui_q.put(
-                            ("call",
-                             lambda: self._apply_access(result)))
-                    else:
-                        self.ui_q.put(("call", lambda: (
-                            self._gate_buttons_on(),
-                            self.gate_err.configure(
-                                text="Account ban gaya ✔ Ab email "
-                                     "inbox me Supabase ka confirm "
-                                     "link kholo, phir yahin LOGIN "
-                                     "karo. (Confirm band ho to "
-                                     "direct LOGIN chalega.)"))))
-                    return
                 resp = client.login(email, pw)
                 server_mod.save_session(
                     server_mod.session_from_auth(resp))
@@ -2900,11 +2880,10 @@ class App(tk.Tk):
         threading.Thread(target=work, daemon=True).start()
 
     def _gate_buttons_on(self):
-        for b in (self.gate_login_btn, self.gate_signup_btn):
-            try:
-                b.configure(state="normal")
-            except Exception:  # noqa: BLE001
-                pass
+        try:
+            self.gate_login_btn.configure(state="normal")
+        except Exception:  # noqa: BLE001
+            pass
 
     def _gate_restricted(self):
         """Sirf-Dukaan mode — records local hain, servicing band."""
