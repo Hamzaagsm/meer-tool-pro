@@ -144,8 +144,10 @@ DRIVER_GUIDANCE = (
     "dabaye hue cable; EDL: 9008 mode; SPRD: Volume Down "
     "dabaye hue; META: band phone META combo ke saath). Agar "
     "port Device Manager me nazar hi nahi ata to driver "
-    "missing hai — UTILITY module ka 'Install Drivers (UsbDk "
-    "+ Vendor Pack)' op chalao, phir phone dobara lagao."
+    "missing hai — UTILITY module ka 'Install Drivers (VCOM "
+    "+ Filter + Vendor Pack)' op chalao (MediaTek VCOM lagao "
+    "aur 'MediaTek USB Port' par libusb filter lazmi lagao), "
+    "phir phone dobara lagao."
 )
 
 

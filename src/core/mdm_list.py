@@ -157,6 +157,56 @@ def model_label(m):
     return label
 
 
+# ---------------------------------------------------------------------------
+# Route ki rehnumai lines (PAID-TOOLS-TEARDOWN item: MDM route
+# ladder). Pehli line har model ki asal 'route' value + us ki
+# wazahat hai. Doosri line ("Pehla rasta na chale to...") SIRF
+# un models par ati hai jin ke apne data / is file ki apni
+# documented soch me doosra darwaza pehle se mojood hai:
+#   - 'META+DA'  : route value khud do raston ka jora hai.
+#   - 'new-Auth' : upar wali note ke mutabiq META entry gated
+#                  hai aur "DA ladder baqi" hai (meta_guard ki
+#                  ladder bhi yahi kehti hai).
+# Is ke ilawa koi alternate NAHI banaya jata — jo data me nahi,
+# wo hint me nahi.
+# ---------------------------------------------------------------------------
+
+_ROUTE_NOTES = {
+    "META": "Transsion META mode se entry — band phone, META "
+            "combo ke saath cable lagti hai.",
+    "META+DA": "META aur Download Agent — dono darwaze is "
+               "model par khule hain.",
+    "new-Auth": "META entry naye signed Auth se gated hai — "
+                "bina Auth ke META andar nahi jane deta.",
+    "Kamakiri": "MT6768 ka ROM-exploit rasta — software patch "
+                "is darwaze ko band nahi karta.",
+    "DIAG/FDL": "Unisoc DIAG mode + model ke apne PAC ke FDL "
+                "se kaam hota hai.",
+}
+
+_ROUTE_ALT = {
+    "META+DA": "Pehla rasta na chale to: Download Agent (DA) "
+               "wala rasta — upar Download tab se DA chun kar "
+               "koshish karo.",
+    "new-Auth": "Pehla rasta na chale to: DA ladder — Download "
+                "tab wale raste pehle azmao; Auth wala darwaza "
+                "aakhir me ata hai.",
+}
+
+
+def route_hint_lines(m):
+    """Model panel ke liye 'Rasta:' wali lines (1 ya 2)."""
+    route = model_route(m)
+    note = _ROUTE_NOTES.get(
+        route, "Model ke record wala rasta — panel ke tabs isi "
+               "ke mutabiq khule hain.")
+    lines = [f"Rasta: {route} — {note}"]
+    alt = _ROUTE_ALT.get(route)
+    if alt:
+        lines.append(alt)
+    return lines
+
+
 def model_tabs(m):
     """Model ke tags/chipset-family se kaun se mode tabs nazar ayenge.
 

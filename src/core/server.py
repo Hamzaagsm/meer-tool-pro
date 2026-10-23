@@ -63,6 +63,39 @@ class ServerError(Exception):
 
 
 # ------------------------------------------------------------- config ----
+# CONFIG PIN (anti-crack): trial ka asal taala server par hai,
+# is liye is tool ko crack karne ka sab se asan rasta
+# tools/server-config.json ki 'url' badal kar apna nakli local
+# server khara karna hota — nakli server hamesha "trial ok"
+# kahega. Asli project ka address is liye CODE me bhi pin hai:
+# shipped config (default path) ka url is se na mile to server
+# features band — ye copy asli nahi mani jayegi.
+# MEER_SERVER_CONFIG env override (upar documented test/dev
+# hook) par pin lagu NAHI hota; OFFLINE mode (tasdeeq shuda
+# session + asli config) bilkul pehle ki tarah chalta hai.
+EXPECTED_PROJECT_URL = "https://kcowjfrdeissgotsmljj.supabase.co"
+
+CONFIG_PIN_MESSAGE = (
+    "Server config badli hui hai — ye copy asli nahi hai. "
+    "Tool ki asli copy download karo; is copy par server "
+    "login/trial band hai.")
+
+
+def config_pin_error(url, from_override=False):
+    """Pin mismatch par CONFIG_PIN_MESSAGE, warna None (pure).
+
+    Sirf HOST compare hota hai (scheme/path ki chhoti
+    tabdeeli par nakli alarm nahi)."""
+    if from_override:
+        return None
+    host = urllib.parse.urlparse(str(url or "")).netloc.lower()
+    expected = urllib.parse.urlparse(
+        EXPECTED_PROJECT_URL).netloc.lower()
+    if host != expected:
+        return CONFIG_PIN_MESSAGE
+    return None
+
+
 def config_path() -> Path:
     override = os.environ.get("MEER_SERVER_CONFIG", "").strip()
     if override:
@@ -83,6 +116,11 @@ def load_config() -> dict:
         key = str(data.get("publishable_key") or "")
         if not url or not key:
             raise ValueError("url/publishable_key khaali hai")
+        pin_err = config_pin_error(
+            url, from_override=bool(
+                os.environ.get("MEER_SERVER_CONFIG", "").strip()))
+        if pin_err:
+            raise ServerError(pin_err, code="config_pin")
         return {"url": url, "publishable_key": key}
     except ServerError:
         raise
@@ -508,6 +546,8 @@ def friendly_auth_error(err: Exception) -> str:
     if isinstance(err, ServerOffline):
         return ("Internet nahi hai — pehla login online lazmi "
                 "hai. Connection check karke dobara try karo.")
+    if isinstance(err, ServerError) and err.code == "config_pin":
+        return err.message
     if isinstance(err, ServerError):
         low = (err.message or "").lower()
         if "invalid login credentials" in low:
@@ -530,7 +570,8 @@ def friendly_auth_error(err: Exception) -> str:
 
 __all__ = [
     "ServerOffline", "ServerError", "SupabaseClient",
-    "load_config", "config_path",
+    "load_config", "config_path", "config_pin_error",
+    "EXPECTED_PROJECT_URL", "CONFIG_PIN_MESSAGE",
     "session_path", "load_session", "save_session",
     "clear_session", "session_from_auth",
     "AccessResult", "evaluate_access", "friendly_auth_error",
