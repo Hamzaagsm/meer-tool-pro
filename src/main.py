@@ -13,6 +13,7 @@ engine chalata hai — output live log me stream hoti hai. Koi launcher
 nahi, koi nakli success nahi.
 """
 
+import hashlib
 import queue
 import sys
 import threading
@@ -37,6 +38,29 @@ from core import shop_sync                      # noqa: E402
 from core import utility                      # noqa: E402
 from core.runner import ENGINES_DIR, Runner, TOOLS_DIR     # noqa: E402
 from ops import load_operations               # noqa: E402
+
+
+def _integrity_digest():
+    """Chal rahi copy ka SHA-256 (pehle 12 hex) + file ka naam.
+
+    Anti-crack ki halki si jhalak: repack/tamper hui copy ka
+    hash asal release se mukhtalif hoga — startup log me ye
+    line saboot ke tor par rehti hai. Frozen EXE me executable
+    hash hota hai; source run me main.py ka. Kabhi raise nahi
+    karta — (None, None) nakami par."""
+    try:
+        if getattr(sys, "frozen", False):
+            target = Path(sys.executable)
+        else:
+            target = Path(__file__)
+        h = hashlib.sha256()
+        with target.open("rb") as f:
+            for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                h.update(chunk)
+        return h.hexdigest()[:12], target.name
+    except Exception:  # noqa: BLE001 — integrity line kabhi rukawat nahi
+        return None, None
+
 
 # ---------------------------------------------------------------- theme ----
 BG = "#14181f"
@@ -106,9 +130,12 @@ v1.0.1 — Round 5 izafa (Pandora sweep ke baad, 75 ops):
   (dependencies ke saath) — ab MTK/EDL engines ke liye alag
   Python install NAHI karna parta. Double-click par sab chalta
   hai; system Python sirf fallback hai.
-- Driver Pack + Install Drivers op (Utility): UsbDk + Samsung
-  official USB driver bundle; MTK VCOM / Qualcomm 9008 / SPRD
-  ke liye sirf official raste ki guide (README-DRIVERS).
+- Driver Pack + Install Drivers op (Utility): MediaTek VCOM
+  (signed) + libusb filter + Zadig + Samsung official USB
+  driver bundle; Qualcomm 9008 / SPRD ke liye sirf official
+  raste ki guide (README-DRIVERS). UsbDk bundle se HATA diya
+  gaya — Windows ke naye builds par wo MTKClient ko crash
+  karta tha; MTK ops se pehle UsbDk pre-check WARN ajata hai.
 - META basic-tier asal ops: Enter META (port verify ke saath),
   META Read Info, META Factory Reset, META Enable ADB — har
   SUCCESS sirf device ke verify-shuda jawab par. EFT Pro ke
@@ -657,6 +684,13 @@ class App(tk.Tk):
             item = self.tree.insert(cats[cat], "end", text=label)
             self.op_modules[item] = module
         self.log_line(f"{len(modules)} operations load ho gayeen.", "INFO")
+        if not getattr(self, "_integrity_logged", False):
+            self._integrity_logged = True
+            digest, target_name = _integrity_digest()
+            if digest:
+                self.log_line(
+                    f"Integrity: {target_name} sha256:{digest} "
+                    f"· {len(modules)} ops", "INFO")
 
     def _on_select(self, _event=None):
         sel = self.tree.selection()
@@ -809,7 +843,11 @@ class App(tk.Tk):
         tags = "  ".join(f"[{t}]" for t in model.get("tags", []))
         tk.Label(panel, text=tags, bg=PANEL, fg=ACCENT,
                  font=("Segoe UI", 8, "bold")).pack(anchor="w", padx=8,
-                                                    pady=(0, 4))
+                                                    pady=(0, 2))
+        for hint_line in mdm_list.route_hint_lines(model):
+            tk.Label(panel, text=hint_line, bg=PANEL, fg=MUTED,
+                     font=("Segoe UI", 8)).pack(anchor="w", padx=8)
+        tk.Frame(panel, bg=PANEL, height=4).pack(fill="x")
         tabs = mdm_list.model_tabs(model)
         if tabs.get("fdl_exploit"):
             tk.Checkbutton(panel, text="FDL Exploit",
