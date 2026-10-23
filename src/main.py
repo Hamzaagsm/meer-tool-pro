@@ -284,9 +284,8 @@ Intelligence; 99 ops):
 v1.0.1 — Suite Phase 3 izafa (SERVER: login + trial +
 sync + Update Center + admin; 100 ops):
 - LOGIN GATE: tool start par Supabase login (email +
-  password; SIRF Login — Sign Up tool me nahi hai,
-  account sirf dukaan ki taraf se banta hai). Login ke
-  baad trial
+  password; SIRF Login — Sign Up tool me nahi hai).
+  Login ke baad trial
   ka faisla SERVER ke time par hota hai (trial_status
   RPC) — PC ki ghari badalne se trial nahi barhta.
   Blocked / trial-expired par band screen saaf wajah
@@ -2754,13 +2753,6 @@ class App(tk.Tk):
             font=("Segoe UI", 11, "bold"), padx=22, pady=5,
             command=self._gate_auth)
         self.gate_login_btn.pack(pady=2)
-        tk.Label(lf, text="Account ke liye rabta karen — accounts "
-                          "sirf dukaan ki taraf se bante hain. "
-                          "Naya account dukaan se milta hai; trial "
-                          "account bante hi shuru ho jata hai.",
-                 bg=PANEL, fg=MUTED, wraplength=440,
-                 justify="center",
-                 font=("Segoe UI", 8)).pack(padx=16, pady=(2, 4))
         lf.pack(fill="x", pady=(0, 6))
 
         # Band (locked) halat ke buttons
@@ -2848,8 +2840,7 @@ class App(tk.Tk):
 
     def _gate_auth(self):
         """Sirf Login — network thread, natija _apply_access.
-        Sign Up tool me NAHI hai: accounts sirf dukaan (admin)
-        ki taraf se Supabase dashboard me bante hain."""
+        Sign Up tool me NAHI hai."""
         email = self.gate_email_var.get().strip()
         pw = self.gate_pass_var.get()
         if not email or "@" not in email:
