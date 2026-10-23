@@ -404,8 +404,9 @@ def evaluate_access(client: SupabaseClient) -> AccessResult:
         msg = ("Internet nahi hai aur is PC par pehle koi login "
                "nahi hua — pehla login online lazmi hai."
                if offline else
-               "Apne account se login karo. Naya account ho to "
-               "Sign Up se banao — trial khud shuru ho jayega.")
+               "Apne account se login karo. Account na ho to "
+               "dukaan se rabta karen — accounts sirf dukaan ki "
+               "taraf se bante hain.")
         return AccessResult("login", msg, session=None,
                             offline=offline)
 
