@@ -155,6 +155,9 @@ jobs:
           --hidden-import core.firmware_catalog
           --hidden-import core.fw_harvest
           --hidden-import core.repair_intel
+          --hidden-import core.server
+          --hidden-import core.shop_sync
+          --hidden-import ops.util_server_status
           src/main.py
 
       - name: Package (EXE + tools folder aik ZIP me)
