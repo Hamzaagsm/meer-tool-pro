@@ -21,7 +21,7 @@ import tkinter as tk
 import webbrowser
 from datetime import date
 from pathlib import Path
-from tkinter import filedialog, ttk
+from tkinter import filedialog, messagebox, ttk
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -31,7 +31,9 @@ from core import firmware_catalog             # noqa: E402
 from core import mdm_list                     # noqa: E402
 from core import platforms_mtk                # noqa: E402
 from core import repair_intel                 # noqa: E402
-from core import shop_db                      # noqa: E402
+from core import server as server_mod
+from core import shop_db
+from core import shop_sync                      # noqa: E402
 from core import utility                      # noqa: E402
 from core.runner import ENGINES_DIR, Runner, TOOLS_DIR     # noqa: E402
 from ops import load_operations               # noqa: E402
@@ -278,6 +280,41 @@ Intelligence; 99 ops):
   NVRAM+NVDATA aur Proinfo Write pehle warning-only
   thay, ab dono par DANGER GATE (tasdeeq ke baghair
   zero koshish) lag gaya hai.
+
+v1.0.1 — Suite Phase 3 izafa (SERVER: login + trial +
+sync + Update Center + admin; 100 ops):
+- LOGIN GATE: tool start par Supabase login (email +
+  password; Login / Sign Up tabs). Login ke baad trial
+  ka faisla SERVER ke time par hota hai (trial_status
+  RPC) — PC ki ghari badalne se trial nahi barhta.
+  Blocked / trial-expired par band screen saaf wajah
+  ke saath. HOME par 'Trial: X din baqi' badge.
+- OFFLINE mode (survival rule): server na mile aur
+  pehle se verify shuda session ho to 'Offline mode'
+  me andar — dukaan ka kaam kabhi nahi rukta. Koi
+  session hi na ho to pehla login online lazmi hai.
+  Band/expired halat me bhi 'Sirf Dukaan Records'
+  button se CUSTOMERS / JOBS / HOME khul sakte hain
+  (servicing band rehta hai) — records hamesha LOCAL
+  shop.db me hain, server sirf un ka backup hai.
+- DUKAAN SYNC (CUSTOMERS screen par buttons): poora
+  JSON backup server par (shop_backup), aur server se
+  wapas — restore se pehle hamesha local backup copy
+  (shop_db.backup_db) + dates dikha kar user ki
+  tasdeeq lazmi.
+- UPDATE CENTER mukammal: pehle server (app_releases)
+  se latest version/notes/URL/SHA-256, werna GitHub
+  fallback. UTILITY ke 'UPDATE FILE VERIFY' button se
+  downloaded file ki SHA-256 server wale hash se
+  verify hoti hai.
+- ADMIN module (sirf admin account par nazar ata
+  hai): tamam accounts ki fehrist (email, role,
+  blocked, trial din), Block/Unblock, per-user trial
+  din override, aur global trial_days setting — sab
+  server par jata hai. Admin khud ko block nahi kar
+  sakta (guard).
+- Naya op: 'Server / Account Status' (Utility) —
+  server rabta + login + trial ki LIVE halat log me.
 """
 
 
@@ -333,6 +370,13 @@ class App(tk.Tk):
         self.fw_selected = None         # catalog entries ka index
         self.fw_items = {}              # fw tree item id -> catalog index
         self.fw_catalog = None          # load shuda catalogue dict
+        # Suite Phase 3 (SERVER) ki halat
+        self.server_state = "checking"  # gate ki halat
+        self.server_status = {}     # aakhri trial_status ka jawab
+        self.session = None         # tools/session.json wali session
+        self.restricted = False     # Sirf-Dukaan mode (servicing band)
+        self.admin_profiles = []    # admin fehrist ki rows
+        self.admin_items = {}       # admin tree item id -> profile dict
 
         self.runner = Runner(
             log_fn=lambda m, lvl: self.ui_q.put(("log", m, lvl)),
@@ -345,6 +389,9 @@ class App(tk.Tk):
         self._load_ops_tree()
         self._load_mdm_models()
         self._init_shop()
+        # Phase 3: server gate sab se aakhir me — overlay poori
+        # window par ata hai, peeche UI tayyar rehta hai.
+        self._gate_begin()
         self.after(60, self._drain_queue)
         threading.Thread(target=self._watch_loop, daemon=True).start()
         self.log_line("MEER TOOL PRO tayyar hai. Phone lagao — device "
@@ -363,6 +410,17 @@ class App(tk.Tk):
         tk.Button(head, text="▶  DEMO MODE", command=self.start_demo,
                   bg=ACCENT, fg="#111", font=("Segoe UI", 10, "bold"),
                   relief="flat", padx=12, pady=4).pack(side="right", padx=12, pady=8)
+        # Phase 3: account halat + LOGOUT (title bar, dayen janib)
+        self.logout_btn = tk.Button(
+            head, text="LOGOUT", command=self._logout,
+            bg=PANEL2, fg=FG, font=("Segoe UI", 9, "bold"),
+            relief="flat", padx=10, pady=4)
+        self.logout_btn.pack(side="right", padx=(0, 4), pady=8)
+        self.acct_label = tk.Label(head, text="Server: check ho "
+                                              "raha hai...",
+                                   bg=PANEL, fg=MUTED,
+                                   font=("Segoe UI", 9, "bold"))
+        self.acct_label.pack(side="right", padx=(0, 6), pady=10)
 
         # Module switcher (Fenix-style): HOME / UNLOCK / PLATFORMS /
         # UTILITY / CHANGELOG
@@ -374,6 +432,7 @@ class App(tk.Tk):
                            ("customers", "CUSTOMERS"),
                            ("jobs", "JOBS"),
                            ("firmware", "FIRMWARE"),
+                           ("admin", "ADMIN"),
                            ("changelog", "CHANGELOG")):
             btn = tk.Button(mbar, text=title, relief="flat",
                             font=("Segoe UI", 9, "bold"), padx=12, pady=3,
@@ -477,7 +536,12 @@ class App(tk.Tk):
         self.module_frames["customers"] = self._build_customers(modarea)
         self.module_frames["jobs"] = self._build_jobs(modarea)
         self.module_frames["firmware"] = self._build_firmware(modarea)
+        self.module_frames["admin"] = self._build_admin(modarea)
         self.module_frames["changelog"] = self._build_changelog(modarea)
+        # ADMIN button sirf admin account par — baqi sab ke liye
+        # chhupa rehta hai (gate ke baad _apply_access ise kholta
+        # / band rakhta hai).
+        self.module_btns["admin"].pack_forget()
         mid.pack(fill="both", expand=True)
 
         # LIVE LOG — tamam modules ke liye mushtaraka, hamesha nazar
@@ -711,9 +775,21 @@ class App(tk.Tk):
         }
         return imei, danger, params
 
+    def _servicing_blocked(self):
+        """Sirf-Dukaan (restricted) mode me servicing band hai —
+        login lazmi hai. True = op rok do."""
+        if getattr(self, "restricted", False):
+            self.log_line("⛔ Sirf-Dukaan mode hai — servicing "
+                          "ops ke liye pehle LOGIN karo.",
+                          "ERROR")
+            return True
+        return False
+
     def _run_action(self, op_obj):
         """Model panel ke buttons — bilkul START wala rasta (runner)."""
         if op_obj is None:
+            return
+        if self._servicing_blocked():
             return
         imei, danger, params = self._collect_op_args(op_obj)
         if self.runner.start(op_obj, self.device,
@@ -967,6 +1043,18 @@ class App(tk.Tk):
         hain."""
         if name not in self.module_frames:
             return
+        # Phase 3 guards: Sirf-Dukaan (restricted) mode me sirf
+        # HOME / CUSTOMERS / JOBS khulte hain; ADMIN sirf admin
+        # account par.
+        if getattr(self, "restricted", False) and \
+                name not in ("home", "customers", "jobs"):
+            self.log_line("⛔ Sirf-Dukaan mode hai — ye module "
+                          "login ke baghair band hai.", "WARN")
+            return
+        if name == "admin" and not self._is_admin_now():
+            self.log_line("⛔ ADMIN module sirf admin account "
+                          "par khulta hai.", "WARN")
+            return
         self.current_module = name
         for key, frame in self.module_frames.items():
             if key == name:
@@ -987,6 +1075,8 @@ class App(tk.Tk):
             self._refresh_jobs()
         elif name == "firmware":
             self._refresh_firmware()
+        elif name == "admin":
+            self._admin_refresh()
 
     def _run_lazy(self, op_id):
         """Click ke waqt registry se module dhoondo (builders GUI banne
@@ -1059,9 +1149,16 @@ class App(tk.Tk):
             shopf, text="Records load ho rahe hain...",
             bg=PANEL, fg=FG, font=("Segoe UI", 11, "bold"))
         self.home_shop_label.pack(anchor="w", padx=10, pady=(8, 2))
-        tk.Label(shopf, text="Records sirf is PC par mehfooz hain "
-                             "(local SQLite) — koi server nahi, "
-                             "internet ho ya na ho dukaan chalti hai.",
+        # Phase 3: trial / account badge (gate ke baad bhar jata hai)
+        self.home_trial_label = tk.Label(
+            shopf, text="🎫 Account: check ho raha hai...",
+            bg=PANEL, fg=MUTED, font=("Segoe UI", 10, "bold"))
+        self.home_trial_label.pack(anchor="w", padx=10, pady=(2, 0))
+        tk.Label(shopf, text="Records is PC par mehfooz hain "
+                             "(local SQLite) — internet ho ya na "
+                             "ho dukaan chalti hai. Server par sirf "
+                             "backup / sync jata hai (CUSTOMERS "
+                             "screen ke buttons se).",
                  bg=PANEL, fg=MUTED,
                  font=("Segoe UI", 8)).pack(anchor="w", padx=10)
         srow = tk.Frame(shopf, bg=PANEL)
@@ -1095,6 +1192,7 @@ class App(tk.Tk):
                  f"Pending (deliver baqi): {st['pending_jobs']}      "
                  f"·      Kul customers: {st['total_customers']}      "
                  f"·      Kul jobs: {st['total_jobs']}")
+        self._refresh_trial_badge()
 
     # ------------------------------------------------------- PLATFORMS ---
     def _build_platforms(self, parent):
@@ -1497,7 +1595,13 @@ class App(tk.Tk):
                     padx=(0, 4), pady=2)
         self._tab_ops_lazy(pc_box, [
             ("util_install_drivers", "INSTALL DRIVERS - [PC]"),
-            ("util_update_check", "UPDATE CHECK - [PC]")])
+            ("util_update_check", "UPDATE CHECK - [PC]"),
+            ("util_server_status", "SERVER / ACCOUNT STATUS - [PC]")])
+        tk.Button(pc_box, text="UPDATE FILE VERIFY (SHA-256)",
+                  bg=PANEL2, fg=FG, relief="flat",
+                  font=("Segoe UI", 9, "bold"), padx=10, pady=5,
+                  command=self._update_verify_file).pack(
+                      anchor="w", fill="x", padx=8, pady=3)
         fw_box = tk.LabelFrame(row2, text=" FIRMWARE FRONT DOOR ", bg=PANEL,
                                fg=MUTED, font=("Segoe UI", 9, "bold"),
                                bd=1)
@@ -1658,6 +1762,17 @@ class App(tk.Tk):
                   pady=3,
                   command=self._cust_backup).pack(side="right",
                                                   padx=(4, 0))
+        # Phase 3: server sync buttons (login lazmi hai)
+        tk.Button(top, text="⬆ SERVER PAR BACKUP", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 8, "bold"), padx=8,
+                  pady=3,
+                  command=self._shop_sync_upload).pack(side="right",
+                                                       padx=4)
+        tk.Button(top, text="⬇ SERVER SE WAPAS", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 8, "bold"), padx=8,
+                  pady=3,
+                  command=self._shop_sync_restore).pack(side="right",
+                                                        padx=4)
 
         body = tk.Frame(f, bg=BG)
         body.pack(fill="both", expand=True, pady=(6, 0))
@@ -2538,6 +2653,816 @@ class App(tk.Tk):
         except Exception:  # noqa: BLE001
             pass
 
+    # ------------------------------------------------ SERVER (Phase 3) --
+    def _client(self):
+        return server_mod.SupabaseClient.from_config()
+
+    def _is_admin_now(self):
+        if self.server_state == "ok_admin":
+            return True
+        if self.server_state == "offline_ok":
+            return (self.server_status or {}).get("role") == "admin"
+        return False
+
+    def _badge_text(self):
+        """HOME badge + header account label ki ibarat."""
+        st = self.server_status or {}
+        email = (self.session or {}).get("email", "")
+        who = email or "Account"
+        if self.server_state == "ok_admin":
+            return f"🎫 {who} — ADMIN account"
+        if self.server_state == "ok_user":
+            left = st.get("days_left")
+            if left is not None:
+                return (f"🎫 Trial: {left} din baqi "
+                        f"(khatam: {st.get('expires_at', '')}) — "
+                        f"{who}")
+            return f"🎫 Trial jaari hai — {who}"
+        if self.server_state == "offline_ok":
+            left = st.get("days_left")
+            tail = (f" — aakhri tasdeeq par {left} din baqi thay"
+                    if left is not None else "")
+            return f"🎫 OFFLINE mode{tail} — {who}"
+        if self.restricted:
+            return "🎫 Sirf-Dukaan mode — login nahi (servicing band)"
+        if self.server_state == "locked_blocked":
+            return "🎫 Account BAND hai — rabta karen"
+        if self.server_state == "locked_expired":
+            return "🎫 Trial KHATAM — rabta karen"
+        if self.server_state == "locked_setup":
+            return "🎫 Server setup baqi hai — admin ko batao"
+        return "🎫 Account: check ho raha hai..."
+
+    def _refresh_trial_badge(self):
+        lbl = getattr(self, "home_trial_label", None)
+        if lbl is not None:
+            lbl.configure(text=self._badge_text())
+        acct = getattr(self, "acct_label", None)
+        if acct is not None:
+            acct.configure(text=self._badge_text())
+
+    # -- login gate overlay -------------------------------------------
+    def _gate_begin(self):
+        """Poori window par login/locked overlay + pehla check."""
+        g = tk.Frame(self, bg=BG)
+        g.place(x=0, y=0, relwidth=1, relheight=1)
+        self.gate = g
+        box = tk.Frame(g, bg=PANEL, bd=1, relief="solid")
+        box.place(relx=0.5, rely=0.5, anchor="center", width=560)
+        tk.Label(box, text="MEER TOOL PRO", bg=PANEL, fg=ACCENT,
+                 font=("Segoe UI", 18, "bold")).pack(pady=(18, 0))
+        tk.Label(box, text="Server login — trial account system",
+                 bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 10)).pack(pady=(0, 8))
+        self.gate_msg = tk.Label(box, text="Server se rabta ho "
+                                           "raha hai...",
+                                 bg=PANEL, fg=FG, wraplength=500,
+                                 justify="center",
+                                 font=("Segoe UI", 10))
+        self.gate_msg.pack(padx=16, pady=(0, 8))
+
+        # Login form
+        lf = tk.Frame(box, bg=PANEL)
+        self.gate_login_frame = lf
+        tk.Label(lf, text="Email:", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 9, "bold")).pack(anchor="w",
+                                                    padx=60)
+        self.gate_email_var = tk.StringVar()
+        tk.Entry(lf, textvariable=self.gate_email_var, bg=PANEL2,
+                 fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 11)).pack(fill="x", padx=60,
+                                             pady=(0, 6))
+        tk.Label(lf, text="Password:", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 9, "bold")).pack(anchor="w",
+                                                    padx=60)
+        self.gate_pass_var = tk.StringVar()
+        tk.Entry(lf, textvariable=self.gate_pass_var, show="•",
+                 bg=PANEL2, fg=FG, insertbackground=FG,
+                 relief="flat",
+                 font=("Segoe UI", 11)).pack(fill="x", padx=60,
+                                             pady=(0, 6))
+        self.gate_err = tk.Label(lf, text="", bg=PANEL, fg="#ff7b72",
+                                 wraplength=440, justify="center",
+                                 font=("Segoe UI", 9, "bold"))
+        self.gate_err.pack(padx=16, pady=(0, 4))
+        brow = tk.Frame(lf, bg=PANEL)
+        brow.pack(pady=(2, 4))
+        self.gate_login_btn = tk.Button(
+            brow, text="LOGIN", bg=ACCENT, fg="#111", relief="flat",
+            font=("Segoe UI", 11, "bold"), padx=22, pady=5,
+            command=lambda: self._gate_auth("login"))
+        self.gate_login_btn.pack(side="left", padx=4)
+        self.gate_signup_btn = tk.Button(
+            brow, text="SIGN UP (naya account)", bg=PANEL2, fg=FG,
+            relief="flat", font=("Segoe UI", 11, "bold"), padx=14,
+            pady=5, command=lambda: self._gate_auth("signup"))
+        self.gate_signup_btn.pack(side="left", padx=4)
+        tk.Label(lf, text="Naya account: Sign Up dabate hi trial "
+                          "khud shuru ho jata hai (din server "
+                          "setting se).",
+                 bg=PANEL, fg=MUTED, wraplength=440,
+                 justify="center",
+                 font=("Segoe UI", 8)).pack(padx=16, pady=(2, 4))
+        lf.pack(fill="x", pady=(0, 6))
+
+        # Band (locked) halat ke buttons
+        kf = tk.Frame(box, bg=PANEL)
+        self.gate_locked_frame = kf
+        tk.Button(kf, text="↻ Dobara Try Karo", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 10, "bold"),
+                  padx=14, pady=5,
+                  command=self._gate_retry).pack(pady=2)
+        kf.pack(fill="x")
+
+        # Sirf-Dukaan rasta (records hamesha local hain)
+        tk.Button(box, text="📒 Baghair login — sirf Dukaan "
+                            "Records kholo",
+                  bg=PANEL, fg=MUTED, relief="flat",
+                  font=("Segoe UI", 9, "bold"), padx=10, pady=4,
+                  command=self._gate_restricted).pack(pady=(8, 14))
+        self._gate_check()
+
+    def _gate_check(self):
+        """Session/trial ka check — network thread me."""
+        def work():
+            try:
+                result = server_mod.evaluate_access(self._client())
+            except Exception as e:  # noqa: BLE001
+                result = server_mod.AccessResult(
+                    "locked_setup",
+                    f"Server check me masla: {e}")
+            self.ui_q.put(("call",
+                           lambda: self._apply_access(result)))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _gate_retry(self):
+        self.gate_err.configure(text="")
+        self.gate_msg.configure(text="Server se dobara rabta ho "
+                                     "raha hai...")
+        self.gate_locked_frame.pack_forget()
+        self.gate_login_frame.pack_forget()
+        self._gate_check()
+
+    def _apply_access(self, result):
+        """Gate ka natija GUI par lago (main thread)."""
+        self.server_state = result.state
+        self.server_status = result.status or {}
+        self.session = result.session
+        self._refresh_trial_badge()
+        if result.allowed:
+            self.restricted = False
+            if getattr(self, "gate", None) is not None:
+                self.gate.place_forget()
+            btn = self.module_btns.get("admin")
+            if btn is not None:
+                if result.is_admin:
+                    btn.pack(side="left", padx=3)
+                else:
+                    btn.pack_forget()
+            if result.state == "offline_ok":
+                self.log_line("🌐 Internet nahi — OFFLINE mode: "
+                              "aakhri server tasdeeq par andar. "
+                              "Dukaan + servicing chalte rahenge; "
+                              "sync/update ke liye internet chahiye.",
+                              "WARN")
+            elif result.state == "ok_admin":
+                self.log_line(f"🔐 Login: "
+                              f"{(self.session or {}).get('email', '')}"
+                              " — ADMIN account. ADMIN module khul "
+                              "gaya hai.", "OK")
+            else:
+                st = self.server_status
+                self.log_line(f"🔐 Login: "
+                              f"{(self.session or {}).get('email', '')}"
+                              f" — Trial: {st.get('days_left')} din "
+                              f"baqi.", "OK")
+            return
+        # Login ya band halat — overlay upar rahe
+        if getattr(self, "gate", None) is not None:
+            self.gate.place(x=0, y=0, relwidth=1, relheight=1)
+        self.gate_msg.configure(text=result.message)
+        if result.state == "login":
+            self.gate_login_frame.pack(fill="x", pady=(0, 6))
+            self.gate_locked_frame.pack_forget()
+        else:
+            self.gate_login_frame.pack_forget()
+            self.gate_locked_frame.pack(fill="x")
+
+    def _gate_auth(self, mode):
+        """Login / Sign Up — network thread, natija _apply_access."""
+        email = self.gate_email_var.get().strip()
+        pw = self.gate_pass_var.get()
+        if not email or "@" not in email:
+            self.gate_err.configure(text="Sahi email likho.")
+            return
+        if len(pw) < 6:
+            self.gate_err.configure(
+                text="Password kam az kam 6 characters ka ho.")
+            return
+        self.gate_err.configure(text="")
+        for b in (self.gate_login_btn, self.gate_signup_btn):
+            b.configure(state="disabled")
+
+        def work():
+            try:
+                client = self._client()
+                if mode == "signup":
+                    resp = client.signup(email, pw)
+                    if resp and resp.get("access_token"):
+                        server_mod.save_session(
+                            server_mod.session_from_auth(resp))
+                        result = server_mod.evaluate_access(client)
+                        self.ui_q.put(
+                            ("call",
+                             lambda: self._apply_access(result)))
+                    else:
+                        self.ui_q.put(("call", lambda: (
+                            self._gate_buttons_on(),
+                            self.gate_err.configure(
+                                text="Account ban gaya ✔ Ab email "
+                                     "inbox me Supabase ka confirm "
+                                     "link kholo, phir yahin LOGIN "
+                                     "karo. (Confirm band ho to "
+                                     "direct LOGIN chalega.)"))))
+                    return
+                resp = client.login(email, pw)
+                server_mod.save_session(
+                    server_mod.session_from_auth(resp))
+                result = server_mod.evaluate_access(client)
+                self.ui_q.put(("call",
+                               lambda: self._apply_access(result)))
+            except Exception as e:  # noqa: BLE001
+                msg = server_mod.friendly_auth_error(e)
+                self.ui_q.put(("call", lambda: (
+                    self._gate_buttons_on(),
+                    self.gate_err.configure(text=msg))))
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def _gate_buttons_on(self):
+        for b in (self.gate_login_btn, self.gate_signup_btn):
+            try:
+                b.configure(state="normal")
+            except Exception:  # noqa: BLE001
+                pass
+
+    def _gate_restricted(self):
+        """Sirf-Dukaan mode — records local hain, servicing band."""
+        self.restricted = True
+        if getattr(self, "gate", None) is not None:
+            self.gate.place_forget()
+        self._refresh_trial_badge()
+        self.log_line("📒 Sirf-Dukaan mode: HOME / CUSTOMERS / "
+                      "JOBS khule hain (records local shop.db me "
+                      "hain). Servicing ops ke liye LOGIN lazmi "
+                      "hai — upar LOGOUT ki jagah nahi, tool "
+                      "dobara kholo to login screen ayegi.", "WARN")
+        self.show_module("home")
+
+    def _logout(self):
+        sess = server_mod.load_session()
+        token = (sess or {}).get("access_token")
+
+        def work():
+            if token:
+                try:
+                    self._client().logout(token)
+                except Exception:  # noqa: BLE001
+                    pass
+            server_mod.clear_session()
+        threading.Thread(target=work, daemon=True).start()
+        self.session = None
+        self.server_status = {}
+        self.server_state = "login"
+        self.restricted = False
+        btn = self.module_btns.get("admin")
+        if btn is not None:
+            btn.pack_forget()
+        self._refresh_trial_badge()
+        self.log_line("Logout ho gaya — session saaf. Login "
+                      "screen wapas a gayi hai.", "WARN")
+        if getattr(self, "gate", None) is not None:
+            self.gate.place(x=0, y=0, relwidth=1, relheight=1)
+        self.gate_msg.configure(
+            text="Logout ho gaya. Dobara login karo.")
+        self.gate_login_frame.pack(fill="x", pady=(0, 6))
+        self.gate_locked_frame.pack_forget()
+
+    # -- dukaan sync ----------------------------------------------------
+    def _sync_precheck(self):
+        """Sync ke liye session + token — na ho to (None, None)."""
+        sess = server_mod.load_session()
+        if not sess or not sess.get("access_token"):
+            self.log_line("⬆⬇ Sync ke liye pehle LOGIN lazmi hai "
+                          "(is PC par session nahi mila).", "ERROR")
+            return None, None
+        return self._client(), sess
+
+    def _refresh_session_tokens(self, client, sess):
+        """401 par refresh karke session dobara save karo."""
+        auth = client.refresh(sess["refresh_token"])
+        sess = server_mod.session_from_auth(auth, old=sess)
+        server_mod.save_session(sess)
+        return sess
+
+    def _shop_sync_upload(self):
+        got = self._sync_precheck()
+        if got[0] is None:
+            return
+        self.log_line("⬆ Dukaan backup server par ja raha hai...",
+                      "INFO")
+
+        def work():
+            client, sess = got
+            try:
+                payload = shop_sync.export_json()
+                nc, nj = shop_sync.payload_counts(payload)
+                try:
+                    client.upsert_backup(sess["access_token"],
+                                         sess["user_id"], payload)
+                except server_mod.ServerError as e:
+                    if e.status in (401, 403):
+                        sess = self._refresh_session_tokens(
+                            client, sess)
+                        client.upsert_backup(sess["access_token"],
+                                             sess["user_id"], payload)
+                    else:
+                        raise
+                self.ui_q.put(("log",
+                               f"⬆ Backup server par mehfooz ✔ "
+                               f"({nc} customers, {nj} jobs) — "
+                               f"{payload['exported_at']}", "OK"))
+            except Exception as e:  # noqa: BLE001
+                self.ui_q.put(("log",
+                               f"⬆ Backup nahi ho saka: "
+                               f"{server_mod.friendly_auth_error(e)}",
+                               "ERROR"))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _shop_sync_restore(self):
+        got = self._sync_precheck()
+        if got[0] is None:
+            return
+        self.log_line("⬇ Server se backup ki maloomat a rahi "
+                      "hai...", "INFO")
+
+        def work():
+            client, sess = got
+            try:
+                try:
+                    row = client.get_backup(sess["access_token"],
+                                            sess["user_id"])
+                except server_mod.ServerError as e:
+                    if e.status in (401, 403):
+                        sess = self._refresh_session_tokens(
+                            client, sess)
+                        row = client.get_backup(sess["access_token"],
+                                                sess["user_id"])
+                    else:
+                        raise
+            except Exception as e:  # noqa: BLE001
+                self.ui_q.put(("log",
+                               f"⬇ Server backup nahi mila: "
+                               f"{server_mod.friendly_auth_error(e)}",
+                               "ERROR"))
+                return
+            if not row:
+                self.ui_q.put(("log",
+                               "⬇ Server par is account ka koi "
+                               "backup maujood nahi hai.", "WARN"))
+                return
+            self.ui_q.put(("call",
+                           lambda: self._confirm_restore(row)))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _confirm_restore(self, row):
+        """Dates/counts dikha kar tasdeeq — phir local backup +
+        import (main thread par confirm, import bhi yahin —
+        chhota data hai)."""
+        payload = row.get("payload") or {}
+        nc, nj = shop_sync.payload_counts(payload)
+        when = row.get("updated_at") or "?"
+        exp = payload.get("exported_at") or "?"
+        ok = messagebox.askyesno(
+            "Server se Restore?",
+            f"Server backup:\n"
+            f"  • Upload hua: {when}\n"
+            f"  • Backup bana tha: {exp}\n"
+            f"  • Customers: {nc}   Jobs: {nj}\n\n"
+            "⚠ RESTORE se is PC ke MAUJOODA dukaan records is "
+            "backup se REPLACE ho jayenge.\n"
+            "Pehle maujooda data ki backup copy khud ban jayegi "
+            "(tools/backups/).\n\nRestore karun?")
+        if not ok:
+            self.log_line("⬇ Restore user ne cancel kar diya — "
+                          "koi tabdeeli nahi hui.", "WARN")
+            return
+        # Pehle LOCAL backup copy — baghair is ke restore nahi
+        try:
+            bak = shop_db.backup_db()
+            self.log_line(f"💾 Pehle local backup copy ban gayi: "
+                          f"{bak}", "OK")
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"⬇ Restore ROK diya — local backup "
+                          f"copy nahi ban saki: {e}", "ERROR")
+            return
+        try:
+            res = shop_sync.import_json(payload)
+        except Exception as e:  # noqa: BLE001
+            self.log_line(f"⬇ Restore FAIL: {e} — maujooda "
+                          "records mehfooz hain (backup copy bhi "
+                          "maujood hai).", "ERROR")
+            return
+        self.log_line(f"⬇ Restore mukammal ✔ {res['customers']} "
+                      f"customers, {res['jobs']} jobs wapas a "
+                      "gaye.", "OK")
+        self._refresh_customers()
+        self._refresh_jobs()
+        self._refresh_home_shop()
+
+    # -- update verify ----------------------------------------------------
+    def _update_verify_file(self):
+        """Downloaded file ki SHA-256 server wale hash se verify."""
+        path = filedialog.askopenfilename(
+            title="Download ki hui update file chuno (SHA-256 "
+                  "verify)")
+        if not path:
+            return
+        self.log_line(f"🔎 Verify: {path}", "INFO")
+
+        def work():
+            from ops.util_update_check import (CURRENT_VERSION,
+                                                is_newer,
+                                                sha256_file)
+            digest = ""
+            try:
+                digest = sha256_file(path)
+                self.ui_q.put(("log", f"File ki SHA-256: {digest}",
+                               "INFO"))
+            except Exception as e:  # noqa: BLE001
+                self.ui_q.put(("log", f"File parhi nahi ja saki: "
+                                      f"{e}", "ERROR"))
+                return
+            expected = ""
+            latest_version = ""
+            try:
+                got = self._sync_precheck_silent()
+                if got:
+                    client, sess = got
+                    try:
+                        row = client.latest_release(
+                            sess["access_token"])
+                    except server_mod.ServerError as e:
+                        if e.status in (401, 403):
+                            sess = self._refresh_session_tokens(
+                                client, sess)
+                            row = client.latest_release(
+                                sess["access_token"])
+                        else:
+                            raise
+                    if row:
+                        expected = str(row.get("sha256") or "")
+                        latest_version = str(row.get("version")
+                                             or "")
+            except Exception as e:  # noqa: BLE001
+                self.ui_q.put(("log",
+                               f"Server se hash nahi mil saka "
+                               f"({server_mod.friendly_auth_error(e)})"
+                               " — sirf file ka hash dikhaya gaya "
+                               "hai.", "WARN"))
+            if expected:
+                if digest.lower() == expected.strip().lower():
+                    self.ui_q.put(("log",
+                                   "✅ SHA-256 MATCH — file bilkul "
+                                   "sahi hai, server wale hash se "
+                                   "mil gayi.", "OK"))
+                else:
+                    self.ui_q.put(("log",
+                                   "❌ SHA-256 MISMATCH — file "
+                                   "server wale hash se NAHI "
+                                   "milti. Ise istemaal MAT karo — "
+                                   "dobara download karo.", "ERROR"))
+                if latest_version:
+                    note = ("naya version hai"
+                            if is_newer(latest_version)
+                            else "yehi latest version hai")
+                    self.ui_q.put(("log",
+                                   f"Server par latest: "
+                                   f"{latest_version} "
+                                   f"(maujooda tool: "
+                                   f"v{CURRENT_VERSION}) — {note}.",
+                                   "INFO"))
+            else:
+                self.ui_q.put(("log",
+                               "Server par is release ka SHA-256 "
+                               "darj nahi / session nahi — muqabla "
+                               "nahi ho saka.", "WARN"))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _sync_precheck_silent(self):
+        """Verify ke liye khamosh session check (log nahi)."""
+        sess = server_mod.load_session()
+        if not sess or not sess.get("access_token"):
+            return None
+        try:
+            return self._client(), sess
+        except Exception:  # noqa: BLE001
+            return None
+
+    # -- ADMIN module -----------------------------------------------------
+    def _build_admin(self, parent):
+        f = tk.Frame(parent, bg=BG)
+        hdr = tk.Frame(f, bg=PANEL)
+        hdr.pack(fill="x")
+        tk.Label(hdr, text="ADMIN — Accounts aur Trial ki "
+                           "Management (server)",
+                 bg=PANEL, fg=FG,
+                 font=("Segoe UI", 13, "bold")).pack(side="left",
+                                                     padx=10, pady=6)
+        tk.Button(hdr, text="↻ REFRESH", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 9, "bold"),
+                  padx=10, pady=4,
+                  command=self._admin_refresh).pack(side="right",
+                                                     padx=10, pady=6)
+        cols = ("email", "role", "status", "trial")
+        tree = ttk.Treeview(f, columns=cols, show="headings",
+                            height=12)
+        for col, title, w in (("email", "Email", 300),
+                              ("role", "Role", 80),
+                              ("status", "Halat", 110),
+                              ("trial", "Trial (andaza)", 330)):
+            tree.heading(col, text=title)
+            tree.column(col, width=w, anchor="w")
+        tree.pack(fill="both", expand=True, padx=8, pady=8)
+        tree.bind("<<TreeviewSelect>>", self._admin_on_select)
+        self.admin_tree = tree
+
+        brow = tk.Frame(f, bg=PANEL)
+        brow.pack(fill="x", padx=8, pady=(0, 4))
+        tk.Button(brow, text="⛔ BLOCK / ✅ UNBLOCK",
+                  bg=PANEL2, fg=FG, relief="flat",
+                  font=("Segoe UI", 9, "bold"), padx=10, pady=5,
+                  command=self._admin_toggle_block).pack(
+                      side="left", padx=3)
+        tk.Label(brow, text="Trial din (is user ke liye, "
+                            "khaali = global):", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 9)).pack(side="left",
+                                             padx=(14, 4))
+        self.admin_days_var = tk.StringVar()
+        tk.Entry(brow, textvariable=self.admin_days_var, bg=PANEL2,
+                 fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 10), width=6).pack(side="left")
+        tk.Button(brow, text="DIN SET KARO", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 9, "bold"),
+                  padx=10, pady=5,
+                  command=self._admin_set_days).pack(side="left",
+                                                     padx=4)
+
+        grow = tk.Frame(f, bg=PANEL)
+        grow.pack(fill="x", padx=8, pady=(0, 8))
+        tk.Label(grow, text="Global trial din (har naye account "
+                            "ke liye):", bg=PANEL, fg=MUTED,
+                 font=("Segoe UI", 9)).pack(side="left", padx=(3, 4))
+        self.admin_global_var = tk.StringVar()
+        tk.Entry(grow, textvariable=self.admin_global_var,
+                 bg=PANEL2, fg=FG, insertbackground=FG, relief="flat",
+                 font=("Segoe UI", 10), width=6).pack(side="left")
+        tk.Button(grow, text="GLOBAL SET KARO", bg=PANEL2, fg=FG,
+                  relief="flat", font=("Segoe UI", 9, "bold"),
+                  padx=10, pady=5,
+                  command=self._admin_set_global).pack(side="left",
+                                                       padx=4)
+        tk.Label(grow, text="Note: fehrist me 'Trial (andaza)' "
+                            "sirf display ka andaza hai — asal "
+                            "gate har login par server ka "
+                            "trial_status hota hai.",
+                 bg=PANEL, fg=MUTED, wraplength=520, justify="left",
+                 font=("Segoe UI", 8)).pack(side="left", padx=(12, 0))
+        return f
+
+    def _admin_session(self):
+        """Admin actions ke liye (client, sess) ya (None, None)."""
+        sess = server_mod.load_session()
+        if not sess or not sess.get("access_token"):
+            self.log_line("ADMIN: login session nahi mila.",
+                          "ERROR")
+            return None, None
+        return self._client(), sess
+
+    def _admin_refresh(self):
+        got = self._admin_session()
+        if got[0] is None:
+            return
+        label = getattr(self, "admin_tree", None)
+        if label is None:
+            return
+
+        def work():
+            client, sess = got
+            try:
+                try:
+                    profiles = client.list_profiles(
+                        sess["access_token"])
+                except server_mod.ServerError as e:
+                    if e.status in (401, 403):
+                        sess = self._refresh_session_tokens(
+                            client, sess)
+                        profiles = client.list_profiles(
+                            sess["access_token"])
+                    else:
+                        raise
+                settings = {}
+                try:
+                    settings = client.get_settings(
+                        sess["access_token"])
+                except Exception:  # noqa: BLE001
+                    pass
+            except Exception as e:  # noqa: BLE001
+                self.ui_q.put(("log",
+                               f"ADMIN fehrist nahi a saki: "
+                               f"{server_mod.friendly_auth_error(e)}",
+                               "ERROR"))
+                return
+            self.ui_q.put(("call", lambda: self._admin_fill(
+                profiles, settings)))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _admin_fill(self, profiles, settings):
+        from datetime import datetime, timezone
+        try:
+            global_days = int(settings.get("trial_days", "30"))
+        except (TypeError, ValueError):
+            global_days = 30
+        self.admin_global_var.set(str(global_days))
+        tree = self.admin_tree
+        for item in tree.get_children():
+            tree.delete(item)
+        self.admin_items = {}
+        self.admin_profiles = list(profiles)
+        now = datetime.now(timezone.utc)
+        for p in profiles:
+            created = str(p.get("created_at") or "")
+            try:
+                days = int(p.get("trial_days_override")
+                           or global_days)
+            except (TypeError, ValueError):
+                days = global_days
+            left_txt = "—"
+            try:
+                dt = datetime.fromisoformat(
+                    created.replace("Z", "+00:00"))
+                if dt.tzinfo is None:
+                    from datetime import timezone as _tz
+                    dt = dt.replace(tzinfo=_tz.utc)
+                from datetime import timedelta
+                exp = dt + timedelta(days=days)
+                left = (exp - now).days
+                left_txt = (f"{created[:10]} + {days} din → "
+                            f"{exp.date()} ({left} din baqi)")
+            except Exception:  # noqa: BLE001
+                left_txt = f"{created[:10]} + {days} din"
+            if p.get("role") == "admin":
+                left_txt = "ADMIN — trial had nahi"
+            item = tree.insert(
+                "", "end",
+                values=(p.get("email", ""),
+                        p.get("role", "user"),
+                        "⛔ BLOCKED" if p.get("blocked")
+                        else "✅ Active",
+                        left_txt))
+            self.admin_items[item] = p
+        self.log_line(f"ADMIN: {len(profiles)} account server se "
+                      f"a gaye (global trial: {global_days} din).",
+                      "OK")
+
+    def _admin_selected(self):
+        sel = self.admin_tree.selection()
+        if not sel:
+            self.log_line("ADMIN: pehle fehrist se aik account "
+                          "chuno.", "WARN")
+            return None
+        return self.admin_items.get(sel[0])
+
+    def _admin_on_select(self, _evt=None):
+        p = self._admin_selected_silent()
+        if p is not None:
+            ov = p.get("trial_days_override")
+            self.admin_days_var.set("" if ov is None else str(ov))
+
+    def _admin_selected_silent(self):
+        sel = self.admin_tree.selection()
+        if not sel:
+            return None
+        return self.admin_items.get(sel[0])
+
+    def _admin_patch(self, profile, patch, what):
+        """Profile update server par + fehrist taza."""
+        got = self._admin_session()
+        if got[0] is None:
+            return
+
+        def work():
+            client, sess = got
+            try:
+                try:
+                    client.update_profile(sess["access_token"],
+                                          profile["id"], patch)
+                except server_mod.ServerError as e:
+                    if e.status in (401, 403):
+                        sess = self._refresh_session_tokens(
+                            client, sess)
+                        client.update_profile(sess["access_token"],
+                                              profile["id"], patch)
+                    else:
+                        raise
+                self.ui_q.put(("log",
+                               f"ADMIN ✔ {what}: "
+                               f"{profile.get('email')}", "OK"))
+                self.ui_q.put(("call", self._admin_refresh))
+            except Exception as e:  # noqa: BLE001
+                self.ui_q.put(("log",
+                               f"ADMIN ✗ {what} fail: "
+                               f"{server_mod.friendly_auth_error(e)}",
+                               "ERROR"))
+        threading.Thread(target=work, daemon=True).start()
+
+    def _admin_toggle_block(self):
+        p = self._admin_selected()
+        if p is None:
+            return
+        my_id = (server_mod.load_session() or {}).get("user_id")
+        if p.get("id") == my_id and not p.get("blocked"):
+            self.log_line("⛔ GUARD: Admin apne AAP ko block nahi "
+                          "kar sakta — pehle kisi aur ko admin "
+                          "banao.", "ERROR")
+            return
+        new_state = not bool(p.get("blocked"))
+        self._admin_patch(p, {"blocked": new_state},
+                          "BLOCK" if new_state else "UNBLOCK")
+
+    def _admin_set_days(self):
+        p = self._admin_selected()
+        if p is None:
+            return
+        raw = self.admin_days_var.get().strip()
+        if raw == "":
+            patch = {"trial_days_override": None}
+            what = "trial override SAAF (global lagu)"
+        else:
+            try:
+                days = int(raw)
+                if days < 0 or days > 3650:
+                    raise ValueError
+            except ValueError:
+                self.log_line("ADMIN: din 0–3650 ke darmiyan ka "
+                              "number likho (ya khaali chhor do "
+                              "= global).", "ERROR")
+                return
+            patch = {"trial_days_override": days}
+            what = f"trial din = {days}"
+        self._admin_patch(p, patch, what)
+
+    def _admin_set_global(self):
+        raw = self.admin_global_var.get().strip()
+        try:
+            days = int(raw)
+            if days < 1 or days > 3650:
+                raise ValueError
+        except ValueError:
+            self.log_line("ADMIN: global trial din 1–3650 ka "
+                          "number likho.", "ERROR")
+            return
+        got = self._admin_session()
+        if got[0] is None:
+            return
+
+        def work():
+            client, sess = got
+            try:
+                try:
+                    client.update_setting(sess["access_token"],
+                                          "trial_days", str(days))
+                except server_mod.ServerError as e:
+                    if e.status in (401, 403):
+                        sess = self._refresh_session_tokens(
+                            client, sess)
+                        client.update_setting(sess["access_token"],
+                                              "trial_days",
+                                              str(days))
+                    else:
+                        raise
+                self.ui_q.put(("log",
+                               f"ADMIN ✔ Global trial din = {days} "
+                               "(naye accounts par lagu; maujooda "
+                               "users par un ki created date se "
+                               "hisaab hota hai).", "OK"))
+            except Exception as e:  # noqa: BLE001
+                self.ui_q.put(("log",
+                               f"ADMIN ✗ Global set fail: "
+                               f"{server_mod.friendly_auth_error(e)}",
+                               "ERROR"))
+        threading.Thread(target=work, daemon=True).start()
+
     # ------------------------------------------------------- CHANGELOG ---
     def _build_changelog(self, parent):
         f = tk.Frame(parent, bg=BG)
@@ -2552,6 +3477,8 @@ class App(tk.Tk):
     def start_op(self):
         if self.selected_op is None:
             return
+        if self._servicing_blocked():
+            return
         # Gates + params: IMEI tasdeeq (Network tab), danger
         # tasdeeq aur PARAMS bar — _collect_op_args dono raston
         # (tree + model panel) me mushtaraka hai.
@@ -2563,6 +3490,8 @@ class App(tk.Tk):
             self.stop_btn.configure(state="normal")
 
     def start_demo(self):
+        if self._servicing_blocked():
+            return
         self.show_module("unlock")
         self.show_ops_view()
         demo_item = None
@@ -2640,7 +3569,14 @@ class App(tk.Tk):
             while True:
                 item = self.ui_q.get_nowait()
                 kind = item[0]
-                if kind == "log":
+                if kind == "call":
+                    # Main-thread callback (server gate ke nateeje
+                    # network thread se isi raste ate hain)
+                    try:
+                        item[1]()
+                    except Exception:  # noqa: BLE001
+                        pass
+                elif kind == "log":
                     self.log_line(item[1], item[2])
                 elif kind == "progress":
                     self.progress.configure(value=item[1])
