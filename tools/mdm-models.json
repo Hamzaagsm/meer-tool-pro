@@ -23818,6 +23818,20 @@
       "verified": false,
       "route": "unknown",
       "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y91i",
+      "name": "Vivo Y91i",
+      "code": "PD1818HF",
+      "chipset": "MediaTek Helio P35 (MT6765)",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "DFT Pro live read 2026-10-24: PD1818HF_EX, MT6765, Android 8.1.0 — reset+FRP done via Preloader+DA in 33s. (Y91 MT6762 se alag variant hai.)"
     }
   ]
 }
