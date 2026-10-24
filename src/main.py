@@ -29,6 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import demo as demo_mod                       # noqa: E402
 from core import device_watch                 # noqa: E402
 from core import firmware_catalog             # noqa: E402
+from core import imei_panels                  # noqa: E402
 from core import mdm_list                     # noqa: E402
 from core import platforms_mtk                # noqa: E402
 from core import repair_intel                 # noqa: E402
@@ -557,6 +558,22 @@ class App(tk.Tk):
                                          font=("Segoe UI", 9, "bold"))
         self.unlock_right = right
 
+        # 2026-10-24 (Hamza ke hukm): Phone Information panel +
+        # brand pages + dedicated IMEI section — UNLOCK ke dayein
+        # panel me, model panel se upar. Ye panels maujooda ops hi
+        # chalate hain (koi bahari tool nahi khulta); IMEI section
+        # model list se azad hai (chip live detection se).
+        self.phone_info_frame, self.phone_info_refresh = \
+            imei_panels.build_phone_info_panel(right, self)
+        self.phone_info_frame.pack(fill="x", pady=(0, 6))
+        self.brand_pages_frame = imei_panels.build_brand_pages(
+            right, self)
+        self.brand_pages_frame.pack(fill="both", expand=True,
+                                    pady=(0, 6))
+        self.imei_section_frame = imei_panels.build_imei_section(
+            right, self)
+        self.imei_section_frame.pack(fill="x", pady=(0, 6))
+
         # Baqi modules ke frames (builder methods) — sirf UNLOCK packed
         self.module_frames["home"] = self._build_home(modarea)
         self.module_frames["platforms"] = self._build_platforms(modarea)
@@ -793,6 +810,12 @@ class App(tk.Tk):
         if op.get("imei_write"):
             var = getattr(self, "net_imei_confirm_var", None)
             imei = bool(var.get()) if var is not None else False
+            # Naya IMEI section (model list se azad) ki tasdeeq
+            # bhi maani jayegi (OR) — Network tab wala rasta
+            # waisa hi rehta hai, ye sirf izafa hai.
+            sec = getattr(self, "imei_sec_confirm_var", None)
+            if sec is not None and sec.get():
+                imei = True
         danger = False
         if op.get("danger_write"):
             var = getattr(self, "danger_confirm_var", None)
@@ -808,6 +831,26 @@ class App(tk.Tk):
             "sectors": _entry("param_sectors_var"),
             "sector_size": _entry("param_sector_size_var"),
         }
+        if op.get("imei_write"):
+            # IMEI likhne wale ops ko Network tab ke type
+            # kiye hue asal IMEI bhi params me do — tree wala
+            # native META IMEI op wahi se number leta hai
+            # (MDM model-panel wale ops provider se lete
+            # hain, un par is ka koi asar nahi). Network tab
+            # kabhi khula hi na ho to khali string — op guide
+            # karke ruk jayega.
+            net = getattr(self, "net_vars", None) or {}
+            for key in ("imei1", "imei2"):
+                var = net.get(key)
+                params[key] = var.get() if var is not None else ""
+            # 2026-10-24: IMEI section (model list se azad) ke
+            # khane bhare hon to WAHI jeetenge — Network tab
+            # khula hi na ho ya khali ho to section se lo.
+            for pkey, vname in (("imei1", "imei_sec_var1"),
+                                ("imei2", "imei_sec_var2")):
+                svar = getattr(self, vname, None)
+                if svar is not None and svar.get().strip():
+                    params[pkey] = svar.get().strip()
         return imei, danger, params
 
     def _servicing_blocked(self):
@@ -3532,6 +3575,11 @@ class App(tk.Tk):
                 "android": dev.android, "detail": dev.detail}
         for key, lbl in self.dev_fields.items():
             lbl.configure(text=vals.get(key) or "—")
+        # 2026-10-24: Phone Information panel bhi isi device se bhare
+        # (Read Info / connect ke baad auto-fill).
+        refresh = getattr(self, "phone_info_refresh", None)
+        if refresh is not None:
+            refresh(dev)
         if hasattr(self, "home_dev_label"):
             if dev.connected:
                 self.home_dev_label.configure(
