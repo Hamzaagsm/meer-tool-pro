@@ -57,12 +57,17 @@ def _scan_via_pyserial():
 
 def run(ctx) -> bool:
     ctx.log("META mode me lane ka tareeqa — qadam ba qadam:", "INFO")
-    ctx.log("1) Phone bilkul band karo (battery alag hoti ho to nikaal "
-            "kar dobara lagao).", "INFO")
-    ctx.log("2) Volume Up + Volume Down dono dabaye rakho.", "INFO")
-    ctx.log("3) Dabaye hue hi USB cable lagao — PC par MediaTek "
-            "PreLoader / META port Device Manager me nazar ayega.", "INFO")
-    ctx.log("4) Ye tool ab 30 second tak port dhoondhega...", "INFO")
+    ctx.log("1) Pehle BINA button wala rasta: phone ON rakho (ADB "
+            "ON ho) aur tool ke 'Enter META Mode (ADB — bina "
+            "button)' op se META me jao — META port khud ban "
+            "jayega.", "INFO")
+    ctx.log("2) Ya band phone sirf cable se lagao (koi button "
+            "nahi) — MediaTek PreLoader / META port Device "
+            "Manager me nazar ayega; ye tool ab 30 second tak "
+            "port dhoondhega.", "INFO")
+    ctx.log("3) Vol combo META ke liye nahi hai — wo sirf BROM "
+            "ke liye hai. Port na mile to driver (MediaTek "
+            "VCOM) check karo.", "INFO")
 
     start = time.monotonic()
     while True:
@@ -91,7 +96,9 @@ def run(ctx) -> bool:
             time.sleep(0.2)
 
     ctx.log("Port nahi mila — cable/driver (MediaTek VCOM) check karke "
-            "dobara try karo. Phone band halat me Volume dono dabaye hue "
-            "cable lagana lazmi hai; driver na ho to port nazar hi nahi "
+            "dobara try karo. Pehle phone ON + ADB se 'Enter META "
+            "Mode (ADB — bina button)' chalao, ya band phone sirf "
+            "cable se lagao (Vol combo META ke liye nahi, sirf "
+            "BROM ke liye hai); driver na ho to port nazar hi nahi "
             "ayega.", "ERROR")
     return False

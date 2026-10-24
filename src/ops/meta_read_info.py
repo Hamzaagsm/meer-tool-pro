@@ -8,6 +8,9 @@ lines me log hota hai. Timeout / ghalat status / khali payload =
 saaf FAIL, wajah ke saath. Command "bhej di" kabhi success nahi.
 """
 
+import dataclasses
+import re
+
 from core import meta_session
 
 OP = {
@@ -18,6 +21,43 @@ OP = {
     "modes": (),
     "server_required": False,
 }
+
+_CHIP_RE = re.compile(r"(MT\d{4}[A-Z]*|Helio\s+\S+|Dimensity\s+\S+)",
+                      re.IGNORECASE)
+_MODEL_RE = re.compile(r"Model\s*[:=]\s*(.+)", re.IGNORECASE)
+
+
+def _push_panel(ctx, lines):
+    """FT jawab se mili chip/model Phone Information panel + top bar
+    par dhakelo — wahi pattern jo mtk_info ka _push_chip BROM Read
+    Info ke liye karta hai. Sirf tab jab chip ya model asal me mila
+    ho; kuch na mile ya push fail ho to khamoshi se chhoro (op ka
+    result is se kabhi nahi badlega)."""
+    try:
+        text = "\n".join(lines)
+        chip = None
+        m = _CHIP_RE.search(text)
+        if m:
+            chip = m.group(1).strip()
+        model = None
+        for ln in lines:
+            mm = _MODEL_RE.search(ln)
+            if mm and mm.group(1).strip():
+                model = mm.group(1).strip()
+                break
+        if not chip and not model:
+            return
+        dev = getattr(ctx, "device", None)
+        if dev is None or not getattr(ctx, "update_device", None):
+            return
+        ctx.update_device(dataclasses.replace(
+            dev,
+            chip=chip or dev.chip,
+            model=model or dev.model,
+            mode="META",
+            detail=dev.detail or "MediaTek META"))
+    except Exception:  # noqa: BLE001 — panel update kabhi op na tore
+        pass
 
 
 def run(ctx) -> bool:
@@ -61,5 +101,6 @@ def run(ctx) -> bool:
         ctx.log(printable, "DATA")
     ctx.log("META Read Info mukammal — upar wali maloomat phone ke "
             "asal FT jawab se ayi hai.", "OK")
+    _push_panel(ctx, lines)
     ctx.progress(95, "Read Info mukammal")
     return True

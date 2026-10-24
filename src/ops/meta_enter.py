@@ -8,6 +8,12 @@ second tak asal META port (VID 0x0E8D) ka intezaar karta hai.
 SUCCESS sirf tab hai jab META port asal me nazar ajaye — command ka
 exit code akela kabhi success nahi mana jata. Port na mile to saaf
 FAIL, driver/cable ki hidayat ke saath.
+
+BINA-BUTTON RASTA: ye op BROM/Preloader se shuru hone wala rasta hai
+(is liye is ki entry guard me BROM wali hidayat rehti hai — Vol combo
+sirf BROM ke liye hai). Phone ON + ADB wala rasta alag op hai:
+`meta_enter_adb` ("Enter META Mode (ADB — bina button)") — wohi
+pehle azmana chahiye.
 """
 
 import time
@@ -103,9 +109,10 @@ def run(ctx) -> bool:
             "me nahi gaya. Wajahen check karo: (1) MediaTek VCOM/USB "
             "driver laga hai ya nahi (driver na ho to port banta hi "
             "nahi), (2) cable asal data cable ho, charge-only na ho, "
-            "(3) phone poori tarah band halat me Volume dono dabaye "
-            "hue lagaya gaya ho, (4) kuch models par META entry ke "
-            "liye test-point ya new Auth lag sakta hai — naye "
-            "Dimensity par ye rasta server-required ho sakta hai.",
+            "(3) pehle BINA button wala rasta azmao — phone ON + "
+            "ADB se 'Enter META Mode (ADB — bina button)' chalao, "
+            "(4) kuch models par META entry ke liye test-point ya "
+            "new Auth lag sakta hai — naye Dimensity par ye rasta "
+            "server-required ho sakta hai.",
             "ERROR")
     return False

@@ -2,9 +2,13 @@
 spd_switch_diag.py — "Switch to Diag": SPD section ka pehla qadam.
 
 Hamza ki FINAL tartib (SPD-EXPANSION.md, 2026-10-24) ka step 1:
-phone BAND halat me lagao -> Diag mode me connect -> us ke baad
-Restore / FRP / IMEI ke process easy ho jate hain. Ye op wahi
-connect asal me karke dikhata hai:
+Diag mode me connect -> us ke baad Restore / FRP / IMEI ke
+process easy ho jate hain. Ye op wahi connect asal me karke
+dikhata hai. PEHLA RASTA BINA BUTTON: phone ON rakho — Diag
+port (SPRD U2S Diag) khud nazar ayega; band phone + boot key
+sirf fallback hai un phones ke liye jin ka Diag ON halat me
+nahi khulta (Vol combo sirf isi fallback ke liye hai, Diag
+ke liye lazmi nahi):
 
   1. SPRD Diag port (1782:4D00/4D01) ka intezaar aur pehchan
      (core/spd_diag + device_watch wali hi pehchan).
@@ -37,7 +41,7 @@ OP = {
     "server_required": False,
 }
 
-WAIT_SECONDS = 90      # band phone lagane ka waqt (GUI params 'diag_wait' se override)
+WAIT_SECONDS = 90      # Diag port ke intezaar ka waqt (GUI params 'diag_wait' se override)
 
 
 def _wait_seconds(ctx) -> int:
@@ -48,16 +52,20 @@ def _wait_seconds(ctx) -> int:
 
 
 def _boot_line(ctx):
-    """Chip ke hisaab se boot-key rehnumai (mile to), warna aam line."""
+    """Chip ke hisaab se boot-key rehnumai (mile to), warna aam line.
+
+    Ye SIRF fallback hai — pehla rasta phone ON + Diag port hai.
+    """
     try:
         from core import spd_chips
         line = spd_chips.boot_guidance(ctx.device)
         if line:
-            return line
+            return "Fallback (agar ON rasta na chale): " + line
     except Exception:  # noqa: BLE001 — rehnumai hi hai, rukawat nahi
         pass
-    return ("Boot key: Volume Down (kuch models par Up, naye "
-            "Transsion par Up+Down dono) | Diag port: 1782:4D00")
+    return ("Fallback (agar ON rasta na chale) — Boot key: Volume "
+            "Down (kuch models par Up, naye Transsion par Up+Down "
+            "dono) | Diag port: 1782:4D00")
 
 
 def _find_port(ctx, wait_s):
@@ -81,14 +89,17 @@ def _find_port(ctx, wait_s):
             left = int(deadline - now)
             ctx.progress(15, f"Diag port ka intezaar... ({left}s)")
             ctx.log(f"Diag port ka intezaar hai... ({left}s baqi) "
-                    "— phone band halat me, boot key dabaye hue "
-                    "cable lagao.", "INFO")
+                    "— phone ON rakho (Diag port khud ayega); na "
+                    "aaye to band phone + boot key fallback hai.",
+                    "INFO")
         time.sleep(0.5)
 
 
 def run(ctx) -> bool:
-    ctx.log("SPD tartib ka pehla qadam: Switch to Diag. Phone ko "
-            "BAND halat me lagao — Diag connect ho jane ke baad "
+    ctx.log("SPD tartib ka pehla qadam: Switch to Diag. Pehle "
+            "BINA button: phone ON rakho — Diag port khud nazar "
+            "ayega; na aaye to band phone + boot key sirf "
+            "fallback hai. Diag connect ho jane ke baad "
             "Restore / FRP / IMEI ke process isi tartib se honge.",
             "INFO")
     ctx.log(_boot_line(ctx), "INFO")
@@ -104,10 +115,11 @@ def run(ctx) -> bool:
         return False
     if found is None:
         ctx.log("Diag port waqt ke andar nahi mila. Check karo: "
-                "SPRD driver install hai, phone band halat me boot "
-                "key dabaye hue laga tha, cable durust hai. Port "
-                "Device Manager me 'SPRD U2S Diag' (1782:4D00) ke "
-                "naam se ana chahiye.", "ERROR")
+                "SPRD driver install hai, phone ON tha (ya "
+                "fallback: band halat me boot key dabaye hue laga "
+                "tha), cable durust hai. Port Device Manager me "
+                "'SPRD U2S Diag' (1782:4D00) ke naam se ana "
+                "chahiye.", "ERROR")
         return False
     port, desc = found
     ctx.log(f"Diag port mil gaya: {port} ({desc or 'SPRD Diag'})",
