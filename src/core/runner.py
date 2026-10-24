@@ -60,8 +60,12 @@ class OpContext:
     def is_cancelled(self):
         return self.cancelled.is_set()
 
-    def stream(self, cmd, timeout=600, cwd=None):
+    def stream(self, cmd, timeout=600, cwd=None, line_hook=None):
         """Subprocess chalao aur output line-by-line log me bhejo.
+
+        line_hook (optional): har output line par call hota hai —
+        ops is se maloomat (masalan CPU/chip) nikal kar panel ko
+        update kar sakte hain; hook ki kharabi stream ko nahi rokti.
 
         Return: process ka exit code (int). Cancel/timeout par -1 / -2 aur
         log me wajah pehle hi likh di jati hai.
@@ -107,6 +111,11 @@ class OpContext:
                 line = line.rstrip("\n")
                 if line.strip():
                     self.log(line, "DATA")
+                    if line_hook is not None:
+                        try:
+                            line_hook(line)
+                        except Exception:  # noqa: BLE001 — hook kabhi stream nahi rokta
+                            pass
             proc.wait()
             if timer:
                 timer.cancel()
