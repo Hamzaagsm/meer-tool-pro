@@ -372,6 +372,9 @@ class App(tk.Tk):
         self.op_modules = {}            # tree item id -> plugin module
         self.selected_op = None
         self.view_mode = "ops"          # "ops" | "mdm"
+        self._status_op = ""            # slim bar: chal raha kaam
+        self._status_pct = 0            # slim bar: progress %
+        self._status_last = ""          # slim bar: aakhri log line
         self.mdm_models = []            # mdm-models.json wale models
         self.mdm_items = {}             # model tree item id -> model dict
         self.selected_model = None
@@ -462,7 +465,8 @@ class App(tk.Tk):
                            ("jobs", "JOBS"),
                            ("firmware", "FIRMWARE"),
                            ("admin", "ADMIN"),
-                           ("changelog", "CHANGELOG")):
+                           ("changelog", "CHANGELOG"),
+                           ("log", "LOG")):
             btn = tk.Button(mbar, text=title, relief="flat",
                             font=("Segoe UI", 9, "bold"), padx=12, pady=3,
                             bg=ACCENT if key == "unlock" else PANEL,
@@ -592,39 +596,24 @@ class App(tk.Tk):
         self.module_btns["admin"].pack_forget()
         mid.pack(fill="both", expand=True)
 
-        # LIVE LOG — tamam modules ke liye mushtaraka, hamesha nazar
-        # ata hai (runner ki output har module se yahin ati hai)
-        logf = tk.Frame(self, bg=BG)
-        logf.pack(fill="x", padx=10, pady=(0, 2))
-        self.log_label = tk.Label(logf, text="LIVE LOG", bg=BG, fg=MUTED,
-                                  font=("Segoe UI", 9, "bold"))
-        self.log_label.pack(anchor="w", pady=(2, 4))
-        self.log = tk.Text(logf, bg=LOG_BG, fg=FG, font=("Consolas", 10),
-                           relief="flat", wrap="word", state="disabled",
-                           height=7)
-        scroll = ttk.Scrollbar(logf, command=self.log.yview)
-        self.log.configure(yscrollcommand=scroll.set)
-        scroll.pack(side="right", fill="y")
-        self.log.pack(fill="both", expand=True)
-        for lvl, color in LEVEL_COLORS.items():
-            self.log.tag_configure(lvl, foreground=color)
+        # 2026-10-24 (Hamza ka hukm): LIVE LOG neeche docked tha to
+        # main view ghusa hua tha — poora log ab LOG tab me hai
+        # (DFT-style: kaam apni jagah nazar aaye). self.log wahi
+        # aik Text widget hai, sirf is ka parent badla hai — tamam
+        # log writers (ops/runner/guards) baghair tabdeeli ke isi
+        # me likhte rehte hain, koi line zaya nahi hoti.
+        self.module_frames["log"] = self._build_log_tab(modarea)
 
-        # Bottom: progress + buttons
+        # Slim status bar — har view par nazar ati hai: chal raha
+        # kaam + % + aakhri log line (aik line, bara box nahi).
+        # START/STOP yahin global controls hain — LOG tab ke andar
+        # qaid nahi, taake kisi bhi view se kaam shuru/roka ja sake.
         bot = tk.Frame(self, bg=PANEL)
-        bot.pack(fill="x", padx=10, pady=(4, 10))
-        style = ttk.Style(self)
-        style.theme_use("clam")
-        style.configure("Pro.Horizontal.TProgressbar", troughcolor=PANEL2,
-                        background=ACCENT, bordercolor=PANEL2)
-        self.progress = ttk.Progressbar(bot, style="Pro.Horizontal.TProgressbar",
-                                        maximum=100, value=0, length=420)
-        self.progress.pack(side="left", padx=10, pady=10)
-        self.prog_label = tk.Label(bot, text="0%", bg=PANEL, fg=FG,
-                                   font=("Segoe UI", 10, "bold"), width=16,
-                                   anchor="w")
-        self.prog_label.pack(side="left")
-        tk.Button(bot, text="CLEAR LOG", command=self.clear_log, bg=PANEL2,
-                  fg=FG, relief="flat", padx=10, pady=5).pack(side="right", padx=4)
+        self.status_label = tk.Label(
+            bot, text="Tayyar — operation select karo.", bg=PANEL,
+            fg=MUTED, font=("Segoe UI", 9), anchor="w")
+        self.status_label.pack(side="left", fill="x", expand=True,
+                               padx=10, pady=8)
         self.stop_btn = tk.Button(bot, text="■ STOP", command=self.runner.stop,
                                   bg="#7f1d1d", fg="#fff", relief="flat",
                                   padx=16, pady=5, state="disabled",
@@ -675,15 +664,54 @@ class App(tk.Tk):
             font=("Segoe UI", 9, "bold")).pack(side="right",
                                                padx=10, pady=4)
 
-        # Pack tartib ki islah: LIVE LOG aur bottom bar ko bottom se
-        # anchor karo, module area darmiyan ki baqi jagah lega — warna
-        # baray module (Platforms) par log/buttons window se bahir
-        # dhakel jate hain.
-        bot.pack_forget()
-        logf.pack_forget()
+        # Pack tartib: slim status bar + PARAMS bar neeche anchor;
+        # module area (jis me LOG tab bhi hai) darmiyan ki baqi
+        # jagah lega — is liye UNLOCK ka dayein panel (brand pages,
+        # IMEI, FRP) ab zyada lambi jagah me khulta hai.
         bot.pack(side="bottom", fill="x", padx=10, pady=(4, 10))
-        logf.pack(side="bottom", fill="x", padx=10, pady=(0, 2))
         parambar.pack(side="bottom", fill="x", padx=10, pady=(2, 0))
+
+    def _build_log_tab(self, modarea):
+        """LOG tab: poora LIVE LOG + progress + CLEAR LOG.
+
+        self.log wahi aik Text widget hai jo pehle neeche docked
+        tha — sirf is ka parent badla hai. Is liye tamam log
+        writers (ops, runner, guards) baghair kisi tabdeeli ke
+        isi me likhte rehte hain; koi line zaya nahi hoti, aur
+        koi doosra log widget nahi banta.
+        """
+        f = tk.Frame(modarea, bg=BG)
+        self.log_label = tk.Label(f, text="LIVE LOG", bg=BG, fg=MUTED,
+                                  font=("Segoe UI", 9, "bold"))
+        self.log_label.pack(anchor="w", pady=(2, 4))
+        self.log = tk.Text(f, bg=LOG_BG, fg=FG, font=("Consolas", 10),
+                           relief="flat", wrap="word", state="disabled")
+        scroll = ttk.Scrollbar(f, command=self.log.yview)
+        self.log.configure(yscrollcommand=scroll.set)
+        scroll.pack(side="right", fill="y")
+        self.log.pack(fill="both", expand=True)
+        for lvl, color in LEVEL_COLORS.items():
+            self.log.tag_configure(lvl, foreground=color)
+        # Tab ke neeche: progress + CLEAR LOG (pehle wali bottom
+        # bar, ab LOG tab ke andar).
+        lbot = tk.Frame(f, bg=PANEL)
+        lbot.pack(fill="x", pady=(4, 0))
+        style = ttk.Style(self)
+        style.theme_use("clam")
+        style.configure("Pro.Horizontal.TProgressbar", troughcolor=PANEL2,
+                        background=ACCENT, bordercolor=PANEL2)
+        self.progress = ttk.Progressbar(
+            lbot, style="Pro.Horizontal.TProgressbar",
+            maximum=100, value=0, length=420)
+        self.progress.pack(side="left", padx=10, pady=10)
+        self.prog_label = tk.Label(lbot, text="0%", bg=PANEL, fg=FG,
+                                   font=("Segoe UI", 10, "bold"), width=16,
+                                   anchor="w")
+        self.prog_label.pack(side="left")
+        tk.Button(lbot, text="CLEAR LOG", command=self.clear_log,
+                  bg=PANEL2, fg=FG, relief="flat", padx=10,
+                  pady=5).pack(side="right", padx=4)
+        return f
 
     # ------------------------------------------------------------ ops tree -
     def _load_ops_tree(self):
@@ -878,6 +906,13 @@ class App(tk.Tk):
                              danger_confirmed=danger, params=params):
             self.start_btn.configure(state="disabled")
             self.stop_btn.configure(state="normal")
+            self._status_op = op_obj.OP.get(
+                "name", op_obj.OP.get("id", ""))
+            self._status_pct = 0
+            self._refresh_status_line()
+            # Brand/model panel ke buttons bhi START hi hain — kaam
+            # shuru hote hi LOG tab khul jaye (DFT-style).
+            self.show_module("log")
 
     def _render_model_panel(self, model):
         panel = self.model_panel
@@ -1124,15 +1159,17 @@ class App(tk.Tk):
     # ---------------------------------------------------- module switch --
     def show_module(self, name):
         """Fenix-style module switcher — sirf muntakhib module ka frame
-        nazar ata hai; device panel, LIVE LOG aur progress hamesha rehte
-        hain."""
+        nazar ata hai; device panel aur slim status bar hamesha rehte
+        hain; poora LIVE LOG LOG tab me hai."""
         if name not in self.module_frames:
             return
         # Phase 3 guards: Sirf-Dukaan (restricted) mode me sirf
         # HOME / CUSTOMERS / JOBS khulte hain; ADMIN sirf admin
-        # account par.
+        # account par. LOG tab sirf output hai (koi servicing nahi)
+        # is liye restricted me bhi khula hai — pehle docked log
+        # bhi har waqt nazar ata tha.
         if getattr(self, "restricted", False) and \
-                name not in ("home", "customers", "jobs"):
+                name not in ("home", "customers", "jobs", "log"):
             self.log_line("⛔ Sirf-Dukaan mode hai — ye module "
                           "login ke baghair band hai.", "WARN")
             return
@@ -3542,6 +3579,14 @@ class App(tk.Tk):
                              danger_confirmed=danger, params=params):
             self.start_btn.configure(state="disabled")
             self.stop_btn.configure(state="normal")
+            self._status_op = self.selected_op.OP.get(
+                "name", self.selected_op.OP.get("id", ""))
+            self._status_pct = 0
+            self._refresh_status_line()
+            # DFT-style: kaam shuru hote hi LOG tab khul jaye taake
+            # chal raha kaam apni jagah nazar aaye; wapsi tab bar
+            # se (UNLOCK waghera dabao).
+            self.show_module("log")
 
     def start_demo(self):
         if self._servicing_blocked():
@@ -3616,12 +3661,34 @@ class App(tk.Tk):
             time.sleep(2)
 
     # ------------------------------------------------------------ queue ----
+    def _refresh_status_line(self):
+        """Slim status bar: chal raha kaam + % + aakhri log line
+        (aik line, kabhi bara box nahi)."""
+        lbl = getattr(self, "status_label", None)
+        if lbl is None:
+            return
+        parts = []
+        if getattr(self, "_status_op", ""):
+            parts.append(str(self._status_op))
+        parts.append(f"{getattr(self, '_status_pct', 0)}%")
+        last = getattr(self, "_status_last", "")
+        if last:
+            parts.append(str(last)[:140])
+        try:
+            lbl.configure(text=" · ".join(parts) if parts else
+                          "Tayyar — operation select karo.")
+        except tk.TclError:
+            pass
+
     def log_line(self, msg, level="INFO"):
         ts = time.strftime("%H:%M:%S")
         self.log.configure(state="normal")
         self.log.insert("end", f"[{ts}] {msg}\n", level if level in LEVEL_COLORS else "INFO")
         self.log.see("end")
         self.log.configure(state="disabled")
+        # Slim bar par bhi aakhri line live nazar aaye.
+        self._status_last = msg
+        self._refresh_status_line()
 
     def _drain_queue(self):
         try:
@@ -3640,6 +3707,8 @@ class App(tk.Tk):
                 elif kind == "progress":
                     self.progress.configure(value=item[1])
                     self.prog_label.configure(text=f"{item[1]}%  {item[2]}")
+                    self._status_pct = item[1]
+                    self._refresh_status_line()
                 elif kind == "device":
                     self.set_device(item[1])
                 elif kind == "plat_gpt":
@@ -3650,6 +3719,8 @@ class App(tk.Tk):
                     self.stop_btn.configure(state="disabled")
                     if self.selected_op is not None:
                         self.start_btn.configure(state="normal")
+                    self._status_op = "Mukammal"
+                    self._refresh_status_line()
         except queue.Empty:
             pass
         self.after(60, self._drain_queue)
