@@ -20,6 +20,12 @@ layout nahi toota):
    Server-required stubs button nahi, label hain (🔒 SERVER REQUIRED).
    Tab row + content dono scroll hote hain (chhoti window par bhi
    koi tab/button kata hua nahi rehta).
+   2026-10-24 (Hamza ka hukm): har brand page par us brand ke
+   MODELS ki fehrist bhi hai (search ke saath) — model chunne par
+   us ki chip/route nazar ati hai aur reset/FRP buttons khulte
+   hain. Buttons hamesha CONNECTED phone par chalte hain (chip
+   live detection se); phone connect na ho to connect-first guide
+   ati hai, kabhi nakli run nahi hota.
 
 4. FRP section — IMEI section wala aik-click big-button pattern:
    FRP Tools screen ke functions bare buttons ki shakal me; sirf
@@ -516,6 +522,244 @@ def _scrollable(parent):
     return inner
 
 
+# ---------------------------------------------------------------------------
+# 3b. Brand-page model lists (2026-10-24, Hamza ka hukm: "name waheen
+# hony chahye taky model select krky reset frp kiya ja saky").
+# Pure helpers (GUI se azad — logic tests in par chalte hain):
+#   - brand_page_models(models, key): is page ki models (naam se sort).
+#   - search_models(models, query): naam/code/chipset par search.
+#   - model_reset_frp_op_ids(model): selected model ke reset/FRP ops.
+# Imaandari: selection sirf CONTEXT batati hai (chip/route). Buttons
+# hamesha CONNECTED phone par chalte hain (app._action_button ->
+# runner); phone connect na ho to op ka guard connect-first guide
+# de kar FAIL karta hai — kabhi nakli run nahi hota.
+# ---------------------------------------------------------------------------
+
+# Brand page key -> DB brand values (Oppo page me Realme bhi, Vivo
+# page me iQOO bhi — dono apne bare brand ki family hain).
+_BRAND_PAGE_BRANDS = {
+    "infinix": ("Infinix",),
+    "tecno": ("Tecno",),
+    "itel": ("Itel",),
+    "samsung": ("Samsung",),
+    "xiaomi": ("Xiaomi",),
+    "oppo": ("Oppo", "Realme"),
+    "vivo": ("Vivo", "iQOO"),
+    "huawei": ("Huawei",),
+}
+
+# Chipset page key -> DB tag values.
+_BRAND_PAGE_TAG_FILTER = {
+    "mtk": ("MediaTek",),
+    "spd": ("Unisoc", "SPD"),
+    "qualcomm": ("Qualcomm",),
+}
+
+_MTK_CHIP_RE = re.compile(r"\bMT\d|helio|dimensity|mediatek", re.I)
+_SPD_CHIP_RE = re.compile(r"unisoc|\bSC\d{4}\b|\bUMS\d{4}\b|\bT\d{3,4}\b",
+                           re.I)
+
+_MTK_RESET_OPS = ("mtk_frp_reset", "mtk_reset_only", "mtk_frp_only")
+_SPD_RESET_OPS = ("spd_reset", "spd_frp")
+_QC_RESET_OPS = ("qc_edl_reset", "qc_edl_frp")
+_SAMSUNG_RESET_OPS = ("samsung_frp_router",)
+
+
+def brand_page_models(models, key):
+    """Is brand/chipset page ki models, naam se sort. 'all' (Sab Ops)
+    koi brand nahi — us par [] (poori fehrist bayein MDM tree me
+    hai, wahi rehti hai)."""
+    if key == "all":
+        return []
+    brands = _BRAND_PAGE_BRANDS.get(key)
+    if brands is not None:
+        wanted = {b.lower() for b in brands}
+        out = [m for m in models
+               if str(m.get("brand", "")).lower() in wanted]
+    else:
+        tags = _BRAND_PAGE_TAG_FILTER.get(key)
+        if not tags:
+            return []
+        wanted = {t.lower() for t in tags}
+        out = [m for m in models
+               if wanted & {str(t).lower() for t in m.get("tags", [])}]
+    out.sort(key=lambda m: str(m.get("name", "")).lower())
+    return out
+
+
+def search_models(models, query):
+    """Naam/code/chipset par case-insensitive search (MDM tree wali
+    q-filter jaisa). Khali query par poori fehrist."""
+    q = (query or "").strip().lower()
+    if not q:
+        return list(models)
+    return [m for m in models
+            if q in " ".join(str(m.get(f, "")) for f in
+                             ("name", "code", "chipset")).lower()]
+
+
+def model_reset_frp_op_ids(model):
+    """Selected model ke reset/FRP op ids — chip family se. Chip
+    maloom na ho to () — ghalat family ka button dikhane se behtar
+    hai ke koi button na dikhe, sirf rehnumai ho."""
+    tags = {str(t).lower() for t in model.get("tags", [])}
+    chipset = str(model.get("chipset", ""))
+    if "mediatek" in tags or _MTK_CHIP_RE.search(chipset):
+        return _MTK_RESET_OPS
+    if "unisoc" in tags or "spd" in tags or _SPD_CHIP_RE.search(chipset):
+        return _SPD_RESET_OPS
+    if "qualcomm" in tags or "snapdragon" in chipset.lower():
+        return _QC_RESET_OPS
+    if str(model.get("brand", "")).lower() == "samsung":
+        return _SAMSUNG_RESET_OPS
+    return ()
+
+
+def _brand_page_model_data(app):
+    """Brand pages ke liye models — app.mdm_models (startup par load)
+    ya, khali ho to, mdm_list se lazy load (app par cache). Kabhi
+    exception nahi phenkta — khali fehrist hi sahi."""
+    models = list(getattr(app, "mdm_models", None) or [])
+    if models:
+        return models
+    try:
+        from core import mdm_list as _mdm_list
+        models, _note = _mdm_list.load_models()
+        app.mdm_models = models
+        return list(models)
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def _render_brand_models(inner, app, key):
+    """Brand page ke neeche: searchable model list + selection par
+    chip/route + reset/FRP buttons. Listbox ka apna scrollbar hai
+    (page ke canvas scroll se alag); wheel listbox par usi ko
+    scroll karta hai."""
+    try:
+        from core import mdm_list as _mdm_list
+    except Exception:  # noqa: BLE001
+        _mdm_list = None
+    models = brand_page_models(_brand_page_model_data(app), key)
+    tk.Label(inner, text="MODELS — is page ke models (naam likh kar "
+                          "dhoondo, model chuno, phir neeche reset/FRP "
+                          "dabao):",
+             bg=PANEL, fg=FG, wraplength=680, justify="left",
+             font=("Segoe UI", 9, "bold")).pack(anchor="w", pady=(10, 2))
+    search_var = tk.StringVar()
+    search_row = tk.Frame(inner, bg=PANEL)
+    search_row.pack(fill="x", pady=(0, 2))
+    tk.Label(search_row, text="Dhoondo:", bg=PANEL, fg=MUTED,
+             font=("Segoe UI", 8)).pack(side="left")
+    search_entry = tk.Entry(search_row, textvariable=search_var,
+                            bg=PANEL2, fg=FG, insertbackground=FG,
+                            relief="flat", font=("Segoe UI", 8))
+    search_entry.pack(side="left", fill="x", expand=True, padx=(6, 0))
+    list_frame = tk.Frame(inner, bg=PANEL)
+    list_frame.pack(fill="x", pady=(0, 2))
+    list_scroll = tk.Scrollbar(list_frame, orient="vertical")
+    list_scroll.pack(side="right", fill="y")
+    model_list = tk.Listbox(list_frame, bg=PANEL2, fg=FG,
+                            relief="flat", font=("Segoe UI", 8),
+                            height=10, exportselection=False,
+                            yscrollcommand=list_scroll.set)
+    list_scroll.configure(command=model_list.yview)
+    model_list.pack(side="left", fill="x", expand=True)
+
+    def _list_wheel(event):
+        try:
+            model_list.yview_scroll(int(-event.delta / 120), "units")
+        except tk.TclError:
+            pass
+        return "break"
+
+    model_list.bind("<MouseWheel>", _list_wheel)
+    info_frame = tk.Frame(inner, bg=PANEL)
+    info_frame.pack(fill="x", pady=(2, 0))
+    btn_frame = tk.Frame(inner, bg=PANEL)
+    btn_frame.pack(fill="x", pady=(2, 0))
+    tk.Label(inner,
+             text="Ye buttons CONNECTED phone par chalte hain — "
+                  "phone connect na ho to dabane par connect-first "
+                  "guide ayegi, koi nakli run nahi hoga. Model "
+                  "chunna sirf context batata hai; chip live "
+                  "detection se confirm hoti hai.",
+             bg=PANEL, fg=MUTED, wraplength=680, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", pady=(4, 0))
+
+    shown = {"items": []}
+
+    def _refill():
+        model_list.delete(0, "end")
+        shown["items"] = search_models(models, search_var.get())
+        for m in shown["items"]:
+            label = (_mdm_list.model_label(m) if _mdm_list is not None
+                     else str(m.get("name", "")))
+            model_list.insert("end", label)
+        for child in info_frame.winfo_children():
+            child.destroy()
+        for child in btn_frame.winfo_children():
+            child.destroy()
+
+    def _on_select(_event=None):
+        sel = model_list.curselection()
+        if not sel:
+            return
+        model = shown["items"][sel[0]]
+        try:
+            app.selected_model = model
+        except Exception:  # noqa: BLE001
+            pass
+        for child in info_frame.winfo_children():
+            child.destroy()
+        for child in btn_frame.winfo_children():
+            child.destroy()
+        label = (_mdm_list.model_label(model) if _mdm_list is not None
+                 else str(model.get("name", "")))
+        tk.Label(info_frame, text=label, bg=PANEL, fg=FG,
+                 wraplength=680, justify="left",
+                 font=("Segoe UI", 9, "bold")).pack(anchor="w")
+        tags = "  ".join(f"[{t}]" for t in model.get("tags", []))
+        if tags:
+            tk.Label(info_frame, text=tags, bg=PANEL, fg=ACCENT,
+                     font=("Segoe UI", 8, "bold")).pack(anchor="w")
+        if _mdm_list is not None:
+            for line in _mdm_list.route_hint_lines(model):
+                tk.Label(info_frame, text=line, bg=PANEL, fg=MUTED,
+                         wraplength=680, justify="left",
+                         font=("Segoe UI", 8)).pack(anchor="w")
+        op_ids = model_reset_frp_op_ids(model)
+        if not op_ids:
+            tk.Label(btn_frame,
+                     text="Is model ki chip maloom nahi — phone "
+                          "connect karo, live detection se sahi "
+                          "rasta khulega; neeche FRP section se bhi "
+                          "reset/FRP chala sakte ho.",
+                     bg=PANEL, fg=WARN_FG, wraplength=680,
+                     justify="left",
+                     font=("Segoe UI", 8)).pack(anchor="w")
+            return
+        for op_id in op_ids:
+            module = None
+            try:
+                module = app._module_by_id(op_id)
+            except Exception:  # noqa: BLE001
+                module = None
+            if module is None:
+                continue
+            app._action_button(
+                btn_frame, module.OP.get("name", op_id),
+                module).pack(side="left", padx=(0, 4))
+
+    search_entry.bind("<KeyRelease>", lambda _e: _refill())
+    # Trace bhi — programmatic set par bhi fehrist chhan jaye (sirf
+    # KeyRelease par inhesar nahi; asli typing me focus hota hai,
+    # is liye dono raste mehfooz hain).
+    search_var.trace_add("write", lambda *_a: _refill())
+    model_list.bind("<<ListboxSelect>>", _on_select)
+    _refill()
+
+
 def build_brand_pages(parent, app):
     """Brand tab row + scrollable content frame. IMEI section is
     frame ke neeche alag pack hota hai (har brand page par wahi)."""
@@ -598,6 +842,9 @@ def build_brand_pages(parent, app):
                      justify="left",
                      font=("Segoe UI", 8)).pack(anchor="w",
                                                 pady=(8, 0))
+            # 2026-10-24 (Hamza ka hukm): isi page par us brand ke
+            # models — naam dhoondo, model chuno, reset/FRP dabao.
+            _render_brand_models(inner, app, key)
 
     for key, title, _ops, _note, _stubs in BRAND_DEFS:
         btn = tk.Button(tabrow, text=title, bg=PANEL2, fg=FG,
