@@ -573,6 +573,9 @@ class App(tk.Tk):
         self.imei_section_frame = imei_panels.build_imei_section(
             right, self)
         self.imei_section_frame.pack(fill="x", pady=(0, 6))
+        self.frp_section_frame = imei_panels.build_frp_section(
+            right, self)
+        self.frp_section_frame.pack(fill="x", pady=(0, 6))
 
         # Baqi modules ke frames (builder methods) — sirf UNLOCK packed
         self.module_frames["home"] = self._build_home(modarea)
