@@ -18,6 +18,7 @@ hai. Isi liye ye step is flow ka hissa hai.
 """
 
 from core import engines
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.reset_honesty import pre_reset_honesty, result_label
 from core.runner import APP_ROOT, BACKUPS_DIR, TOOLS_DIR  # noqa: F401
 
@@ -60,12 +61,17 @@ def _guard(ctx) -> bool:
 
 
 def run(ctx) -> bool:
-    if not _guard(ctx):
-        return False
     cmd, cwd = _engine(ctx)
     if cmd is None:
         return False
     extra = engines.mtk_extra_args()
+    # Entry: device pehle se ho to foran; warna cable-only wait
+    # (band phone + cable, button zaroori nahi). Na mile to asal
+    # _guard ki ERROR rehnumai + False (pehle wala bartao).
+    ok, entry_note = ensure_mtk_entry(ctx)
+    if not ok and not _guard(ctx):
+        return False
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
     if extra:
         ctx.log("User ka DA (loader) istemal hoga jo tools/loaders/mtk/ "
                 "me rakha hai.", "INFO")
@@ -77,7 +83,7 @@ def run(ctx) -> bool:
     # (a) FRP erase — fail = overall FAIL
     ctx.progress(10, "FRP partition erase ho raha hai...")
     ctx.log("Step 1/5: FRP partition erase (e frp)", "INFO")
-    code = ctx.stream(cmd + ["e", "frp"] + extra, timeout=180, cwd=cwd)
+    code = transport.stream_step(["e", "frp"], timeout=180)
     if ctx.is_cancelled():
         return False
     if code != 0:
@@ -91,7 +97,7 @@ def run(ctx) -> bool:
     ctx.progress(35, "Userdata erase ho raha hai (factory reset)...")
     ctx.log("Step 2/5: Userdata erase (e userdata) — tamam user data "
             "mit jayega.", "INFO")
-    code = ctx.stream(cmd + ["e", "userdata"] + extra, timeout=180, cwd=cwd)
+    code = transport.stream_step(["e", "userdata"], timeout=180)
     if ctx.is_cancelled():
         return False
     if code != 0:
@@ -104,7 +110,7 @@ def run(ctx) -> bool:
     # (c) metadata erase — fail = sirf WARN (kuch devices par hota hi nahi)
     ctx.progress(60, "Metadata erase ho raha hai...")
     ctx.log("Step 3/5: Metadata erase (e metadata)", "INFO")
-    code = ctx.stream(cmd + ["e", "metadata"] + extra, timeout=180, cwd=cwd)
+    code = transport.stream_step(["e", "metadata"], timeout=180)
     if ctx.is_cancelled():
         return False
     if code != 0:
@@ -121,7 +127,7 @@ def run(ctx) -> bool:
     ctx.log("Step 4/5: Persist erase (e persist) — security-plugin / "
             "kist-band lock ki config is partition me hoti hai; is ke "
             "baghair lock reset ke baad wapas aa sakta hai.", "INFO")
-    code = ctx.stream(cmd + ["e", "persist"] + extra, timeout=180, cwd=cwd)
+    code = transport.stream_step(["e", "persist"], timeout=180)
     if ctx.is_cancelled():
         return False
     if code != 0:
@@ -136,7 +142,7 @@ def run(ctx) -> bool:
     # (e) reset — fail = sirf WARN (asal erase kaam pehle ho chuka hai)
     ctx.progress(88, "Phone reset ho raha hai...")
     ctx.log("Step 5/5: Device reset (reset)", "INFO")
-    code = ctx.stream(cmd + ["reset"] + extra, timeout=180, cwd=cwd)
+    code = transport.stream_step(["reset"], timeout=180)
     if ctx.is_cancelled():
         return False
     if code != 0:
