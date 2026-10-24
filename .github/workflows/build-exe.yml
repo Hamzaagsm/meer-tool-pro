@@ -166,6 +166,13 @@ jobs:
           --hidden-import core.server
           --hidden-import core.shop_sync
           --hidden-import ops.util_server_status
+          --hidden-import core.mtk_serial_fallback
+          --hidden-import serial
+          --hidden-import serial.tools.list_ports
+          --hidden-import serial.tools.list_ports_windows
+          --hidden-import serial.serialwin32
+          --hidden-import serial.win32
+          --hidden-import serial.serialutil
           src/main.py
 
       - name: Package (EXE + tools folder aik ZIP me)
