@@ -119,6 +119,7 @@ jobs:
           --hidden-import ops.fw_payload_extract
           --hidden-import ops.meta_enable_adb
           --hidden-import ops.meta_enter
+          --hidden-import ops.meta_enter_adb
           --hidden-import ops.meta_factory_reset
           --hidden-import ops.meta_read_info
           --hidden-import ops.moto_fastboot_frp
