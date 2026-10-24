@@ -11513,22 +11513,28 @@
       "model": "Redmi K50",
       "name": "Xiaomi Redmi K50",
       "code": "unknown",
-      "chipset": "unknown",
-      "tags": [],
+      "chipset": "MediaTek Dimensity 8100",
+      "tags": [
+        "MediaTek"
+      ],
       "verified": false,
       "route": "unknown",
-      "route_unknown": true
+      "route_unknown": true,
+      "note": "Chipset gap-fill se: MediaTek Dimensity 8100 (source: https://gsmyogesh.com/unlocktool-offline-version-free-and-working-100/)"
     },
     {
       "brand": "Xiaomi",
       "model": "Redmi K50 Gaming",
       "name": "Xiaomi Redmi K50 Gaming",
       "code": "unknown",
-      "chipset": "unknown",
-      "tags": [],
+      "chipset": "Qualcomm Snapdragon 8 Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
       "verified": false,
       "route": "unknown",
-      "route_unknown": true
+      "route_unknown": true,
+      "note": "Chipset gap-fill se: Qualcomm Snapdragon 8 Gen 1 (source: https://gsmyogesh.com/unlocktool-offline-version-free-and-working-100/)"
     },
     {
       "brand": "Xiaomi",
@@ -17125,7 +17131,7 @@
       "verified": false,
       "route": "unknown",
       "route_unknown": true,
-      "note": "Shared code RMX3933: isi code par 2 alag models hain (Realme C61 (India), Realme Narzo N61) — naam se chunna, code akela kafi nahi"
+      "note": "Shared code RMX3933: isi code par 2 alag models hain (Realme C61 (India), Realme Narzo N61) — naam se chunna, code akela kafi nahi | Shared code RMX3933: alag models hain (Realme C61 (India), Realme Narzo N61, Realme Note 60) — naam se chunna, code akela kafi nahi"
     },
     {
       "brand": "Realme",
@@ -17230,7 +17236,7 @@
       "verified": false,
       "route": "unknown",
       "route_unknown": true,
-      "note": "Shared code RMX5313: isi code par 2 alag models hain (Realme C71 (India), Realme C71 Note 70) — naam se chunna, code akela kafi nahi"
+      "note": "Shared code RMX5313: isi code par 2 alag models hain (Realme C71 (India), Realme C71 Note 70) — naam se chunna, code akela kafi nahi | Shared code RMX5313: alag models hain (Realme C71 (India), Realme C71 Note 70, Realme Note 70) — naam se chunna, code akela kafi nahi"
     },
     {
       "brand": "Realme",
@@ -17242,7 +17248,7 @@
       "verified": false,
       "route": "unknown",
       "route_unknown": true,
-      "note": "Shared code RMX5313: isi code par 2 alag models hain (Realme C71 (India), Realme C71 Note 70) — naam se chunna, code akela kafi nahi"
+      "note": "Shared code RMX5313: isi code par 2 alag models hain (Realme C71 (India), Realme C71 Note 70) — naam se chunna, code akela kafi nahi | Shared code RMX5313: alag models hain (Realme C71 (India), Realme C71 Note 70, Realme Note 70) — naam se chunna, code akela kafi nahi"
     },
     {
       "brand": "Realme",
@@ -17671,7 +17677,7 @@
       "verified": false,
       "route": "unknown",
       "route_unknown": true,
-      "note": "CODE COLLISION: same code as new row Realme C61 (India) | Shared code RMX3933: isi code par 2 alag models hain (Realme C61 (India), Realme Narzo N61) — naam se chunna, code akela kafi nahi"
+      "note": "CODE COLLISION: same code as new row Realme C61 (India) | Shared code RMX3933: isi code par 2 alag models hain (Realme C61 (India), Realme Narzo N61) — naam se chunna, code akela kafi nahi | Shared code RMX3933: alag models hain (Realme C61 (India), Realme Narzo N61, Realme Note 60) — naam se chunna, code akela kafi nahi"
     },
     {
       "brand": "Realme",
@@ -19995,12 +20001,15 @@
       "brand": "Huawei",
       "model": "Mate 20 Pro",
       "name": "Huawei Mate 20 Pro",
-      "code": "unknown",
-      "chipset": "unknown",
-      "tags": [],
+      "code": "LYA-L29",
+      "chipset": "Kirin 980",
+      "tags": [
+        "Kirin"
+      ],
       "verified": false,
       "route": "unknown",
-      "route_unknown": true
+      "route_unknown": true,
+      "note": "Code gap-fill se: LYA-L29 (source: https://www.gsmarena.com/compare.php3?idPhone1=9803&idPhone2=9343) | Chipset bhi gap-fill se: Kirin 980"
     },
     {
       "brand": "Huawei",
@@ -20901,12 +20910,15 @@
       "brand": "Huawei",
       "model": "P30",
       "name": "Huawei P30",
-      "code": "unknown",
-      "chipset": "unknown",
-      "tags": [],
+      "code": "ELE-L29",
+      "chipset": "Kirin 980",
+      "tags": [
+        "Kirin"
+      ],
       "verified": false,
       "route": "unknown",
-      "route_unknown": true
+      "route_unknown": true,
+      "note": "Code gap-fill se: ELE-L29 (source: https://www.gsmarena.com/compare.php3?idPhone1=9530&idPhone2=9343&idPhone3=10261) | Chipset bhi gap-fill se: Kirin 980"
     },
     {
       "brand": "Huawei",
@@ -21676,14 +21688,15 @@
       "brand": "Huawei",
       "model": "Nova 5T",
       "name": "Huawei Nova 5T",
-      "code": "unknown",
+      "code": "YAL-L21",
       "chipset": "Kirin 980",
       "tags": [
         "Kirin"
       ],
       "verified": false,
       "route": "unknown",
-      "route_unknown": true
+      "route_unknown": true,
+      "note": "Code gap-fill se: YAL-L21 (source: https://www.gsmarena.com/compare.php3?idPhone1=9803&idPhone2=9343)"
     },
     {
       "brand": "Huawei",
@@ -23832,6 +23845,3988 @@
       "route": "unknown",
       "route_unknown": true,
       "note": "DFT Pro live read 2026-10-24: PD1818HF_EX, MT6765, Android 8.1.0 — reset+FRP done via Preloader+DA in 33s. (Y91 MT6762 se alag variant hai.)"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Smart 20",
+      "name": "Infinix Smart 20",
+      "code": "X6840",
+      "chipset": "Helio G81 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Also listed as X6840B variant. Task brief date 6 Oct 2026 matches Smart 20 HD India launch, not base Smart 20 (Mar 2026)."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Smart 20 HD",
+      "name": "Infinix Smart 20 HD",
+      "code": "unknown",
+      "chipset": "Unisoc T7250",
+      "tags": [
+        "Unisoc",
+        "FDL",
+        "Diag",
+        "MDM",
+        "Exploit"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Launched India 2026-10-06, sale from 2026-10-08. Code left unknown: GadgetMaya claims X6725 but a Transsion OTA source attributes X6725 to SMART 10; collision unresolved, do not assign."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Note Edge",
+      "name": "Infinix Note Edge",
+      "code": "X6887",
+      "chipset": "Dimensity 7100",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "VERDICT: real Infinix model, shipped (announced 2026-01-19, released 2026-01-31). NOT Samsung Galaxy Note Edge SM-N915. Retail listings show X6887 5G."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S",
+      "name": "Infinix Hot S",
+      "code": "X521",
+      "chipset": "MT6753",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family. | Shared code X521: alag models hain (Infinix Hot S, Infinix Hot S Pro) — naam se chunna, code akela kafi nahi"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S Pro",
+      "name": "Infinix Hot S Pro",
+      "code": "X521",
+      "chipset": "MT6753",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family. Same code X521 as Hot S (3 GB RAM vs 2 GB on base); same-code pair, not merged. | Shared code X521: alag models hain (Infinix Hot S, Infinix Hot S Pro) — naam se chunna, code akela kafi nahi"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S2",
+      "name": "Infinix Hot S2",
+      "code": "unknown",
+      "chipset": "MT6753",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S2 Pro",
+      "name": "Infinix Hot S2 Pro",
+      "code": "unknown",
+      "chipset": "MT6753",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S3",
+      "name": "Infinix Hot S3",
+      "code": "unknown",
+      "chipset": "Snapdragon 430",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S3X",
+      "name": "Infinix Hot S3X",
+      "code": "unknown",
+      "chipset": "Snapdragon 430",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S3X Pro",
+      "name": "Infinix Hot S3X Pro",
+      "code": "unknown",
+      "chipset": "Snapdragon 430",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family. Listed as MSM8937 in source."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S4",
+      "name": "Infinix Hot S4",
+      "code": "unknown",
+      "chipset": "Helio P22",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family. Some sources drop the Hot prefix (S4/S5); task names kept."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S4 Pro",
+      "name": "Infinix Hot S4 Pro",
+      "code": "unknown",
+      "chipset": "Helio P22",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family."
+    },
+    {
+      "brand": "Infinix",
+      "model": "Hot S5",
+      "name": "Infinix Hot S5",
+      "code": "unknown",
+      "chipset": "Helio P22",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Hot S family."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A8 Star",
+      "name": "Samsung Galaxy A8 Star",
+      "code": "SM-G8850",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Same device as Galaxy A9 Star; split-pair rows sharing code/chipset. GSMArena Models line also lists SM-G885F/Y/S/8. | Shared code SM-G8850: alag models hain (Samsung Galaxy A8 Star, Samsung Galaxy A9 Star) — naam se chunna, code akela kafi nahi"
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A9 Star",
+      "name": "Samsung Galaxy A9 Star",
+      "code": "SM-G8850",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Same device as Galaxy A8 Star; split-pair rows sharing code/chipset. | Shared code SM-G8850: alag models hain (Samsung Galaxy A8 Star, Samsung Galaxy A9 Star) — naam se chunna, code akela kafi nahi"
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A6s",
+      "name": "Samsung Galaxy A6s",
+      "code": "unknown",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Code not explicitly sourced in this pass; SM-G6200 NOT assigned without a source."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A8s",
+      "name": "Samsung Galaxy A8s",
+      "code": "SM-G8870",
+      "chipset": "Snapdragon 710",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Code explicit in FCC-stage source; chipset was rumour-stage there, needs shipped-spec corroboration before parent treats it as firm."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A9 Star Lite",
+      "name": "Samsung Galaxy A9 Star Lite",
+      "code": "SM-A6050",
+      "chipset": "Snapdragon 450",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Chipset from Adreno 506 + 8x 1.8 GHz Cortex-A53 data for SM-A6050."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A03",
+      "name": "Samsung Galaxy A03",
+      "code": "SM-A035F",
+      "chipset": "Unisoc T606",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Also SM-A035M/DS."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A03s",
+      "name": "Samsung Galaxy A03s",
+      "code": "SM-A037M",
+      "chipset": "Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Also SM-A037F/DS."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A03 Core",
+      "name": "Samsung Galaxy A03 Core",
+      "code": "SM-A032",
+      "chipset": "Unisoc SC9863A",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Core code mapping is order-based from Wikipedia model line SM-A032x/SM-A035x/SM-A037x, not a separately quoted Core code; suffix unverified."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A07 5G",
+      "name": "Samsung Galaxy A07 5G",
+      "code": "unknown",
+      "chipset": "Dimensity 6300",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped: launched India 2026-02-05. Distinct from first-pass Galaxy A07 (2025) 4G model."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A07s",
+      "name": "Samsung Galaxy A07s",
+      "code": "unknown",
+      "chipset": "Helio G99+",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped: launched Jordan ~2026-09."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A27 5G",
+      "name": "Samsung Galaxy A27 5G",
+      "code": "unknown",
+      "chipset": "Snapdragon 6 Gen 3",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped: announced 2026-06-25/26, rollout from 2026-07-03."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A37 5G",
+      "name": "Samsung Galaxy A37 5G",
+      "code": "unknown",
+      "chipset": "Exynos 1480",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped 2026-03-25. One source notes a regional Snapdragon 7 Gen 4 variant; Exynos 1480 kept as primary, no second row created."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A57 5G",
+      "name": "Samsung Galaxy A57 5G",
+      "code": "unknown",
+      "chipset": "Exynos 1680",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped alongside A37, 2026-03/04."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A08",
+      "name": "Samsung Galaxy A08",
+      "code": "unknown",
+      "chipset": "Helio G99+",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "LTE variant. Launched India 2026-09-16; Kenya ~2026-10-16."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy A18",
+      "name": "Samsung Galaxy A18",
+      "code": "unknown",
+      "chipset": "Exynos 1610",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "LTE/4G variant. Kenya announcement lists chipset as Exynos 1610/G99+ without stating which ships locally; Gadgets360 lists Exynos 1610."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy M20",
+      "name": "Samsung Galaxy M20",
+      "code": "SM-M205F",
+      "chipset": "Exynos 7904",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy M30",
+      "name": "Samsung Galaxy M30",
+      "code": "SM-M305F",
+      "chipset": "Exynos 7904",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy M30s",
+      "name": "Samsung Galaxy M30s",
+      "code": "SM-M307F",
+      "chipset": "Exynos 9611",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Cashify compare lists SM-M307FZWDINS for M30s."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy M04",
+      "name": "Samsung Galaxy M04",
+      "code": "SM-M045F",
+      "chipset": "Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy M05",
+      "name": "Samsung Galaxy M05",
+      "code": "SM-M055F",
+      "chipset": "Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Manual lists SM-M055F with Helio G85."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy M15 5G",
+      "name": "Samsung Galaxy M15 5G",
+      "code": "unknown",
+      "chipset": "Dimensity 6100 Plus",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy M16 5G",
+      "name": "Samsung Galaxy M16 5G",
+      "code": "unknown",
+      "chipset": "Dimensity 6300",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Released India 2026-03-05 per source text; blog date line (2025-02) unreliable for dating, chipset consistent."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy F04",
+      "name": "Samsung Galaxy F04",
+      "code": "unknown",
+      "chipset": "Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "No SM-F code assigned: first-pass note says SM-F = Z-series; F-series codes here appear as SM-E (see F06)."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy F05",
+      "name": "Samsung Galaxy F05",
+      "code": "unknown",
+      "chipset": "Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy F06 5G",
+      "name": "Samsung Galaxy F06 5G",
+      "code": "SM-E066B",
+      "chipset": "Dimensity 6300",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "SM-E prefix is as listed (SM-E066BZBGINS); do not 'correct' to SM-F."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy F14",
+      "name": "Samsung Galaxy F14",
+      "code": "unknown",
+      "chipset": "Snapdragon 680",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "4G variant per F-series table."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy F15 5G",
+      "name": "Samsung Galaxy F15 5G",
+      "code": "unknown",
+      "chipset": "Dimensity 6100 Plus",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy F56 5G",
+      "name": "Samsung Galaxy F56 5G",
+      "code": "unknown",
+      "chipset": "Exynos 1480",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped: released 2025-05-14."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy J1 Nxt",
+      "name": "Samsung Galaxy J1 Nxt",
+      "code": "SM-J105",
+      "chipset": "Spreadtrum SC9830",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Conflict: GSMArena-derived sources say SC9830, Wikipedia infobox says SC8830A; SC9830 used with this note. Also sold as Galaxy J1 mini (alias, no separate row)."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy J1 mini prime",
+      "name": "Samsung Galaxy J1 mini prime",
+      "code": "SM-J106",
+      "chipset": "Spreadtrum SC9830",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Released 2016-12."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy J4 (2018)",
+      "name": "Samsung Galaxy J4 (2018)",
+      "code": "unknown",
+      "chipset": "Exynos 7570",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Code not explicitly sourced in this pass; not inferred from pattern."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy J4+",
+      "name": "Samsung Galaxy J4+",
+      "code": "SM-J415",
+      "chipset": "Snapdragon 425",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "SamMobile modelinfo SM-J415F."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy J6 (2018)",
+      "name": "Samsung Galaxy J6 (2018)",
+      "code": "SM-J600F",
+      "chipset": "Exynos 7870",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy J6+",
+      "name": "Samsung Galaxy J6+",
+      "code": "SM-J610",
+      "chipset": "Snapdragon 425",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy J8 (2018)",
+      "name": "Samsung Galaxy J8 (2018)",
+      "code": "SM-J800",
+      "chipset": "Snapdragon 450",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped device is Snapdragon 450; a pre-launch Geekbench leak listed SM-J800FN with Exynos 7870 - leak only, no Exynos row."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy On8 (2016)",
+      "name": "Samsung Galaxy On8 (2016)",
+      "code": "unknown",
+      "chipset": "Exynos 7580",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Year-suffixed row; distinct from On8 (2018)."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy On8 (2018)",
+      "name": "Samsung Galaxy On8 (2018)",
+      "code": "unknown",
+      "chipset": "Snapdragon 450",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Year-suffixed row; distinct from On8 (2016)."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy On5 (2015)",
+      "name": "Samsung Galaxy On5 (2015)",
+      "code": "SM-G550FY",
+      "chipset": "Exynos 3475",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Year-suffixed row; distinct from On5 (2016)."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy On5 (2016)",
+      "name": "Samsung Galaxy On5 (2016)",
+      "code": "SM-G570F",
+      "chipset": "Exynos 7570",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Year-suffixed row; source is a surfacing/Geekbench report."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy On Nxt",
+      "name": "Samsung Galaxy On Nxt",
+      "code": "SM-G610F",
+      "chipset": "Exynos 7870",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Also listed as Galaxy J7 Prime SM-G610FZ alias."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy On Max",
+      "name": "Samsung Galaxy On Max",
+      "code": "unknown",
+      "chipset": "Helio P25 Lite",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "P25 Lite NOT expanded to an MT code without a source."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy On7 Prime",
+      "name": "Samsung Galaxy On7 Prime",
+      "code": "unknown",
+      "chipset": "Exynos 7870",
+      "tags": [
+        "Exynos"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy Buddy",
+      "name": "Samsung Galaxy Buddy",
+      "code": "unknown",
+      "chipset": "Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Korea rebadge of Galaxy A22 5G; chipset inherited from base model. No Korea-specific SM code sourced."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy Jump",
+      "name": "Samsung Galaxy Jump",
+      "code": "unknown",
+      "chipset": "Dimensity 720",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Korea rebadge of Galaxy A32 5G; chipset inherited from base model. No Korea-specific SM code sourced."
+    },
+    {
+      "brand": "Samsung",
+      "model": "Galaxy Quantum",
+      "name": "Samsung Galaxy Quantum",
+      "code": "unknown",
+      "chipset": "Snapdragon 765G",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Korea rebadge of Galaxy A71 5G; chipset inherited from base model. No Korea-specific SM code sourced."
+    },
+    {
+      "brand": "Oppo",
+      "model": "F3",
+      "name": "Oppo F3",
+      "code": "unknown",
+      "chipset": "MT6750T",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "F3 Plus",
+      "name": "Oppo F3 Plus",
+      "code": "CPH1613",
+      "chipset": "Snapdragon 653",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Cashify lists model number CPH1613 for F3 Plus."
+    },
+    {
+      "brand": "Oppo",
+      "model": "F3 Lite",
+      "name": "Oppo F3 Lite",
+      "code": "unknown",
+      "chipset": "Snapdragon 435",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Listed as F3 Lite (A57) in Wikipedia list."
+    },
+    {
+      "brand": "Oppo",
+      "model": "F21s Pro",
+      "name": "Oppo F21s Pro",
+      "code": "unknown",
+      "chipset": "Snapdragon 680",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "First-pass already has alias row 'Oppo Reno8 (F21s Pro)'; parent may merge this row with it."
+    },
+    {
+      "brand": "Oppo",
+      "model": "F21s Pro 5G",
+      "name": "Oppo F21s Pro 5G",
+      "code": "CPH2455",
+      "chipset": "Snapdragon 695",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "NOT Dimensity 900 (that is Reno7 5G in compares). International name: Oppo Reno8 Z 5G. Distinct from F21s Pro 4G (SD680)."
+    },
+    {
+      "brand": "Oppo",
+      "model": "A54",
+      "name": "Oppo A54",
+      "code": "CPH2239",
+      "chipset": "Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "A54 5G",
+      "name": "Oppo A54 5G",
+      "code": "unknown",
+      "chipset": "Snapdragon 480",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R5",
+      "name": "Oppo R5",
+      "code": "unknown",
+      "chipset": "Snapdragon 615",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R7",
+      "name": "Oppo R7",
+      "code": "unknown",
+      "chipset": "Snapdragon 615",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R7 Plus",
+      "name": "Oppo R7 Plus",
+      "code": "unknown",
+      "chipset": "Snapdragon 615",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Listed as R7+ in some tables."
+    },
+    {
+      "brand": "Oppo",
+      "model": "R9",
+      "name": "Oppo R9",
+      "code": "unknown",
+      "chipset": "MT6755",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Listed as R9 (F1 Plus) in Wikipedia list."
+    },
+    {
+      "brand": "Oppo",
+      "model": "R9 Plus",
+      "name": "Oppo R9 Plus",
+      "code": "unknown",
+      "chipset": "Snapdragon 652",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Listed as R9+ in some tables."
+    },
+    {
+      "brand": "Oppo",
+      "model": "R11",
+      "name": "Oppo R11",
+      "code": "unknown",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R11 Plus",
+      "name": "Oppo R11 Plus",
+      "code": "unknown",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Listed as R11+ in some tables."
+    },
+    {
+      "brand": "Oppo",
+      "model": "R11s",
+      "name": "Oppo R11s",
+      "code": "unknown",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R11s Plus",
+      "name": "Oppo R11s Plus",
+      "code": "unknown",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Listed as R11s+ in some tables."
+    },
+    {
+      "brand": "Oppo",
+      "model": "R15",
+      "name": "Oppo R15",
+      "code": "unknown",
+      "chipset": "Helio P60",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R15 Pro",
+      "name": "Oppo R15 Pro",
+      "code": "unknown",
+      "chipset": "Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R17",
+      "name": "Oppo R17",
+      "code": "unknown",
+      "chipset": "Snapdragon 670",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Oppo",
+      "model": "R17 Pro",
+      "name": "Oppo R17 Pro",
+      "code": "unknown",
+      "chipset": "Snapdragon 710",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "C100",
+      "name": "Realme C100",
+      "code": "unknown",
+      "chipset": "Helio G92 Max",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Shipped Philippines June 2026. Conflict: pre-launch YugaTech spec list said Dimensity 6300; post-launch PH reports say Helio G92 Max - G92 Max used."
+    },
+    {
+      "brand": "Realme",
+      "model": "C100i",
+      "name": "Realme C100i",
+      "code": "unknown",
+      "chipset": "Unisoc T7250",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "C100x",
+      "name": "Realme C100x",
+      "code": "unknown",
+      "chipset": "Unisoc T7250",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Released India 2026-07-16 per Gadgets360 compare."
+    },
+    {
+      "brand": "Realme",
+      "model": "Note 50",
+      "name": "Realme Note 50",
+      "code": "RMX3834",
+      "chipset": "Unisoc T612",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "Note 60",
+      "name": "Realme Note 60",
+      "code": "RMX3933",
+      "chipset": "Unisoc T612",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "India: C61 / Narzo N61. | Shared code RMX3933: alag models hain (Realme C61 (India), Realme Narzo N61, Realme Note 60) — naam se chunna, code akela kafi nahi"
+    },
+    {
+      "brand": "Realme",
+      "model": "Note 60x",
+      "name": "Realme Note 60x",
+      "code": "RMX3938",
+      "chipset": "Unisoc T612",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Chipset from the shared Note 60/60x page (same SoC listing); model number RMX3938 from list."
+    },
+    {
+      "brand": "Realme",
+      "model": "Note 70",
+      "name": "Realme Note 70",
+      "code": "RMX5313",
+      "chipset": "Unisoc T7250",
+      "tags": [
+        "Unisoc"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "India: C71. First-pass already has 'Realme C71 Note 70' row; parent may merge. | Shared code RMX5313: alag models hain (Realme C71 (India), Realme C71 Note 70, Realme Note 70) — naam se chunna, code akela kafi nahi"
+    },
+    {
+      "brand": "Realme",
+      "model": "P1",
+      "name": "Realme P1",
+      "code": "unknown",
+      "chipset": "Dimensity 7050",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "P1 Pro",
+      "name": "Realme P1 Pro",
+      "code": "RMX3844",
+      "chipset": "Snapdragon 6 Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Cashify lists model number RMX3844 for P1 Pro."
+    },
+    {
+      "brand": "Realme",
+      "model": "P2 Pro",
+      "name": "Realme P2 Pro",
+      "code": "unknown",
+      "chipset": "Snapdragon 7s Gen 2",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "P3",
+      "name": "Realme P3",
+      "code": "unknown",
+      "chipset": "Snapdragon 6 Gen 4",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "P3 Pro",
+      "name": "Realme P3 Pro",
+      "code": "RMX5032",
+      "chipset": "Snapdragon 7s Gen 3",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Cashify lists model number RMX5032 for P3 Pro."
+    },
+    {
+      "brand": "Realme",
+      "model": "P3 Ultra",
+      "name": "Realme P3 Ultra",
+      "code": "unknown",
+      "chipset": "Dimensity 8350 Ultra",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X",
+      "name": "Realme X",
+      "code": "unknown",
+      "chipset": "Snapdragon 710",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X2",
+      "name": "Realme X2",
+      "code": "unknown",
+      "chipset": "Snapdragon 730G",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X2 Pro",
+      "name": "Realme X2 Pro",
+      "code": "unknown",
+      "chipset": "Snapdragon 855+",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X3",
+      "name": "Realme X3",
+      "code": "unknown",
+      "chipset": "Snapdragon 855+",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X3 SuperZoom",
+      "name": "Realme X3 SuperZoom",
+      "code": "unknown",
+      "chipset": "Snapdragon 855+",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X7",
+      "name": "Realme X7",
+      "code": "unknown",
+      "chipset": "Dimensity 800U",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X7 Pro",
+      "name": "Realme X7 Pro",
+      "code": "unknown",
+      "chipset": "Dimensity 1000+",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "X50",
+      "name": "Realme X50",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Existence confirmed from X-series list; chipset not captured in a source snippet this pass, left unknown per rules (not guessed)."
+    },
+    {
+      "brand": "Realme",
+      "model": "X50 Pro",
+      "name": "Realme X50 Pro",
+      "code": "unknown",
+      "chipset": "Snapdragon 865",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Official realme spec page."
+    },
+    {
+      "brand": "Realme",
+      "model": "Q2 Pro",
+      "name": "Realme Q2 Pro",
+      "code": "unknown",
+      "chipset": "Dimensity 800U",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "Q3",
+      "name": "Realme Q3",
+      "code": "unknown",
+      "chipset": "Snapdragon 750G",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "Q3 Pro",
+      "name": "Realme Q3 Pro",
+      "code": "unknown",
+      "chipset": "Dimensity 1100",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "Q5",
+      "name": "Realme Q5",
+      "code": "unknown",
+      "chipset": "Snapdragon 695",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Source is a supplier/B2B listing, not a spec site; chipset kept but flagged here."
+    },
+    {
+      "brand": "Realme",
+      "model": "Q5 Pro",
+      "name": "Realme Q5 Pro",
+      "code": "RMX3372",
+      "chipset": "Snapdragon 870",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Also known as RMX3372."
+    },
+    {
+      "brand": "Realme",
+      "model": "V3",
+      "name": "Realme V3",
+      "code": "unknown",
+      "chipset": "Dimensity 720",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "V5",
+      "name": "Realme V5",
+      "code": "unknown",
+      "chipset": "Dimensity 720",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "V13",
+      "name": "Realme V13",
+      "code": "unknown",
+      "chipset": "Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "V15",
+      "name": "Realme V15",
+      "code": "unknown",
+      "chipset": "Dimensity 800U",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "V20",
+      "name": "Realme V20",
+      "code": "RMX3611",
+      "chipset": "Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "GSMArena Models line lists RMX3611."
+    },
+    {
+      "brand": "Realme",
+      "model": "V23",
+      "name": "Realme V23",
+      "code": "unknown",
+      "chipset": "Dimensity 810",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Source is a supplier/B2B listing, not a spec site; chipset kept but flagged here."
+    },
+    {
+      "brand": "Realme",
+      "model": "V30",
+      "name": "Realme V30",
+      "code": "unknown",
+      "chipset": "Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Realme",
+      "model": "U1",
+      "name": "Realme U1",
+      "code": "RMX1831",
+      "chipset": "Helio P70",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Code from firmware version string RMX1831EX in the Notebookcheck review."
+    },
+    {
+      "brand": "Vivo",
+      "model": "Xplay5",
+      "name": "Vivo Xplay5",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 652",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Xplay5 Elite",
+      "name": "Vivo Xplay5 Elite",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 820",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Elite/Ultimate variant of Xplay5"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Xplay6",
+      "name": "Vivo Xplay6",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 820",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X9",
+      "name": "Vivo X9",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 625",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X9 Plus",
+      "name": "Vivo X9 Plus",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 653",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X7",
+      "name": "Vivo X7",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 652",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X7 Plus",
+      "name": "Vivo X7 Plus",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 653",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X6",
+      "name": "Vivo X6",
+      "code": "unknown",
+      "chipset": "MediaTek MT6752",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X6 Plus",
+      "name": "Vivo X6 Plus",
+      "code": "unknown",
+      "chipset": "MediaTek MT6752",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X5",
+      "name": "Vivo X5",
+      "code": "unknown",
+      "chipset": "MediaTek MT6592",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X5 Pro",
+      "name": "Vivo X5 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 615",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X5 Max",
+      "name": "Vivo X5 Max",
+      "code": "unknown",
+      "chipset": "MediaTek MT6752",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X3",
+      "name": "Vivo X3",
+      "code": "unknown",
+      "chipset": "MediaTek MT6592",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "X1",
+      "name": "Vivo X1",
+      "code": "unknown",
+      "chipset": "MediaTek MT6589",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V23e 5G",
+      "name": "Vivo V23e 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 810",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V23e",
+      "name": "Vivo V23e",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G96",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "4G variant; distinct from V23e 5G"
+    },
+    {
+      "brand": "Vivo",
+      "model": "V11",
+      "name": "Vivo V11",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V11 Pro",
+      "name": "Vivo V11 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V11i",
+      "name": "Vivo V11i",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P60",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V9",
+      "name": "Vivo V9",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 626",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V9 Youth",
+      "name": "Vivo V9 Youth",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 450",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V5",
+      "name": "Vivo V5",
+      "code": "unknown",
+      "chipset": "MediaTek MT6750",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V5 Plus",
+      "name": "Vivo V5 Plus",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 625",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V5 Lite",
+      "name": "Vivo V5 Lite",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V3",
+      "name": "Vivo V3",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 616",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V3 Max",
+      "name": "Vivo V3 Max",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 652",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V1",
+      "name": "Vivo V1",
+      "code": "unknown",
+      "chipset": "MediaTek MT6735",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "V1 Max",
+      "name": "Vivo V1 Max",
+      "code": "unknown",
+      "chipset": "MediaTek MT6752",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y200 GT",
+      "name": "Vivo Y200 GT",
+      "code": "V2361GA",
+      "chipset": "Qualcomm Snapdragon 7 Gen 3",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y200i",
+      "name": "Vivo Y200i",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 4 Gen 2",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y200t",
+      "name": "Vivo Y200t",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 6 Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y78",
+      "name": "Vivo Y78",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 695",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Global variant; China Y78 uses Dimensity 7020 - do not merge"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y78+",
+      "name": "Vivo Y78+",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 695",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y77",
+      "name": "Vivo Y77",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 930",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Y77 5G"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y76s",
+      "name": "Vivo Y76s",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 810",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y75 5G",
+      "name": "Vivo Y75 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y33s",
+      "name": "Vivo Y33s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G80",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y33t",
+      "name": "Vivo Y33t",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y33e",
+      "name": "Vivo Y33e",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Alias of iQOO U5e"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y27 4G",
+      "name": "Vivo Y27 4G",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y27 5G",
+      "name": "Vivo Y27 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 6020",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y27s",
+      "name": "Vivo Y27s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y21",
+      "name": "Vivo Y21",
+      "code": "V2111",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y21s",
+      "name": "Vivo Y21s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G80",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y21T",
+      "name": "Vivo Y21T",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 680",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y21 5G",
+      "name": "Vivo Y21 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y20",
+      "name": "Vivo Y20",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 460",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y20i",
+      "name": "Vivo Y20i",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 460",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y20s",
+      "name": "Vivo Y20s",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 460",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y20G",
+      "name": "Vivo Y20G",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G80",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y19 (2019)",
+      "name": "Vivo Y19 (2019)",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P65",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "2019 model; distinct from 2025 Y19 5G below"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y19s",
+      "name": "Vivo Y19s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y19s Pro",
+      "name": "Vivo Y19s Pro",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y19 5G",
+      "name": "Vivo Y19 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 6300",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "2025 model; distinct from 2019 Y19"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y18",
+      "name": "Vivo Y18",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y18s",
+      "name": "Vivo Y18s",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y17s",
+      "name": "Vivo Y17s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y17",
+      "name": "Vivo Y17",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y16",
+      "name": "Vivo Y16",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y15",
+      "name": "Vivo Y15",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y15s",
+      "name": "Vivo Y15s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y15C",
+      "name": "Vivo Y15C",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y15A",
+      "name": "Vivo Y15A",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y12",
+      "name": "Vivo Y12",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y12s",
+      "name": "Vivo Y12s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y12G",
+      "name": "Vivo Y12G",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y12A",
+      "name": "Vivo Y12A",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y10",
+      "name": "Vivo Y10",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y03",
+      "name": "Vivo Y03",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y03t",
+      "name": "Vivo Y03t",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y02",
+      "name": "Vivo Y02",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y02s",
+      "name": "Vivo Y02s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y02t",
+      "name": "Vivo Y02t",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y01",
+      "name": "Vivo Y01",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y1s",
+      "name": "Vivo Y1s",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y93",
+      "name": "Vivo Y93",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y91",
+      "name": "Vivo Y91",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Not Y91i (already in DB, PD1818HF)"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y91C",
+      "name": "Vivo Y91C",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y90",
+      "name": "Vivo Y90",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y85",
+      "name": "Vivo Y85",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y83",
+      "name": "Vivo Y83",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y81",
+      "name": "Vivo Y81",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P22",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y79",
+      "name": "Vivo Y79",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y75",
+      "name": "Vivo Y75",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y73",
+      "name": "Vivo Y73",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y71",
+      "name": "Vivo Y71",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 450",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y69",
+      "name": "Vivo Y69",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y66",
+      "name": "Vivo Y66",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y55",
+      "name": "Vivo Y55",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y53",
+      "name": "Vivo Y53",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y51",
+      "name": "Vivo Y51",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y50",
+      "name": "Vivo Y50",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 665",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "2020 Y50; distinct from Y35-old grouping"
+    },
+    {
+      "brand": "Vivo",
+      "model": "Y35 (2015)",
+      "name": "Vivo Y35 (2015)",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Pre-2020 Y35; distinct from 2022 Y35 already in DB"
+    },
+    {
+      "brand": "Vivo",
+      "model": "S17e",
+      "name": "Vivo S17e",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 7200",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S17t",
+      "name": "Vivo S17t",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S12",
+      "name": "Vivo S12",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 1100",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S12 Pro",
+      "name": "Vivo S12 Pro",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 1200",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S9",
+      "name": "Vivo S9",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 1100",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S9e",
+      "name": "Vivo S9e",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 820",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S7",
+      "name": "Vivo S7",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 765G",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S7e",
+      "name": "Vivo S7e",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 720",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S7t",
+      "name": "Vivo S7t",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 820",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S1",
+      "name": "Vivo S1",
+      "code": "unknown",
+      "chipset": "MediaTek Helio P65",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "S1 Pro",
+      "name": "Vivo S1 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 665",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "NEX",
+      "name": "Vivo NEX",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 845",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Also sold as NEX S - same device, one row"
+    },
+    {
+      "brand": "Vivo",
+      "model": "NEX A",
+      "name": "Vivo NEX A",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 710",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "NEX 3",
+      "name": "Vivo NEX 3",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 855+",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "NEX 3S",
+      "name": "Vivo NEX 3S",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 865",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "NEX Dual Display",
+      "name": "Vivo NEX Dual Display",
+      "code": "V1821A",
+      "chipset": "Qualcomm Snapdragon 845",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z1",
+      "name": "Vivo Z1",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z1 Pro",
+      "name": "Vivo Z1 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 712",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z1x",
+      "name": "Vivo Z1x",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 712",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z3",
+      "name": "Vivo Z3",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 710",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z5",
+      "name": "Vivo Z5",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 712",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z5x",
+      "name": "Vivo Z5x",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 710",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z5i",
+      "name": "Vivo Z5i",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 712",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "Z6",
+      "name": "Vivo Z6",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 765G",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "U1",
+      "name": "Vivo U1",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "U3",
+      "name": "Vivo U3",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Vivo",
+      "model": "U10",
+      "name": "Vivo U10",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 665",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "9",
+      "name": "iQOO 9",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 888+",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Global variant; China variant uses Snapdragon 8 Gen 1"
+    },
+    {
+      "brand": "iQOO",
+      "model": "9 Pro",
+      "name": "iQOO 9 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8 Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "9 SE",
+      "name": "iQOO 9 SE",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 888",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Known as Neo5S in China"
+    },
+    {
+      "brand": "iQOO",
+      "model": "8",
+      "name": "iQOO 8",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 888",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "8 Pro",
+      "name": "iQOO 8 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 888+",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "5",
+      "name": "iQOO 5",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 865",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "5 Pro",
+      "name": "iQOO 5 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 865",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "3",
+      "name": "iQOO 3",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 865",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 11",
+      "name": "iQOO Neo 11",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8 Elite",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 11 Ultra",
+      "name": "iQOO Neo 11 Ultra",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 9500",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Launched China 18 Aug 2026"
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 9",
+      "name": "iQOO Neo 9",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8 Gen 2",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 9 Pro",
+      "name": "iQOO Neo 9 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8 Gen 2",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "India variant; China Neo 9 Pro uses Dimensity 9300"
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 8",
+      "name": "iQOO Neo 8",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8+ Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 8 Pro",
+      "name": "iQOO Neo 8 Pro",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 9200+",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 7",
+      "name": "iQOO Neo 7",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 8200",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 7 Pro",
+      "name": "iQOO Neo 7 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8+ Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 7 SE",
+      "name": "iQOO Neo 7 SE",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 8200",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 6",
+      "name": "iQOO Neo 6",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 870",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 6 SE",
+      "name": "iQOO Neo 6 SE",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 870",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Neo 5",
+      "name": "iQOO Neo 5",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 870",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Known as iQOO 7 in India"
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z11",
+      "name": "iQOO Z11",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 7500 Turbo",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "India variant; China D8500, Malaysia SD 7s Gen 4 - regional variants differ"
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z11x",
+      "name": "iQOO Z11x",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 7400 Turbo",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z11 Lite",
+      "name": "iQOO Z11 Lite",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 6300",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z10",
+      "name": "iQOO Z10",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 7s Gen 3",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z10R",
+      "name": "iQOO Z10R",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 7400",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z10 Lite",
+      "name": "iQOO Z10 Lite",
+      "code": "unknown",
+      "chipset": "unknown",
+      "tags": [],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Pre-launch reports claimed SD 4 Gen 2; not re-verified post-launch, left unknown"
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z10x",
+      "name": "iQOO Z10x",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 7300",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z9",
+      "name": "iQOO Z9",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 7 Gen 3",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z9 Turbo",
+      "name": "iQOO Z9 Turbo",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8s Gen 3",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z9x",
+      "name": "iQOO Z9x",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 6 Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z7",
+      "name": "iQOO Z7",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 920",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z7 Pro",
+      "name": "iQOO Z7 Pro",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 7200",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z6",
+      "name": "iQOO Z6",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 695",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z6 Pro",
+      "name": "iQOO Z6 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 778G",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z6 44W",
+      "name": "iQOO Z6 44W",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 680",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "iQOO",
+      "model": "Z5",
+      "name": "iQOO Z5",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 778G",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi 9T",
+      "name": "Xiaomi Mi 9T",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 730",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi 9T Pro",
+      "name": "Xiaomi Mi 9T Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 855",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi MIX 2",
+      "name": "Xiaomi Mi MIX 2",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 835",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi MIX 2S",
+      "name": "Xiaomi Mi MIX 2S",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 845",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi MIX 3",
+      "name": "Xiaomi Mi MIX 3",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 845",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi Note",
+      "name": "Xiaomi Mi Note",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 801",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi Note Pro",
+      "name": "Xiaomi Mi Note Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 810",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi Note 3",
+      "name": "Xiaomi Mi Note 3",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 660",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi Max",
+      "name": "Xiaomi Mi Max",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 650",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Base variant; some Mi Max units use SD652"
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi Max 2",
+      "name": "Xiaomi Mi Max 2",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 625",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Mi Max 3",
+      "name": "Xiaomi Mi Max 3",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 636",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi Note 11T Pro",
+      "name": "Xiaomi Redmi Note 11T Pro",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 8100",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi Note 11T Pro+",
+      "name": "Xiaomi Redmi Note 11T Pro+",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 8100",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 9",
+      "name": "Xiaomi Redmi 9",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G80",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 9A",
+      "name": "Xiaomi Redmi 9A",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G25",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 9C",
+      "name": "Xiaomi Redmi 9C",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G35",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 10",
+      "name": "Xiaomi Redmi 10",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G88",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 10 5G",
+      "name": "Xiaomi Redmi 10 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 700",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 10C",
+      "name": "Xiaomi Redmi 10C",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 680",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 10X 4G",
+      "name": "Xiaomi Redmi 10X 4G",
+      "code": "unknown",
+      "chipset": "MediaTek Helio G85",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Same hardware as global Redmi Note 9"
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 10X 5G",
+      "name": "Xiaomi Redmi 10X 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 820",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi 10X Pro 5G",
+      "name": "Xiaomi Redmi 10X Pro 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 820",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K40",
+      "name": "Xiaomi Redmi K40",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 870",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K40 Pro",
+      "name": "Xiaomi Redmi K40 Pro",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 888",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K40 Pro+",
+      "name": "Xiaomi Redmi K40 Pro+",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 888",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Extra beyond task list; same SoC as K40 Pro"
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K40 Gaming",
+      "name": "Xiaomi Redmi K40 Gaming",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 1200",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K60",
+      "name": "Xiaomi Redmi K60",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 8+ Gen 1",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K60E",
+      "name": "Xiaomi Redmi K60E",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 8200",
+      "tags": [
+        "MediaTek"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K20 Pro Premium",
+      "name": "Xiaomi Redmi K20 Pro Premium",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 855+",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "K-series completion extra; distinct from K20 Pro already in DB"
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "Redmi K30S",
+      "name": "Xiaomi Redmi K30S",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 865",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "K-series completion extra"
+    },
+    {
+      "brand": "Tecno",
+      "model": "Camon Slim 5G",
+      "name": "Tecno Camon Slim 5G",
+      "code": "unknown",
+      "chipset": "MediaTek Dimensity 7300e",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Excluded-8 se ab shipped: Philippines me 2026-10-01 launch, sales 2026-10-16; parent ne 7 mazeed sources se tasdeeq ki (GadgetPilipinas, TechPatrol, WalasTech, PinoyTechnoGuide, Technobaboy, REVU, NoypiGeeks). Code abhi unknown."
+    },
+    {
+      "brand": "Xiaomi",
+      "model": "POCO X8",
+      "name": "Xiaomi POCO X8",
+      "code": "unknown",
+      "chipset": "Qualcomm Snapdragon 6s Gen 4",
+      "tags": [
+        "Qualcomm"
+      ],
+      "verified": false,
+      "route": "unknown",
+      "route_unknown": true,
+      "note": "Excluded-8 se ab shipped: GSMArena par announced 2026-09-01, released 2026-09-11; parent ne GSMArena spec page + GizmoChina + Beebom se tasdeeq ki. Code abhi unknown."
     }
   ]
 }
