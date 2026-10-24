@@ -81,6 +81,7 @@ jobs:
           --hidden-import ops.mtk_frp_reset
           --hidden-import ops.mtk_identify_backup
           --hidden-import ops.mtk_info
+          --hidden-import ops.mtk_meta_imei_restore
           --hidden-import ops.mtk_nv_backup
           --hidden-import ops.mtk_nv_restore
           --hidden-import ops.mtk_scatter_creator
@@ -105,6 +106,7 @@ jobs:
           --hidden-import ops.spd_launcher
           --hidden-import ops.spd_pac_builder
           --hidden-import ops.spd_reset
+          --hidden-import ops.spd_switch_diag
           --hidden-import ops.stubs
           --hidden-import serial.tools.list_ports
           --hidden-import ops.adb_reboot_download
@@ -129,7 +131,6 @@ jobs:
           --hidden-import ops.spd_readback
           --hidden-import ops.util_dump_analyser
           --hidden-import ops.util_install_drivers
-          --hidden-import ops.util_transsion_rom_patcher
           --hidden-import ops.util_update_check
           --hidden-import ops.xiaomi_miassistant
           --hidden-import ops.mtk_rpmb_read
@@ -156,13 +157,13 @@ jobs:
           --hidden-import ops.util_loader_import
           --hidden-import ops.fw_loader_harvest
           --hidden-import ops.util_repair_intel
+          --hidden-import ops.util_transsion_rom_patcher
           --hidden-import core.loader_library
           --hidden-import core.firmware_catalog
           --hidden-import core.fw_harvest
           --hidden-import core.repair_intel
           --hidden-import core.server
           --hidden-import core.shop_sync
-          --hidden-import core.spd_chips
           --hidden-import ops.util_server_status
           src/main.py
 
