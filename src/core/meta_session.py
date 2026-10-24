@@ -333,8 +333,11 @@ def open_session(ctx):
         return None
     if port is None:
         ctx.log("META port nahi mila — phone META mode me nahi hai. "
-                "Phone band karke Volume dono dabaye hue cable lagao "
-                "(META/Preloader port Device Manager me ana chahiye).",
+                "Pehle BINA button: phone ON + ADB se 'Enter META "
+                "Mode (ADB)' chalao, ya band phone sirf cable se "
+                "lagao (META/Preloader port Device Manager me ana "
+                "chahiye). Vol combo sirf BROM ke liye hai, META "
+                "ke liye nahi.",
                 "ERROR")
         ctx.log("Guide: MediaTek VCOM/USB driver laga hona lazmi hai — "
                 "driver na ho to META port nazar hi nahi ayega, aur "

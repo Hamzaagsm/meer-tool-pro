@@ -18,6 +18,19 @@ layout nahi toota):
    wohi functions jo MEER ke engine se waqai chalte hain; jis brand
    ka alag engine nahi, us par saaf label + aam (ADB/Fastboot) ops.
    Server-required stubs button nahi, label hain (🔒 SERVER REQUIRED).
+   Tab row + content dono scroll hote hain (chhoti window par bhi
+   koi tab/button kata hua nahi rehta).
+
+4. FRP section — IMEI section wala aik-click big-button pattern:
+   FRP Tools screen ke functions bare buttons ki shakal me; sirf
+   wohi FRP ops jo engine se waqai chalte hain, server-required
+   sirf label hai.
+
+5. No-button entry (2026-10-24, Hamza ki pakar): META/DIAG me
+   koi button nahi — IMEI section me "Enter META Mode (ADB —
+   bina button)" button + DIAG subsection me ON-rasta note;
+   META/DIAG guide texts se Vol-combo hidayat hatayi gayi (BROM
+   flows ki hidayat wahi ki wahi hai).
 
 Non-negotiables (yahan bhi laagu):
   - NO-LAUNCHER: ye panels sirf maujooda ops chalate hain
@@ -219,6 +232,19 @@ def build_imei_section(parent, app):
              bg=PANEL, fg=MUTED, font=("Segoe UI", 8)).pack(
                  side="left")
 
+    # META entry — BINA button wala rasta (Hamza ki pakar, 2026-10-24)
+    mrow = tk.Frame(frame, bg=PANEL)
+    mrow.pack(fill="x", padx=8, pady=(0, 2))
+    tk.Button(mrow, text="Enter META Mode (ADB — bina button)",
+               bg=PANEL2, fg=FG, relief="flat",
+               font=("Segoe UI", 9, "bold"), padx=10, pady=4,
+               command=lambda: _run_op(app, "meta_enter_adb")).pack(
+                   side="left", padx=(0, 6))
+    tk.Label(mrow, text="Phone ON + ADB se META me jao — META me Vol "
+                        "combo nahi chahiye (wo sirf BROM ke liye hai).",
+             bg=PANEL, fg=MUTED, font=("Segoe UI", 8)).pack(
+                 side="left")
+
     # --- DIAG subsection (SPD / Unisoc) ---
     diag = tk.LabelFrame(frame, text=" DIAG IMEI (SPD / Unisoc) ",
                          bg=PANEL, fg=MUTED, bd=1,
@@ -233,6 +259,13 @@ def build_imei_section(parent, app):
                   "kaam karta hai.",
              bg=PANEL, fg=MUTED, wraplength=700, justify="left",
              font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=2)
+    tk.Label(diag,
+             text="Bina button: phone ON rakho — Switch Diag Diag "
+                  "port khud pakar lega; band phone + boot key "
+                  "sirf fallback hai.",
+             bg=PANEL, fg=MUTED, wraplength=700, justify="left",
+             font=("Segoe UI", 8, "bold")).pack(anchor="w", padx=8,
+                                                pady=(0, 2))
     drow = tk.Frame(diag, bg=PANEL)
     drow.pack(fill="x", padx=8, pady=(0, 2))
     tk.Button(drow, text="Switch to Diag (Connect + IMEI State)",
@@ -261,6 +294,79 @@ def build_imei_section(parent, app):
 
 
 # ---------------------------------------------------------------------------
+# FRP section — IMEI section wala aik-click big-button pattern
+# ---------------------------------------------------------------------------
+
+# (label, op_id) — sirf wohi FRP ops jo MEER ke engine se waqai
+# chalte hain. Har button apna mode khud check karta hai — phone
+# us mode me na ho to op saaf FAIL dega, nakli kaam nahi hoga.
+_FRP_BUTTONS = (
+    ("FRP Only (MTK — BROM)", "mtk_frp_only"),
+    ("FRP Erase + Factory Reset (MTK — BROM)", "mtk_frp_reset"),
+    ("FRP Erase (META Mode)", "meta_frp_erase"),
+    ("FRP Erase (Unisoc — FDL)", "spd_frp"),
+    ("FRP Erase (Fastboot)", "fastboot_frp"),
+    ("FRP Erase (Motorola Fastboot)", "moto_fastboot_frp"),
+    ("FRP Erase (EDL)", "qc_edl_frp"),
+    ("FRP Method Router (Samsung)", "samsung_frp_router"),
+    ("Reboot (ADB → Normal)", "adb_reboot"),
+    ("Reboot to Normal (META)", "meta_reboot_normal"),
+    ("Reboot to Fastboot (META)", "meta_reboot_fastboot"),
+)
+
+
+def build_frp_section(parent, app):
+    """FRP Tools screen — IMEI section jaisa aik-click pattern:
+    bara button = seedha us ka op, koi lambi list nahi, koi doosra
+    tool nahi khulta."""
+    frame = tk.LabelFrame(
+        parent,
+        text=" FRP — aik click (big buttons) ",
+        bg=PANEL, fg=MUTED, bd=1, font=("Segoe UI", 9, "bold"))
+
+    tk.Label(frame,
+             text="Har button seedha apna FRP op chalata hai — koi "
+                  "doosra tool nahi khulta. Sirf wohi FRP buttons "
+                  "hain jo MEER ke engine se waqai chalte hain; "
+                  "har button apna mode khud check karta hai.",
+             bg=PANEL, fg=MUTED, wraplength=700, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=(4, 2))
+
+    grid = tk.Frame(frame, bg=PANEL)
+    grid.pack(fill="x", padx=8, pady=(0, 2))
+    col = 0
+    row_i = 0
+    for label, op_id in _FRP_BUTTONS:
+        tk.Button(grid, text=label,
+                   bg=PANEL2, fg=FG, relief="flat",
+                   font=("Segoe UI", 9, "bold"), padx=10, pady=4,
+                   command=lambda oid=op_id: _run_op(app, oid)).grid(
+                       row=row_i, column=col, sticky="ew",
+                       padx=2, pady=2)
+        col += 1
+        if col >= 2:
+            col = 0
+            row_i += 1
+    grid.columnconfigure(0, weight=1)
+    grid.columnconfigure(1, weight=1)
+
+    tk.Label(frame,
+             text="🔒 FRP Remove (Latest Security, Samsung) — "
+                  "SERVER REQUIRED (paid server ke baghair nahi "
+                  "chalega); is liye is ka button nahi, sirf ye "
+                  "label hai.",
+             bg=PANEL, fg=MUTED, wraplength=700, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=(2, 0))
+    tk.Label(frame,
+             text="QR code / MTP wale FRP tareeqe (doosre tools "
+                  "wale) MEER ke engine me nahi hain — is liye "
+                  "yahan un ka nakli button nahi hai.",
+             bg=PANEL, fg=MUTED, wraplength=700, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=(0, 4))
+    return frame
+
+
+# ---------------------------------------------------------------------------
 # 3. Brand-wise pages
 # ---------------------------------------------------------------------------
 
@@ -274,7 +380,7 @@ _TRANSSION_OPS = (
     "mdm_library", "mdm_meta_guide", "mdm_payjoy",
     "mdm_proinfo_backup", "mdm_proinfo_write",
     "mdm_security_plugin", "meta_disable_adb", "meta_enable_adb",
-    "meta_enter", "meta_frp_erase", "meta_factory_reset",
+    "meta_enter", "meta_enter_adb", "meta_frp_erase", "meta_factory_reset",
     "meta_gpt_read", "meta_poweroff", "meta_read_info",
     "meta_reboot_fastboot", "meta_reboot_normal",
     "meta_restore_patch", "meta_plugin_patch",
@@ -375,12 +481,18 @@ BRAND_DEFS = (
 
 
 def _scrollable(parent):
-    """Canvas + inner frame (brand content ke liye)."""
+    """Canvas + inner frame (brand content ke liye) — vertical +
+    horizontal scroll, taake chhoti window (1366x768) par bhi koi
+    button kat kar nazar se bahir na rahe."""
     canvas = tk.Canvas(parent, bg=PANEL, highlightthickness=0)
     scroll = tk.Scrollbar(parent, orient="vertical",
                           command=canvas.yview)
-    canvas.configure(yscrollcommand=scroll.set)
+    hscroll = tk.Scrollbar(parent, orient="horizontal",
+                           command=canvas.xview)
+    canvas.configure(yscrollcommand=scroll.set,
+                     xscrollcommand=hscroll.set)
     scroll.pack(side="right", fill="y")
+    hscroll.pack(side="bottom", fill="x")
     canvas.pack(side="left", fill="both", expand=True)
     inner = tk.Frame(canvas, bg=PANEL)
     win = canvas.create_window((0, 0), window=inner, anchor="nw")
@@ -410,8 +522,24 @@ def build_brand_pages(parent, app):
     frame = tk.LabelFrame(parent, text=" BRAND PAGES ",
                           bg=PANEL, fg=MUTED, bd=1,
                           font=("Segoe UI", 9, "bold"))
-    tabrow = tk.Frame(frame, bg=PANEL)
-    tabrow.pack(fill="x", padx=6, pady=(4, 2))
+    # Brand tab row — khud horizontal scroll hoti hai, taake chhoti
+    # window par bhi 12 tabs me se koi kata hua na rahe.
+    tab_container = tk.Frame(frame, bg=PANEL)
+    tab_container.pack(fill="x", padx=6, pady=(4, 2))
+    tab_canvas = tk.Canvas(tab_container, bg=PANEL,
+                           highlightthickness=0, height=32)
+    tab_scroll = tk.Scrollbar(tab_container, orient="horizontal",
+                              command=tab_canvas.xview)
+    tab_canvas.configure(xscrollcommand=tab_scroll.set)
+    tab_scroll.pack(side="bottom", fill="x")
+    tab_canvas.pack(side="top", fill="x")
+    tabrow = tk.Frame(tab_canvas, bg=PANEL)
+    tab_canvas.create_window((0, 0), window=tabrow, anchor="nw")
+
+    def _on_tab_inner(_event=None):
+        tab_canvas.configure(scrollregion=tab_canvas.bbox("all"))
+
+    tabrow.bind("<Configure>", _on_tab_inner)
     content = tk.Frame(frame, bg=PANEL)
     content.pack(fill="both", expand=True, padx=6, pady=(0, 4))
     inner = _scrollable(content)

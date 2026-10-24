@@ -172,8 +172,13 @@ def model_label(m):
 # ---------------------------------------------------------------------------
 
 _ROUTE_NOTES = {
-    "META": "Transsion META mode se entry — band phone, META "
-            "combo ke saath cable lagti hai.",
+    "META": "Transsion META mode se entry — BINA button: phone "
+            "ON + ADB se 'Enter META Mode (ADB)' chalao, ya "
+            "band phone sirf cable se lagao (Vol combo sirf "
+            "BROM ke liye hai).",
+    "unknown": "Is model ka rasta abhi verify nahi hua — chip "
+               "live detection se ayegi; ADB/Fastboot tabs "
+               "hamesha khule hain.",
     "META+DA": "META aur Download Agent — dono darwaze is "
                "model par khule hain.",
     "new-Auth": "META entry naye signed Auth se gated hai — "
@@ -820,9 +825,10 @@ def diag_enable_adb_op(model, fdl_provider=None):
                     "set model ke DIAG firmware par munhasir hai; koi "
                     "universal command maujood nahi.", "OK")
             return True
-        ctx.log("Na ADB mila na DIAG (SPD) port — phone band karke "
-                "Volume keys dabaye hue cable lagao (DIAG port Device "
-                "Manager me Spreadtrum Diag ayega).", "ERROR")
+        ctx.log("Na ADB mila na DIAG (SPD) port — phone ON rakho aur "
+                "'Switch to Diag' dobara chalao (DIAG port Device "
+                "Manager me Spreadtrum Diag ayega); band phone + "
+                "boot key sirf aakhri rasta hai.", "ERROR")
         return False
     return _op("mdm_list_diag_enable_adb",
                "ENABLE ADB - [DIAG]", run, engine="spd-diag")
