@@ -18,10 +18,13 @@ driver wali line ati hai — phone par shak nahi, driver par seedha
 ishara.
 """
 
+import re
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 from core import engines
+from core.device_watch import DeviceInfo
 from core.runner import APP_ROOT, BACKUPS_DIR, TOOLS_DIR  # noqa: F401
 
 OP = {
@@ -81,6 +84,51 @@ def _driver_precheck(ctx):
         ctx.log(_USBDK_WARN, "WARN")
 
 
+_CPU_RE = re.compile(r"CPU:\s*(MT\d+[A-Z]*|Helio\s+\S+|Dimensity\s+\S+)",
+                     re.IGNORECASE)
+
+
+def _cpu_hook(found):
+    """MTKClient ki output se chip pakro (pehli saaf line hi)."""
+
+    def _hook(line):
+        if "chip" in found:
+            return
+        m = _CPU_RE.search(line or "")
+        if m:
+            found["chip"] = " ".join(m.group(1).split())
+
+    return _hook
+
+
+def _push_chip(ctx, found):
+    """Read Info ke baad chip panel me bhejo (update_device chain).
+
+    Sirf tab jab chip mili ho aur device object DeviceInfo jaisa ho —
+    warna khamoshi (panel watcher wali halat par hi rahega)."""
+    chip = found.get("chip")
+    if not chip or not ctx.update_device:
+        return
+    try:
+        dev = ctx.device
+        if dev is None:
+            return
+        if isinstance(dev, DeviceInfo):
+            new = replace(dev, chip=chip,
+                          mode=dev.mode or "BROM",
+                          detail=dev.detail or "MediaTek BROM")
+        else:
+            # Test/legacy device objects — attribute set best-effort
+            new = dev
+            try:
+                new.chip = chip
+            except Exception:  # noqa: BLE001
+                return
+        ctx.update_device(new)
+    except Exception:  # noqa: BLE001 — panel update kabhi op nahi rokta
+        pass
+
+
 def _engine(ctx):
     """(cmd_prefix, cwd) ya (None, None) — nakami par guided log de chuka hoga."""
     cmd, cwd, note = engines.find_mtkclient()
@@ -116,11 +164,17 @@ def run(ctx) -> bool:
     if extra:
         ctx.log("User ka DA (loader) istemal hoga jo tools/loaders/mtk/ "
                 "me rakha hai.", "INFO")
-    code = ctx.stream(cmd + ["printgpt"] + extra, timeout=180, cwd=cwd)
+    found_chip = {}
+    code = ctx.stream(cmd + ["printgpt"] + extra, timeout=180, cwd=cwd,
+                      line_hook=_cpu_hook(found_chip))
     if ctx.is_cancelled():
         return False
     if code == 0:
         ctx.progress(95, "GPT parh li gayi")
+        # 2026-10-24: Read Info ke baad chip panel me aaye — warna
+        # upar "—" rehta hai aur maloomat sirf log me dab jati hai.
+        # Sirf wahi chip jo MTKClient ne khud chhapi ho.
+        _push_chip(ctx, found_chip)
         return True
     if code in _CRASH_CODES:
         ctx.log(_CRASH_LINE, "ERROR")
