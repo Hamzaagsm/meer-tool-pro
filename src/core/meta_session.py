@@ -8,7 +8,13 @@ se Read Info / Factory Reset / Enable ADB chalate hain. Ye module usi
 rasty ka basic tier deta hai:
 
   - Port discovery: pyserial se VID 0x0E8D wale ports; "META" wali
-    description ko tarjeeh.
+    description ko tarjeeh. VID na mile (kuch driver bindings VID
+    expose nahi karti) to description/manufacturer me
+    "meta"/"mediatek" bhi kaafi hai, aur Windows registry backup
+    se chhoote hue ports bhi milte hain (Smart 20 bench, 2026-10-25:
+    META port "foran khtam" isi liye dikha — tool use dekh hi nahi
+    pata tha, jab ke baqi tools usi driver par COM port se kaam
+    karte hain).
   - FT frame codec (PURE functions — bench ke baghair test ho sakte
     hain): build_frame() / parse_frames().
   - MetaSession: aik request/response ka sakht-verified session —
@@ -41,7 +47,9 @@ hai (guard ops me hai, core.mdm_list.NEW_AUTH_TOKENS se).
 
 from __future__ import annotations
 
+import sys
 import time
+from types import SimpleNamespace
 
 # ==========================================================================
 # FT protocol constants — PUBLIC FT message table se.
@@ -96,24 +104,151 @@ class MetaError(Exception):
 # --------------------------------------------------------------------------
 # Port discovery
 # --------------------------------------------------------------------------
-def _candidate_ports():
-    """VID 0x0E8D wale tamam serial port objects (pyserial).
+# Description/manufacturer markers — un ports ke liye jin ki VID pyserial
+# se nahi milti (kuch driver bindings VID expose nahi karti — Smart 20
+# bench: META port "foran khtam" isi liye dikha). Sirf ye do markers:
+# aam "USB Serial" wale ghair-MediaTek ports is me nahi ate.
+META_DESC_MARKERS = ("meta", "mediatek")
 
-    pyserial na ho to MetaError (install note ke saath) — caller isay
-    guided FAIL me badal sakta hai.
+
+def _port_matches_meta(p):
+    """pyserial port object META candidate hai ya nahi.
+
+    Pehle VID 0x0E8D; VID na mile (None) to description/manufacturer
+    me 'meta'/'mediatek' bhi kaafi hai.
     """
+    try:
+        if getattr(p, "vid", None) == META_VID:
+            return True
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        hay = " ".join([getattr(p, "description", "") or "",
+                        getattr(p, "manufacturer", "") or ""]).lower()
+    except Exception:  # noqa: BLE001
+        return False
+    return any(m in hay for m in META_DESC_MARKERS)
+
+
+def _scan_winreg_meta():
+    """Windows registry se VID_0E8D devices ke COM ports.
+
+    HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USB\\VID_0E8D&PID_XXXX...
+    keys me FriendlyName + Device Parameters\\PortName hota hai.
+    Sirf Windows par chalta hai; baqi par []. PID se filter NAHI
+    (META port ka PID mukhtalif ho sakta hai) — preference scoring
+    find_meta_port me hoti hai. pyserial se chhoote hue ports ka
+    backup hai (jaise mtk_serial_fallback._scan_winreg).
+    Returns [SimpleNamespace(device, description, manufacturer,
+    vid, pid), ...].
+    """
+    if not sys.platform.startswith("win"):
+        return []
+    try:
+        import winreg
+    except Exception:  # noqa: BLE001
+        return []
+    found = []
+    try:
+        enum = winreg.OpenKey(
+            winreg.HKEY_LOCAL_MACHINE,
+            r"SYSTEM\CurrentControlSet\Enum\USB")
+    except Exception:  # noqa: BLE001
+        return []
+    try:
+        i = 0
+        while True:
+            try:
+                vidkey = winreg.EnumKey(enum, i)
+            except OSError:
+                break
+            i += 1
+            if not vidkey.upper().startswith("VID_0E8D"):
+                continue
+            pid = None
+            for part in vidkey.split("&"):
+                if part.upper().startswith("PID_"):
+                    try:
+                        pid = int(part[4:], 16)
+                    except Exception:  # noqa: BLE001
+                        pid = None
+            try:
+                sub = winreg.OpenKey(enum, vidkey)
+            except Exception:  # noqa: BLE001
+                continue
+            try:
+                j = 0
+                while True:
+                    try:
+                        inst = winreg.EnumKey(sub, j)
+                    except OSError:
+                        break
+                    j += 1
+                    try:
+                        inst_key = winreg.OpenKey(sub, inst)
+                    except Exception:  # noqa: BLE001
+                        continue
+                    try:
+                        try:
+                            friendly, _t = winreg.QueryValueEx(
+                                inst_key, "FriendlyName")
+                        except Exception:  # noqa: BLE001
+                            friendly = ""
+                        try:
+                            params = winreg.OpenKey(
+                                inst_key, "Device Parameters")
+                            port, _t = winreg.QueryValueEx(
+                                params, "PortName")
+                            winreg.CloseKey(params)
+                        except Exception:  # noqa: BLE001
+                            continue
+                    finally:
+                        winreg.CloseKey(inst_key)
+                    if port:
+                        found.append(SimpleNamespace(
+                            device=str(port),
+                            description=str(friendly or ""),
+                            manufacturer="",
+                            vid=META_VID, pid=pid))
+            finally:
+                winreg.CloseKey(sub)
+    finally:
+        winreg.CloseKey(enum)
+    return found
+
+
+def _candidate_ports():
+    """Tamam META candidate ports (pyserial objects / registry entries).
+
+    pyserial na ho to registry backup azmaya jata hai; dono khali hon
+    to MetaError (install note ke saath) — caller isay guided FAIL
+    me badal sakta hai.
+    """
+    found = []
+    list_ports = None
     try:
         from serial.tools import list_ports
     except Exception:  # noqa: BLE001
+        list_ports = None
+    if list_ports is not None:
+        try:
+            ports = list_ports.comports()
+        except Exception as e:  # noqa: BLE001
+            raise MetaError(f"Serial ports ki fehrist nahi mil saki: {e}")
+        found = [p for p in ports if _port_matches_meta(p)]
+    try:
+        for reg in _scan_winreg_meta():
+            if all(getattr(reg, "device", None)
+                   != getattr(p, "device", None) for p in found):
+                found.append(reg)
+    except Exception:  # noqa: BLE001 — registry backup kabhi scan nahi rokta
+        pass
+    if list_ports is None and not found:
         raise MetaError(
             "pyserial nahi mila — META port scan nahi ho sakta. "
             "Install: python -m pip install pyserial (EXE build me "
             "pyserial shamil hota hai).")
-    try:
-        ports = list_ports.comports()
-    except Exception as e:  # noqa: BLE001
-        raise MetaError(f"Serial ports ki fehrist nahi mil saki: {e}")
-    return [p for p in ports if getattr(p, "vid", None) == META_VID]
+    return found
 
 
 def find_meta_ports():
@@ -126,21 +261,32 @@ def find_meta_ports():
     return out
 
 
+def _meta_preference(p):
+    """Chhota number = behtar. 'META' naam pehle; phir MediaTek
+    (non-Preloader) USB port; phir baqi VID match; Preloader sab se
+    aakhir (wo META session nahi, BROM/Preloader hai)."""
+    hay = " ".join([getattr(p, "description", "") or "",
+                    getattr(p, "manufacturer", "") or ""]).lower()
+    if "meta" in hay:
+        return 0
+    if "preloader" in hay:
+        return 3
+    if "mediatek" in hay:
+        return 1
+    return 2
+
+
 def find_meta_port():
     """Sab se munasib META port object, warna None.
 
-    Candidates VID 0x0E8D wale hain; jis ki description/manufacturer
-    me "META" ayega use tarjeeh milegi.
+    Candidates VID 0x0E8D wale hain (ya description me
+    'meta'/'mediatek'); preference: "META" naam > MediaTek USB
+    Port > baqi VID match > Preloader.
     """
     candidates = _candidate_ports()
     if not candidates:
         return None
-    for p in candidates:
-        hay = " ".join([getattr(p, "description", "") or "",
-                        getattr(p, "manufacturer", "") or ""]).lower()
-        if "meta" in hay:
-            return p
-    return candidates[0]
+    return min(candidates, key=_meta_preference)
 
 
 # --------------------------------------------------------------------------
@@ -310,24 +456,41 @@ class MetaSession:
 # --------------------------------------------------------------------------
 # Ops ke liye helper
 # --------------------------------------------------------------------------
-def open_session(ctx):
+def _wait_for_meta_port(ctx, wait_s=10):
+    """META port mile to object, warna None (MetaError propagate).
+
+    Pehli scan me na mile to bounded wait — phone META mode me
+    janay ke baad re-enumeration me aik do second lag sakte hain
+    (port "foran khtam" wali shikayat ka aik hissa yahi race thi).
+    """
+    port = find_meta_port()
+    if port is not None or wait_s <= 0:
+        return port
+    ctx.log("META port abhi nazar nahi aa raha — %.0f second tak "
+            "dobara dhoondha ja raha hai (phone META mode me janay "
+            "ke baad port banne me waqt lag sakta hai)..." % wait_s,
+            "WARN")
+    deadline = time.monotonic() + float(wait_s)
+    while time.monotonic() < deadline:
+        if ctx.is_cancelled():
+            return None
+        time.sleep(1.0)
+        port = find_meta_port()
+        if port is not None:
+            return port
+    return None
+
+
+def open_session(ctx, wait_s=10):
     """META port dhoondh kar khula hua MetaSession wapas karo, warna None.
 
     Har nakami par ctx me guided wajah pehle hi log ho jati hai:
     pyserial missing → install note; port na mile → phone META mode
-    me nahi / driver (VCOM) check.
+    me nahi / driver (VCOM) check. Port pehli scan me na mile to
+    wait_s second tak dobara dhoondha jata hai (re-enumeration race).
     """
     try:
-        candidates = find_meta_ports()
-    except MetaError as e:
-        ctx.log(str(e), "ERROR")
-        return None
-    for device, desc, pid in candidates:
-        pid_txt = f", PID 0x{pid:04X}" if isinstance(pid, int) else ""
-        ctx.log(f"META candidate port: {device} — {desc or 'MediaTek'}"
-                f"{pid_txt}", "DATA")
-    try:
-        port = find_meta_port()
+        port = _wait_for_meta_port(ctx, wait_s=wait_s)
     except MetaError as e:
         ctx.log(str(e), "ERROR")
         return None
@@ -343,6 +506,14 @@ def open_session(ctx):
                 "driver na ho to META port nazar hi nahi ayega, aur "
                 "yeh session bhi nahi khulega.", "WARN")
         return None
+    try:
+        candidates = find_meta_ports()
+    except MetaError:
+        candidates = []
+    for device, desc, pid in candidates:
+        pid_txt = f", PID 0x{pid:04X}" if isinstance(pid, int) else ""
+        ctx.log(f"META candidate port: {device} — {desc or 'MediaTek'}"
+                f"{pid_txt}", "DATA")
     session = MetaSession(port.device)
     try:
         session.open()
@@ -380,3 +551,59 @@ def ft_checked(ctx, msg_id, payload=b"", timeout=15, what="FT request"):
                 "nahi karte.", "ERROR")
         return False
     return True
+
+
+def reboot_to_normal(ctx, timeout=15, already_gone_ok=True):
+    """Verified kaam ke baad phone ko META mode se normal boot par bhejo.
+
+    META session ops (FRP erase, factory reset, ADB set) ka aakhri
+    qadam: pehle ye nahi hota tha aur phone META mode me atka rehta
+    tha jab tak restart/disconnect na karo (Smart 20 bench flaw,
+    2026-10-25). Ab op khud FT_REBOOT normal bhejta hai.
+
+    already_gone_ok=True (completion step): META port pehle hi gayab
+    ho (phone khud reboot ho raha ho) to bhi True — phone META se
+    nikal chuka hai, wahi maqsad tha. False (standalone Reboot op):
+    port na ho to FAIL (phone META me hai hi nahi).
+
+    Returns True jab phone normal boot ki taraf ja raha ho (verified
+    reboot ya port pehle hi gayab); False jab port mojood ho lekin
+    reboot qabool na hua ho — caller phir manual reboot ki hidayat
+    de (helper khud WARN log karta hai). Reboot ki nakami kabhi
+    main amal ki kamyabi ko FAIL nahi banati — wo alag faisla hai.
+    """
+    try:
+        ports = find_meta_ports()
+    except MetaError:
+        ports = []
+    if not ports:
+        if already_gone_ok:
+            ctx.log("META port pehle hi nazar nahi aa raha — phone "
+                    "shayad khud reboot ho raha hai (META se nikal "
+                    "chuka hai).", "INFO")
+            return True
+        ctx.log("META port nahi mila — phone META mode me nahi hai, "
+                "is liye normal boot par bheja nahi ja sakta.", "ERROR")
+        return False
+    ctx.log("Phone ko META mode se normal boot par bheja ja raha hai...",
+            "INFO")
+    ok = ft_checked(ctx, FT_REBOOT, payload=bytes([REBOOT_NORMAL]),
+                    timeout=timeout, what="Reboot (Normal)")
+    if ok:
+        ctx.log("Reboot ka verified jawab (status OK) mil gaya — "
+                "phone ab normal boot hona chahiye; boot hone me "
+                "thoda waqt lag sakta hai.", "OK")
+        return True
+    # Reboot request nakam — kya phone khud META se nikal chuka hai?
+    try:
+        ports = find_meta_ports()
+    except MetaError:
+        ports = []
+    if already_gone_ok and not ports:
+        ctx.log("META port ab nazar nahi aa raha — phone shayad khud "
+                "reboot ho raha hai (META se nikal chuka hai).", "INFO")
+        return True
+    ctx.log("Phone ko normal boot par bheja nahi ja saka — power "
+            "button 10-15 second dabaye rakho ya 'Reboot to Normal "
+            "(META Mode)' op chalao.", "WARN")
+    return False
