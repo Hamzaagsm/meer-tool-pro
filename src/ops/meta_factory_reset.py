@@ -80,11 +80,15 @@ def run(ctx) -> bool:
     ctx.progress(85, "Reset ka verified jawab mil gaya")
     ctx.log("META factory reset ka verified jawab (status OK) mil "
             "gaya — phone ko reboot hone do.", "OK")
-    ctx.log("Tasdeeq tum khud karo: phone reboot karke setup check "
-            "karo — data saaf hona chahiye; agar setup par purana "
-            "Google account (FRP) mange to is model/security par "
-            "META reset ne FRP saaf nahi kiya (upar wali imaandari "
-            "wali line yaad karo) — phir BROM/Download wala FRP "
-            "rasta istemal hoga.", "INFO")
+    # Aakhri qadam (Smart 20 bench flaw fix, 2026-10-25): phone khud
+    # normal boot par jaye — pehle META mode me atka rehta tha jab
+    # tak restart/disconnect na karo.
+    meta_session.reboot_to_normal(ctx)
+    ctx.log("Tasdeeq: phone normal boot hone par setup check karo — "
+            "data saaf hona chahiye; agar setup par purana Google "
+            "account (FRP) mange to is model/security par META "
+            "reset ne FRP saaf nahi kiya (upar wali imaandari wali "
+            "line yaad karo) — phir BROM/Download wala FRP rasta "
+            "istemal hoga.", "INFO")
     ctx.progress(95, "Factory Reset mukammal")
     return True
