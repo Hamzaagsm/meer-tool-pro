@@ -34,6 +34,19 @@ BACKUPS_DIR = APP_ROOT / "backups"
 LEVELS = ("INFO", "OK", "WARN", "ERROR", "CMD", "DATA")
 
 
+class StreamAbort(Exception):
+    """line_hook se chal rahi stream foran khatam karne ka ishara.
+
+    Sirf YE exception stream rokta hai — baqi hook ghaltiyan pehle
+    ki tarah ignore hoti hain. MTK transport (core.mtk_serial_
+    fallback) is se USB koshish ko enumeration-error wali line
+    milte hi foran khatam karta hai (180s timeout ka intezaar
+    nahi), taake VCOM serial fallback waqt par chal sake (Smart
+    20 bench, 2026-10-25 — DFT/Fenix isi liye COM port se kaam
+    karte hain). stream() is par -3 wapas karta hai.
+    """
+
+
 @dataclass
 class OpContext:
     """Har operation ko milne wali sahulaten — log, progress, device, helpers."""
@@ -66,9 +79,11 @@ class OpContext:
         line_hook (optional): har output line par call hota hai —
         ops is se maloomat (masalan CPU/chip) nikal kar panel ko
         update kar sakte hain; hook ki kharabi stream ko nahi rokti.
+        Sirf StreamAbort exception stream rokta hai (process
+        terminate karke -3 wapas hota hai).
 
         Return: process ka exit code (int). Cancel/timeout par -1 / -2 aur
-        log me wajah pehle hi likh di jati hai.
+        StreamAbort par -3; log me wajah pehle hi likh di jati hai.
         """
         self.log(" ".join(str(c) for c in cmd), "CMD")
         kwargs = {}
@@ -96,6 +111,7 @@ class OpContext:
                 proc.wait()
             # cancel polling neeche read loop me hoti hai
 
+        aborted = False
         try:
             timer = None
             if timeout:
@@ -114,11 +130,23 @@ class OpContext:
                     if line_hook is not None:
                         try:
                             line_hook(line)
+                        except StreamAbort:
+                            # Transport ka foran-khatam ka ishara
+                            # (masalan MTK USB enumeration error) —
+                            # process band karke -3 wapas hoga.
+                            aborted = True
+                            proc.terminate()
+                            self.log("Line-hook ne stream foran khatam "
+                                     "karne ko kaha — process band kiya "
+                                     "ja raha hai.", "WARN")
+                            break
                         except Exception:  # noqa: BLE001 — hook kabhi stream nahi rokta
                             pass
             proc.wait()
             if timer:
                 timer.cancel()
+            if aborted:
+                return -3
             if proc.returncode and proc.returncode < 0 and timeout:
                 pass  # killed — cancel/timeout dono oper handle ho chuke
             return proc.returncode if proc.returncode is not None else -1
