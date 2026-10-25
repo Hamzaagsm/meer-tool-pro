@@ -165,8 +165,7 @@ def build_imei_section(parent, app):
     """IMEI A/B + tasdeeq + Restore + META Write + DIAG subsection."""
     frame = tk.LabelFrame(
         parent,
-        text=" IMEI — Sirf Original (Dabbe / Sticker wala) — "
-             "Model list ki zaroorat NAHI ",
+        text=" IMEI Patch — Sirf Original (Dabbe / Sticker wala) ",
         bg=PANEL, fg=MUTED, bd=1, font=("Segoe UI", 9, "bold"))
 
     tk.Label(frame, text=IMEI_WARNING, bg=PANEL, fg=WARN_FG,
@@ -299,6 +298,197 @@ def build_imei_section(parent, app):
     return frame
 
 
+def build_partition_manager_panel(parent, app):
+    """Partition Manager panel — GPT-driven partition view
+    (Round 2, §8.13).
+
+    META session se GPT parh kar fehrist dikhata hai (naam + size
+    + safety class); har partition par Read / Write / Erase —
+    per-partition button op_for() factory se banta hai (wohi
+    pattern jo model tab ka download_frp_op istemal karta hai),
+    is liye muntakhib partition seedha op ko bandha hota hai,
+    PARAMS bar se kuch nahi mangta.
+
+    Hifazat panel par likhi hai: backup-first (write/erase se
+    pehle poori partition backup hoti hai), preloader/nvram/
+    nvdata/seccfg/proinfo/lk/boot/vbmeta/tee par ERASE mana hai,
+    write/erase par PARAMS bar ki ⚠ tasdeeq lazmi hai. Panel
+    sirf maujooda ops chalata hai (app._run_action) — koi bahari
+    tool kabhi nahi khulta (NO-LAUNCHER).
+    """
+    from core import meta_gpt  # noqa: E402 — lazy (circular se bachao)
+    from ops import meta_partition_manager as _pm  # noqa: E402
+
+    frame = tk.LabelFrame(
+        parent,
+        text=" PARTITION MANAGER (META Mode) — GPT-driven ",
+        bg=PANEL, fg=MUTED, bd=1, font=("Segoe UI", 9, "bold"))
+
+    tk.Label(frame,
+             text="Naye models pehle: Helio G200/G100 (Hot 60 Pro/Pro+, "
+                  "Spark 40 Pro+, Camon 50/50 Pro) par META entry khuli "
+                  "hai. Pehle GPT parho, phir partition chuno — GPT se "
+                  "bahir koi naam chhua nahi jayega.",
+             bg=PANEL, fg=FG, wraplength=700, justify="left",
+             font=("Segoe UI", 8, "bold")).pack(anchor="w", padx=8,
+                                                pady=(4, 2))
+    tk.Label(frame,
+             text="⛔ CRITICAL (preloader / nvram / nvdata / lk / boot / "
+                  "vbmeta / tee) = ERASE MANA (brick). ⚠ PROTECTED = "
+                  "security state. Write/Erase se pehle poori partition "
+                  "ka backup khud banta hai; Write ki file tools/"
+                  "partitions/ me SIRF AIK .bin honi chahiye.",
+             bg=PANEL, fg=WARN_FG, wraplength=700, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=(0, 2))
+    tk.Label(frame,
+             text="Write/Erase KHATARNAAK hain — neeche PARAMS bar ki "
+                  "⚠ tasdeeq ON kiye baghair gate rok dega. Read/List "
+                  "safe hain (tasdeeq nahi chahiye).",
+             bg=PANEL, fg=MUTED, wraplength=700, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=(0, 4))
+
+    # --- GPT parho + listbox (aakhri GPT read se bharti hai) ---
+    app.partition_mgr_name_var = tk.StringVar()
+    top = tk.Frame(frame, bg=PANEL)
+    top.pack(fill="x", padx=8, pady=(0, 2))
+    tk.Button(top, text="GPT Parho (META Mode)",
+              bg=ACCENT, fg="#111", relief="flat",
+              font=("Segoe UI", 9, "bold"), padx=10, pady=4,
+              command=lambda: _run_op(app, "meta_gpt_read")).pack(
+                  side="left", padx=(0, 6))
+    tk.Button(top, text="↻ Fehrist taza karo",
+              bg=PANEL2, fg=FG, relief="flat",
+              font=("Segoe UI", 8, "bold"), padx=8, pady=4,
+              command=lambda: _refill()).pack(side="left", padx=(0, 6))
+    tk.Label(top, text="Fehrist aakhri GPT read se bharti hai — "
+                       "pehle 'GPT Parho' dabao.",
+             bg=PANEL, fg=MUTED, font=("Segoe UI", 8)).pack(
+                 side="left")
+
+    list_frame = tk.Frame(frame, bg=PANEL)
+    list_frame.pack(fill="x", padx=8, pady=(0, 2))
+    list_scroll = tk.Scrollbar(list_frame, orient="vertical")
+    list_scroll.pack(side="right", fill="y")
+    part_list = tk.Listbox(list_frame, bg=PANEL2, fg=FG,
+                           relief="flat", font=("Consolas", 8),
+                           height=8, exportselection=False,
+                           yscrollcommand=list_scroll.set)
+    list_scroll.configure(command=part_list.yview)
+    part_list.pack(side="left", fill="x", expand=True)
+
+    shown = {"items": []}
+
+    def _refill():
+        part_list.delete(0, "end")
+        entries = list(getattr(meta_gpt, "LAST_GPT_ENTRIES", None) or [])
+        shown["items"] = entries
+        for e in entries:
+            cls = _pm.classify_partition(e.get("name", ""))
+            tag = {"critical": "⛔ CRITICAL",
+                   "protected": "⚠ PROTECTED",
+                   "normal": "normal"}[cls]
+            part_list.insert(
+                "end",
+                f"{e.get('name', '')} — "
+                f"{_pm.fmt_size(e.get('size_bytes', 0))} [{tag}]")
+
+    def _on_select(_event=None):
+        sel = part_list.curselection()
+        if not sel:
+            return
+        entry = shown["items"][sel[0]]
+        app.partition_mgr_name_var.set(str(entry.get("name", "")))
+
+    part_list.bind("<<ListboxSelect>>", _on_select)
+
+    # --- Partition naam + per-partition actions ---
+    nrow = tk.Frame(frame, bg=PANEL)
+    nrow.pack(fill="x", padx=8, pady=(2, 2))
+    tk.Label(nrow, text="Partition:", bg=PANEL, fg=FG,
+             font=("Segoe UI", 9, "bold")).pack(side="left",
+                                                padx=(0, 4))
+    tk.Entry(nrow, textvariable=app.partition_mgr_name_var,
+             bg=PANEL2, fg=FG, insertbackground=FG, relief="flat",
+             font=("Consolas", 10), width=24).pack(side="left",
+                                                   padx=(0, 6))
+    tk.Label(nrow, text="(listbox se chuno ya naam likho)",
+             bg=PANEL, fg=MUTED, font=("Segoe UI", 8)).pack(
+                 side="left")
+
+    def _run_partition_action(action):
+        name = app.partition_mgr_name_var.get().strip()
+        _n, _a, err = _pm.parse_request({}, name, action)
+        if err:
+            app.log_line(err, "ERROR")
+            return
+        app._run_action(_pm.op_for(name, action))
+
+    arow = tk.Frame(frame, bg=PANEL)
+    arow.pack(fill="x", padx=8, pady=(0, 6))
+    tk.Button(arow, text="Read (backup me save)",
+              bg=PANEL2, fg=FG, relief="flat",
+              font=("Segoe UI", 9, "bold"), padx=10, pady=4,
+              command=lambda: _run_partition_action("read")).pack(
+                  side="left", padx=(0, 6))
+    tk.Button(arow, text="⚠ Write (backup-first)",
+              bg=PANEL2, fg=FG, relief="flat",
+              font=("Segoe UI", 9, "bold"), padx=10, pady=4,
+              command=lambda: _run_partition_action("write")).pack(
+                  side="left", padx=(0, 6))
+    tk.Button(arow, text="⚠ Erase (backup-first)",
+              bg=PANEL2, fg=FG, relief="flat",
+              font=("Segoe UI", 9, "bold"), padx=10, pady=4,
+              command=lambda: _run_partition_action("erase")).pack(
+                  side="left", padx=(0, 6))
+    tk.Label(arow, text="Har amal se pehle GPT check hota hai — "
+                        "naam GPT me na ho to op ruk jayega.",
+             bg=PANEL, fg=MUTED, font=("Segoe UI", 8)).pack(
+                 side="left")
+    _refill()
+    return frame
+
+
+def build_pta_section(parent, app):
+    """PTA Rehnumai — blocked phone ka asal (qanooni) rasta.
+
+    Sirf rehnumai (koi button, koi write nahi): PTA-blocked phone
+    ka ek hi asal unblock DIRBS tax hai. Bazaar ke 'patch' tareeqe
+    aur doosre ka IMEI likhna yahan sakht mana hai — dono jurm
+    hain aur phone dobara block ho jata hai. (Hamza se tay shuda,
+    2026-10-24.)"""
+    frame = tk.LabelFrame(
+        parent,
+        text=" PTA Rehnumai — Blocked phone ka asal rasta ",
+        bg=PANEL, fg=MUTED, bd=1, font=("Segoe UI", 9, "bold"))
+    tk.Label(frame,
+             text="PTA-blocked phone ka ek hi asal unblock hai: "
+                  "DIRBS tax bharo. SMS 8484 par IMEI bhejo ya "
+                  "dirbs.pta.gov.pk par status dekho, phir wahan "
+                  "bataya gaya tax ada karo — tax clear hote hi "
+                  "phone khud unblock ho jata hai.",
+             bg=PANEL, fg=FG, wraplength=700, justify="left",
+             font=("Segoe UI", 8, "bold")).pack(anchor="w", padx=8,
+                                                pady=(4, 2))
+    tk.Label(frame,
+             text="Bazaar wale 'patch' tareeqe (doosre phone ka IMEI "
+                  "likhna ya IMEI badalna) JURM hain — PTA dobara "
+                  "block kar deta hai aur phone zabt bhi ho sakta "
+                  "hai. MEER me IMEI sirf DABBE / STICKER wala ASAL "
+                  "number wapas likha jata hai (upar wala 'IMEI "
+                  "Patch — Sirf Original' section) — kabhi kisi "
+                  "aur ka number nahi.",
+             bg=PANEL, fg=WARN_FG, wraplength=700, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=(0, 4))
+    tk.Label(frame,
+             text="Dukaan me customer ko yehi batana: CNIC copy + "
+                  "khareed ka saboot (bill/dabba) saath rakho; tax "
+                  "ki raqam PTA ki site par IMEI daal kar maloom "
+                  "hoti hai — andaze se koi raqam mat batana.",
+             bg=PANEL, fg=MUTED, wraplength=700, justify="left",
+             font=("Segoe UI", 8)).pack(anchor="w", padx=8, pady=(0, 6))
+    return frame
+
+
 # ---------------------------------------------------------------------------
 # FRP section — IMEI section wala aik-click big-button pattern
 # ---------------------------------------------------------------------------
@@ -391,6 +581,7 @@ _TRANSSION_OPS = (
     "meta_reboot_fastboot", "meta_reboot_normal",
     "meta_restore_patch", "meta_plugin_patch",
     "meta_ubl_unlock", "meta_ubl_restore",
+    "meta_partition_manager", "meta_bootloader_unlock",
 )
 
 _MTK_OPS = (
@@ -444,8 +635,12 @@ BRAND_DEFS = (
     ("samsung", "Samsung", _SAMSUNG_OPS,
      "Samsung ke liye maujooda engine: FRP router, firmware info, "
      "flash (data ke saath/baghair), KG status.",
-     (("FRP Remove (Latest Security)", "SERVER REQUIRED"),
-      ("Carrier / Network Unlock", "SERVER REQUIRED"))),
+     (("FRP Remove (Latest Security)", "SERVER REQUIRED — pehle "
+      "'FRP Method Router (Samsung)' chalao; sirf latest security "
+      "par ruke to server case hai"),
+      ("Carrier / Network Unlock", "SERVER REQUIRED — asal rasta "
+      "original carrier/operator hai; MEER me free engine rasta "
+      "nahi"))),
     ("xiaomi", "Xiaomi", _XIAOMI_OPS + _GENERIC_OPS,
      "Xiaomi ke liye MiAssistant + aam Fastboot/ADB ops. "
      "EDL auth wale kaam server ke baghair nahi hote.",
@@ -468,7 +663,10 @@ BRAND_DEFS = (
      "MediaTek chipset page: BROM/META ops. SN Writer wala button "
      "RETIRED hai — wo dabane par native META IMEI rasta batayega, "
      "koi bahari tool nahi kholega.",
-     (("SLA/DAA Auth Bypass (New Chipsets)", "SERVER REQUIRED"),)),
+     (("SLA/DAA Auth Bypass (New Chipsets)", "SERVER REQUIRED — "
+      "pehle MTK ops tree ka 'Latest Bypass (Auto)' chalao "
+      "(payload → carbonara → heapbait); Transsion ho to MDM List "
+      "ka TMETA route bhi free rasta hai"),)),
     ("spd", "SPD / Unisoc", _SPD_OPS,
      "Unisoc (SPD) chipset page: tartib Switch Diag -> Cert "
      "Backup -> Cert Restore -> FRP. FDL wale ops ko model ka "
@@ -477,7 +675,9 @@ BRAND_DEFS = (
     ("qualcomm", "Qualcomm", _QC_OPS,
      "Qualcomm EDL page: loader library + EDL/QCN/EFS ops. "
      "Auth wali flashing server ke baghair nahi hoti.",
-     (("Auth Flashing (Oppo/Vivo/Xiaomi EDL)", "SERVER REQUIRED"),)),
+     (("Auth Flashing (Oppo/Vivo/Xiaomi EDL)", "SERVER REQUIRED — "
+      "koi free engine rasta nahi; asal rasta brand ka authorized "
+      "service center ya authorized account hai"),)),
     ("all", "Sab Ops", (),
      "Poori fehrist bayein OPERATIONS tree me hai — wahan har "
      "category (MTK / MDM / Qualcomm / Samsung / Xiaomi / SPD / "
@@ -640,7 +840,16 @@ def _render_brand_models(inner, app, key):
         from core import mdm_list as _mdm_list
     except Exception:  # noqa: BLE001
         _mdm_list = None
-    models = brand_page_models(_brand_page_model_data(app), key)
+
+    def _get_models():
+        # Har refill par TAAZA data — pehle `models` aik dafa render
+        # waqt pakar liye jate the (stale snapshot): startup par DB
+        # abhi load na hua ho ya baad me reload ho to fehrist purani
+        # rehti thi aur nayi rows page par kabhi nahi ati theen
+        # (sirf tab badalne par dobara banti thi). Ab har search /
+        # refill par app ki maujooda fehrist dobara parhi jati hai.
+        return brand_page_models(_brand_page_model_data(app), key)
+
     tk.Label(inner, text="MODELS — is page ke models (naam likh kar "
                           "dhoondo, model chuno, phir neeche reset/FRP "
                           "dabao):",
@@ -691,7 +900,7 @@ def _render_brand_models(inner, app, key):
 
     def _refill():
         model_list.delete(0, "end")
-        shown["items"] = search_models(models, search_var.get())
+        shown["items"] = search_models(_get_models(), search_var.get())
         for m in shown["items"]:
             label = (_mdm_list.model_label(m) if _mdm_list is not None
                      else str(m.get("name", "")))
@@ -836,8 +1045,8 @@ def build_brand_pages(parent, app):
         if key != "all":
             tk.Label(inner,
                      text="IMEI ka kaam isi page ke neeche wale "
-                          "IMEI section se hoga (model list ki "
-                          "zaroorat nahi).",
+                          "\"IMEI Patch — Sirf Original\" section se "
+                          "hoga (model list ki zaroorat nahi).",
                      bg=PANEL, fg=MUTED, wraplength=680,
                      justify="left",
                      font=("Segoe UI", 8)).pack(anchor="w",
@@ -855,4 +1064,9 @@ def build_brand_pages(parent, app):
         state["btns"][key] = btn
     _render("infinix")  # Transsion pehle (dukaan ka asal kaam)
     frame.render_brand = _render
+    # DB load / reload ke baad maujooda brand page dobara banao
+    # (main._load_mdm_models is se fehrist taaza karta hai — pehle
+    # render ke baad ki load ka asar page par nahi parta tha).
+    frame.refresh_brand = (
+        lambda: _render(state["current"]) if state["current"] else None)
     return frame
