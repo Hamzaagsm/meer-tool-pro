@@ -57,8 +57,14 @@ def run(ctx, model=None) -> bool:
     ctx.progress(85, "FRP erase ka verified jawab mil gaya")
     ctx.log("FRP erase ka verified jawab (status OK) mil gaya.",
             "OK")
-    ctx.log("Tasdeeq tum khud karo: phone reboot karke setup chalao "
-            "— purana Google account (FRP) NAHI mangna chahiye. "
+    # Aakhri qadam (Smart 20 bench flaw fix, 2026-10-25): phone khud
+    # normal boot par jaye — pehle META mode me atka rehta tha jab
+    # tak restart/disconnect na karo. Reboot ki nakami FRP erase
+    # ki kamyabi ko FAIL nahi banati (helper khud WARN log karta
+    # hai — phir manual reboot ki hidayat wahi likhi hoti hai).
+    meta_session.reboot_to_normal(ctx)
+    ctx.log("Tasdeeq: phone normal boot hone par setup chalao — "
+            "purana Google account (FRP) NAHI mangna chahiye. "
             "Agar phir bhi mange to is firmware ne FT erase qabool "
             "nahi kiya (log me nakli kamyabi nahi chhupayi gayi) — "
             "phir Download/BROM wala FRP rasta istemal hoga.",
