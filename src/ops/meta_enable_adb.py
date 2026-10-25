@@ -66,12 +66,16 @@ def run(ctx) -> bool:
         return False
     ctx.progress(85, "ADB enable ka verified jawab mil gaya")
     ctx.log("ADB enable ka verified jawab (status OK) mil gaya.", "OK")
-    ctx.log("Agla qadam: phone ko normal reboot karo — on hone par "
-            "ADB ON milna chahiye; phir device panel me ADB mode "
-            "ayega aur ADB tab ke ops (info, app profiles, Security "
-            "Plugin waghera) chal sakenge. Agar reboot ke baad bhi "
-            "ADB na mile to is firmware ne setting save nahi ki — "
-            "wo surat log me nakli kamyabi se nahi chhupayi jayegi.",
+    # Aakhri qadam (Smart 20 bench flaw fix, 2026-10-25): phone khud
+    # normal boot par jaye — ADB asal me tab milega jab phone
+    # normal reboot ho; pehle META mode me atka rehta tha.
+    meta_session.reboot_to_normal(ctx)
+    ctx.log("Agla qadam: phone normal boot hone par ADB ON milna "
+            "chahiye; phir device panel me ADB mode ayega aur ADB "
+            "tab ke ops (info, app profiles, Security Plugin "
+            "waghera) chal sakenge. Agar reboot ke baad bhi ADB na "
+            "mile to is firmware ne setting save nahi ki — wo surat "
+            "log me nakli kamyabi se nahi chhupayi jayegi.",
             "INFO")
     ctx.progress(95, "Enable ADB mukammal")
     return True
