@@ -33,6 +33,7 @@ from core import imei_panels                  # noqa: E402
 from core import mdm_list                     # noqa: E402
 from core import platforms_mtk                # noqa: E402
 from core import repair_intel                 # noqa: E402
+from core import service_info                  # noqa: E402
 from core import server as server_mod
 from core import shop_db
 from core import shop_sync                      # noqa: E402
@@ -361,7 +362,7 @@ def tool_path(name):
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("MEER TOOL PRO v1.0")
+        self.title("MEER TOOL PRO v1.0.1")
         self.geometry("1220x800")
         self.minsize(980, 620)
         self.configure(bg=BG)
@@ -570,6 +571,12 @@ class App(tk.Tk):
         self.phone_info_frame, self.phone_info_refresh = \
             imei_panels.build_phone_info_panel(right, self)
         self.phone_info_frame.pack(fill="x", pady=(0, 6))
+        # 2026-10-25 (build round 2): Service Info screen — ME_ID,
+        # SOC_ID, KG state, BIT, CSC, lock states (maujooda engines
+        # se parha gaya; jo readable nahi use "—").
+        self.service_info_frame, self.service_info_refresh = \
+            service_info.build_service_info(right, self)
+        self.service_info_frame.pack(fill="x", pady=(0, 6))
         self.brand_pages_frame = imei_panels.build_brand_pages(
             right, self)
         self.brand_pages_frame.pack(fill="both", expand=True,
@@ -577,9 +584,20 @@ class App(tk.Tk):
         self.imei_section_frame = imei_panels.build_imei_section(
             right, self)
         self.imei_section_frame.pack(fill="x", pady=(0, 6))
+        # 2026-10-25 (Hamza se tay shuda): PTA Rehnumai — blocked
+        # phone ka qanooni rasta (DIRBS tax) — IMEI section ke
+        # foran neeche, taake patch aur rehnumai aik hi jagah hon.
+        self.pta_section_frame = imei_panels.build_pta_section(
+            right, self)
+        self.pta_section_frame.pack(fill="x", pady=(0, 6))
         self.frp_section_frame = imei_panels.build_frp_section(
             right, self)
         self.frp_section_frame.pack(fill="x", pady=(0, 6))
+        # 2026-10-25 (build round 2): META Partition Manager — GPT
+        # se partitions list/read/write/erase (backup-first).
+        self.partition_manager_frame = imei_panels.build_partition_manager_panel(
+            right, self)
+        self.partition_manager_frame.pack(fill="x", pady=(0, 6))
 
         # Baqi modules ke frames (builder methods) — sirf UNLOCK packed
         self.module_frames["home"] = self._build_home(modarea)
@@ -791,6 +809,18 @@ class App(tk.Tk):
             return
         self.mdm_models = models
         self._fill_model_tree()
+        # Brand pages ki fehrist bhi taaza karo — pehli render startup
+        # par (lazy-load se) hui thi; DB load ke baad page dobara
+        # ban jaye taake nayi/updated rows nazar ayen (stale snapshot
+        # bug: reload ka asar page par nahi parta tha).
+        frame = getattr(self, "brand_pages_frame", None)
+        if frame is not None:
+            refresh = getattr(frame, "refresh_brand", None)
+            if callable(refresh):
+                try:
+                    refresh()
+                except Exception:  # noqa: BLE001
+                    pass
         self.log_line(f"MDM List tayyar: {len(models)} models "
                       "(tools/mdm-models.json).", "INFO")
 
@@ -1067,7 +1097,7 @@ class App(tk.Tk):
                  bg=PANEL, fg=MUTED, wraplength=520, justify="left",
                  font=("Segoe UI", 8)).pack(anchor="w", pady=(0, 4))
         self._tab_ops(frame, [
-            ("spd_launcher", "SPD OFFICIAL TOOLS - [Download]"),
+            ("spd_launcher", "SPD OFFICIAL TOOLS — RETIRED (guide dekho)"),
             ("spd_frp_pac_guide", "FRP.PAC GUIDE - [Download]")])
 
     def _tab_diag(self, frame, model):
@@ -1134,6 +1164,14 @@ class App(tk.Tk):
                              "hai (log me imaandar wazahat ayegi).",
                  bg=PANEL, fg=MUTED, wraplength=520, justify="left",
                  font=("Segoe UI", 8)).pack(anchor="w", pady=(0, 4))
+        tk.Label(frame, text="Ye PATCHER tab sirf .pac anticrack "
+                             "patch ka hai — IMEI ka kaam is se NAHI "
+                             "hota. IMEI ke liye UNLOCK tab ke neeche "
+                             "wala 'IMEI Patch — Sirf Original' "
+                             "section istemal karo.",
+                 bg=PANEL, fg=WARN_FG, wraplength=520, justify="left",
+                 font=("Segoe UI", 8, "bold")).pack(anchor="w",
+                                                    pady=(0, 4))
 
         def _pick_and_run():
             path = filedialog.askopenfilename(
@@ -1292,8 +1330,8 @@ class App(tk.Tk):
                       command=lambda k=key: self.show_module(k)
                       ).pack(side="left", padx=3)
         tk.Label(card, text="Har operation asal engine par chalta hai "
-                            "aur output neeche LIVE LOG me stream hota "
-                            "hai. Pehle poora flow dekhna ho to upar "
+                            "aur output LOG tab me stream hota hai. "
+                            "Pehle poora flow dekhna ho to upar "
                             "▶ DEMO MODE dabao.",
                  bg=PANEL, fg=MUTED, wraplength=760, justify="left",
                  font=("Segoe UI", 8)).pack(anchor="w", padx=14, pady=8)
@@ -1417,12 +1455,16 @@ class App(tk.Tk):
                      ).pack(side="left", padx=4)
         tk.Label(r1, text="Mode:", bg=PANEL, fg=MUTED,
                  font=("Segoe UI", 8)).pack(side="left", padx=(10, 0))
-        ttk.Combobox(r1, values=["Download Only"], width=15,
-                     state="readonly").pack(side="left", padx=4)
+        _plat_mode = ttk.Combobox(r1, values=["Download Only"], width=15,
+                                  state="readonly")
+        _plat_mode.current(0)  # aik hi value hai — khaali na dikhe
+        _plat_mode.pack(side="left", padx=4)
         tk.Label(r1, text="DA Mode:", bg=PANEL, fg=MUTED,
                  font=("Segoe UI", 8)).pack(side="left", padx=(10, 0))
-        ttk.Combobox(r1, values=["AUTO"], width=8,
-                     state="readonly").pack(side="left", padx=4)
+        _plat_da_mode = ttk.Combobox(r1, values=["AUTO"], width=8,
+                                     state="readonly")
+        _plat_da_mode.current(0)  # aik hi value hai — khaali na dikhe
+        _plat_da_mode.pack(side="left", padx=4)
         r2 = tk.Frame(cfg, bg=PANEL)
         r2.pack(fill="x", padx=6, pady=3)
         tk.Label(r2, text="DA File:", bg=PANEL, fg=MUTED,
@@ -3628,6 +3670,9 @@ class App(tk.Tk):
         refresh = getattr(self, "phone_info_refresh", None)
         if refresh is not None:
             refresh(dev)
+        refresh = getattr(self, "service_info_refresh", None)
+        if refresh is not None:
+            refresh(dev)
         if hasattr(self, "home_dev_label"):
             if dev.connected:
                 self.home_dev_label.configure(
@@ -3719,7 +3764,14 @@ class App(tk.Tk):
                     self.stop_btn.configure(state="disabled")
                     if self.selected_op is not None:
                         self.start_btn.configure(state="normal")
-                    self._status_op = "Mukammal"
+                    # 2026-10-25 audit B1: pehle har done par
+                    # "Mukammal" likha jata tha — FAIL par bhi. Ab
+                    # OpResult.ok dekho: fail ho to status saaf
+                    # bataye ke LOG tab me wajah parho.
+                    res = item[1] if len(item) > 1 else None
+                    ok = getattr(res, "ok", True)
+                    self._status_op = ("Mukammal" if ok else
+                                       "Nakam — LOG tab dekho")
                     self._refresh_status_line()
         except queue.Empty:
             pass
