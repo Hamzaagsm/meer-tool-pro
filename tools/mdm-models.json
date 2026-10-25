@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "note": "MDM List — per-model database (v2, 2026-10-24 catalog merge). 78 verified rows + research catalog rows: nayi rows verified=false, route=unknown, route_unknown=true (rasta abhi verify nahi — panel me 'Rasta: unknown' likha ayega); tags har row ke apne chipset se dobara banaye gaye hain; code ya naam shared ho to note me likha hai. Naya model jorne ke liye models me entry jor do (name, code, chipset, tags).",
+  "note": "MDM List — per-model database (v2, 2026-10-24 catalog merge). 82 verified rows + research catalog rows: nayi rows verified=false, route=unknown, route_unknown=true (rasta abhi verify nahi — panel me 'Rasta: unknown' likha ayega); tags har row ke apne chipset se dobara banaye gaye hain; code ya naam shared ho to note me likha hai. Naya model jorne ke liye models me entry jor do (name, code, chipset, tags). Round 2 (2026-10-25): 74 route fills (inferred) + GT 30 5G chipset fix (Dimensity 7400) + Spark 40S new row; unknown 2013 -> 1939; verified count unchanged (78). Camon 50 Ultra alag row nahi — CN7c alias pehle se hai (§7.6.5 merge). Brand-fix (2026-10-25): Note Edge X6887, Smart 20 X6840 + X6840B variant row, Smart 20 HD X6725 verified (GSMArena / GadgetMaya / Rediff); X6725 Smart 10 ke saath shared hai (dono rows ki note me likha); verified count 78 -> 82.",
   "models": [
     {
       "brand": "Infinix",
@@ -30,7 +30,9 @@
         "UBL"
       ],
       "verified": true,
-      "route": "new-Auth"
+      "route": "new-Auth",
+      "chip_unverified": true,
+      "note": "Round 2 (2026-10-25) §1.2/§11: chip Dimensity 7100 is round me dobara independently verify nahi hua — bench par confirm karna hai; route new-Auth unchanged."
     },
     {
       "brand": "Infinix",
@@ -342,14 +344,16 @@
       ],
       "verified": true,
       "a16_meta_frp": true,
-      "route": "META"
+      "route": "META",
+      "bench_pending": true,
+      "note": "Round 2 (2026-10-25) §1.5/§11: D8350 META bench pending — aik asal phone par META entry attempt se confirm karna hai; tab tak tool me \"META (bench pending)\" label."
     },
     {
       "brand": "Infinix",
       "model": "GT 30 5G",
       "name": "Infinix GT 30 5G",
       "code": "X6876",
-      "chipset": "Dimensity 7300 Ultimate",
+      "chipset": "Dimensity 7400",
       "tags": [
         "MediaTek",
         "TMETA",
@@ -358,7 +362,10 @@
       ],
       "verified": true,
       "a16_meta_frp": true,
-      "route": "new-Auth"
+      "route": "new-Auth",
+      "confidence": "documented",
+      "source": "GSMArena spec page https://m.gsmarena.com/infinix_gt_30_5g-14044.php + 6 more sources, unanimous (RESEARCH-2 §2.1) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §2.1: chipset corrected Dimensity 7300 Ultimate -> Dimensity 7400 (7 sources unanimous; both MT6878, route new-Auth unchanged)."
     },
     {
       "brand": "Infinix",
@@ -422,7 +429,8 @@
         "Exploit"
       ],
       "verified": true,
-      "route": "DIAG/FDL"
+      "route": "DIAG/FDL",
+      "note": "Shared code: X6725 Smart 20 HD (Oct 2026) ka bhi hai — Transsion ne code dobara istemal kiya; farq: Smart 10 165.6x77.8x8.3 mm / 187 g / June 2025, Smart 20 HD 165.62x77.01x8.25 mm / 189 g / Oct 2026 — naam se pehchano, sirf code se nahi."
     },
     {
       "brand": "Infinix",
@@ -662,7 +670,9 @@
       ],
       "verified": true,
       "a16_meta_frp": true,
-      "route": "META"
+      "route": "META",
+      "bench_pending": true,
+      "note": "Round 2 (2026-10-25) §1.5/§11: D8350 META bench pending — aik asal phone par META entry attempt se confirm karna hai; tab tak tool me \"META (bench pending)\" label."
     },
     {
       "brand": "Tecno",
@@ -1151,7 +1161,9 @@
       ],
       "verified": true,
       "a16_meta_frp": true,
-      "route": "META"
+      "route": "META",
+      "bench_pending": true,
+      "note": "Round 2 (2026-10-25) §1.5/§11: D8350 META bench pending — aik asal phone par META entry attempt se confirm karna hai; tab tak tool me \"META (bench pending)\" label."
     },
     {
       "brand": "Tecno",
@@ -1745,8 +1757,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -1841,8 +1856,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -1858,8 +1876,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -1981,13 +2002,15 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
+      "route": "DIAG/FDL",
+      "route_unknown": false,
       "codes": [
         "X669",
         "X669D"
       ],
-      "note": "Variant codes: X669, X669D"
+      "note": "Variant codes: X669, X669D | Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25"
     },
     {
       "brand": "Infinix",
@@ -2068,13 +2091,15 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
+      "route": "DIAG/FDL",
+      "route_unknown": false,
       "codes": [
         "X6528",
         "X6528C"
       ],
-      "note": "Variant codes: X6528, X6528C"
+      "note": "Variant codes: X6528, X6528C | Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25"
     },
     {
       "brand": "Infinix",
@@ -2103,8 +2128,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "new-Auth",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "GSMArena + 91mobiles (MT6835) (RESEARCH-2 §2.2) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §2.2: route new-Auth (inferred — Dimensity 6400 / MT6835 class); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -2324,8 +2352,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -2386,8 +2417,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -2453,8 +2487,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -2482,9 +2519,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
-      "note": "CODE COLLISION: code also used in live DB by Infinix Smart 8 | Shared code X6525: isi code par 2 alag models hain (Infinix Smart 8, Infinix Smart 8 HD) — naam se chunna, code akela kafi nahi"
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "note": "CODE COLLISION: code also used in live DB by Infinix Smart 8 | Shared code X6525: isi code par 2 alag models hain (Infinix Smart 8, Infinix Smart 8 HD) — naam se chunna, code akela kafi nahi | Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25"
     },
     {
       "brand": "Infinix",
@@ -3030,8 +3069,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -3045,8 +3087,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — D8050/MT6896 class rule §7.4; DB me D8050 ka koi per-model verified precedent nahi — bench confirm zaroori)."
     },
     {
       "brand": "Infinix",
@@ -3075,8 +3120,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Infinix",
@@ -3644,8 +3692,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — D8050/MT6896 class rule §7.4; DB me D8050 ka koi per-model verified precedent nahi — bench confirm zaroori)."
     },
     {
       "brand": "Tecno",
@@ -3659,8 +3710,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — D8050/MT6896 class rule §7.4; DB me D8050 ka koi per-model verified precedent nahi — bench confirm zaroori)."
     },
     {
       "brand": "Tecno",
@@ -3689,8 +3743,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -3704,8 +3761,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -3886,8 +3946,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — D8050/MT6896 class rule §7.4; DB me D8050 ka koi per-model verified precedent nahi — bench confirm zaroori)."
     },
     {
       "brand": "Tecno",
@@ -4237,8 +4300,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -4336,8 +4402,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -4472,8 +4541,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -4487,8 +4559,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "new-Auth",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 new-Auth rule (MT6835/MT6878 class, release >=2024) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route new-Auth (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -4517,13 +4592,15 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
+      "route": "new-Auth",
+      "route_unknown": false,
       "codes": [
         "KL8",
         "KL8h"
       ],
-      "note": "Variant codes: KL8, KL8h; CODE COLLISION (variant KL8h): also live-DB code of Tecno Pop 9 5G; CODE COLLISION: code also used in live DB by Tecno Spark 30 5G; Tecno Pova 6 Neo 5G | Shared code KL8: isi code par 3 alag models hain (Tecno Pova 6 Neo 5G, Tecno Spark 30 5G, Tecno Spark 30C 5G) — naam se chunna, code akela kafi nahi"
+      "note": "Variant codes: KL8, KL8h; CODE COLLISION (variant KL8h): also live-DB code of Tecno Pop 9 5G; CODE COLLISION: code also used in live DB by Tecno Spark 30 5G; Tecno Pova 6 Neo 5G | Shared code KL8: isi code par 3 alag models hain (Tecno Pova 6 Neo 5G, Tecno Spark 30 5G, Tecno Spark 30C 5G) — naam se chunna, code akela kafi nahi | Round 2 (2026-10-25) §7.7 Wave 1: route new-Auth (inferred — chip-class rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 new-Auth rule (MT6835/MT6878 class, release >=2024) — 2026-10-25"
     },
     {
       "brand": "Tecno",
@@ -4552,8 +4629,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "new-Auth",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 new-Auth rule (MT6835/MT6878 class, release >=2024) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route new-Auth (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -4912,8 +4992,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -4929,8 +5012,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -4946,8 +5032,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5067,11 +5156,18 @@
       "model": "Pop 10 Pro",
       "name": "Tecno Pop 10 Pro",
       "code": "KM5H",
-      "chipset": "unknown",
-      "tags": [],
+      "chipset": "Helio G81",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "Wikipedia + mobileinto (rebrand: Spark 40C KM4k = Pop 10 Pro) (RESEARCH-2 §2.3) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §2.3: chipset filled Helio G81 + route META (inferred — Spark 40C KM4k rebrand precedent); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5087,8 +5183,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5104,8 +5203,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5119,8 +5221,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "new-Auth",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 new-Auth rule (MT6835/MT6878 class, release >=2024) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route new-Auth (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5224,8 +5329,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 META rule (MT6789/MT6833/MT6855/MT6896/MT6897 class) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route META (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5314,8 +5422,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "new-Auth",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 new-Auth rule (MT6835/MT6878 class, release >=2024) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route new-Auth (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5329,8 +5440,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "new-Auth",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 new-Auth rule (MT6835/MT6878 class, release >=2024) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route new-Auth (inferred — chip-class rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Tecno",
@@ -5450,8 +5564,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5467,8 +5584,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5484,8 +5604,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5501,8 +5624,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5518,8 +5644,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5535,8 +5664,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5552,8 +5684,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5569,8 +5704,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5586,8 +5724,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4; Conflict 1: SC9863A vs SC9863A1, dono aik hi DIAG/FDL class §7.6.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5603,8 +5744,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4; Conflict 1: SC9863A vs SC9863A1, dono aik hi DIAG/FDL class §7.6.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5620,8 +5764,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5637,8 +5784,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5674,8 +5824,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5691,8 +5844,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5708,8 +5864,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5725,8 +5884,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5742,8 +5904,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5759,8 +5924,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5787,8 +5955,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5804,13 +5975,15 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
+      "route": "DIAG/FDL",
+      "route_unknown": false,
       "codes": [
         "S665L",
         "S665LN"
       ],
-      "note": "Variant codes: S665L, S665LN"
+      "note": "Variant codes: S665L, S665LN | Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25"
     },
     {
       "brand": "Itel",
@@ -5826,8 +5999,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5858,13 +6034,15 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
+      "route": "DIAG/FDL",
+      "route_unknown": false,
       "codes": [
         "S686LN",
         "OTA-index"
       ],
-      "note": "Variant codes: S686LN, OTA-index"
+      "note": "Variant codes: S686LN, OTA-index | Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25"
     },
     {
       "brand": "Itel",
@@ -5880,13 +6058,15 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
+      "route": "DIAG/FDL",
+      "route_unknown": false,
       "codes": [
         "S688LN",
         "OTA-index"
       ],
-      "note": "Variant codes: S688LN, OTA-index"
+      "note": "Variant codes: S688LN, OTA-index | Round 2 (2026-10-25) §2.4: route DIAG/FDL (inferred — Unisoc T7300 rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "Beebom + mobiledokan + gsmarena.com.bd (chip Unisoc T7300, 3 sources) (RESEARCH-2 §2.4) — 2026-10-25"
     },
     {
       "brand": "Itel",
@@ -5902,8 +6082,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5919,8 +6102,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5936,8 +6122,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5953,8 +6142,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5970,8 +6162,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -5987,13 +6182,15 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
+      "route": "DIAG/FDL",
+      "route_unknown": false,
       "codes": [
         "P663LN",
         "P663L"
       ],
-      "note": "Variant codes: P663LN, P663L"
+      "note": "Variant codes: P663LN, P663L | Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25"
     },
     {
       "brand": "Itel",
@@ -6009,8 +6206,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -6026,8 +6226,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -6063,8 +6266,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -6080,8 +6286,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -6114,8 +6323,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -6131,8 +6343,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -6148,8 +6363,11 @@
         "Exploit"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 DIAG/FDL rule (Unisoc T-series/SC family, any brand) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §7.7 Wave 1: route DIAG/FDL (inferred — Unisoc rule §7.4); bench confirm baqi."
     },
     {
       "brand": "Itel",
@@ -6217,7 +6435,10 @@
       ],
       "verified": false,
       "route": "unknown",
-      "route_unknown": true
+      "route_unknown": true,
+      "chip_unverified": true,
+      "confidence": "unverified",
+      "note": "Round 2 (2026-10-25) §2.4: \"Unisoc T8200\" designation shak wali hai — fill mat karo; asal spec check chahiye."
     },
     {
       "brand": "Itel",
@@ -23857,16 +24078,36 @@
         "TMETA",
         "MDM"
       ],
-      "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
-      "note": "Also listed as X6840B variant. Task brief date 6 Oct 2026 matches Smart 20 HD India launch, not base Smart 20 (Mar 2026)."
+      "verified": true,
+      "route": "Kamakiri/META",
+      "route_unknown": false,
+      "note": "Same naam: X6840 aur X6840B dono 'Infinix Smart 20' hain — code se pehchano. GSMArena verified 2026-10-25: announced 2026-03-04, released March 2026; Helio G81 Ultimate (12 nm), Android 16, XOS 16; models X6840 / X6840B (X6840B regional code variant — alag row bhi hai). Smart 10 ka agla generation. | Round 2 (2026-10-25) §2.2: route Kamakiri/META (inferred — MT6769-class); bench confirm karega kaun sa darwaza khulta hai. Bench 2026-10-25: preloader COM4 milta hai, META mode bhi khulta hai — serial-first fix ke baad dobara test baqi.",
+      "confidence": "documented",
+      "source": "GSMArena (m.gsmarena.com/infinix_smart_20-14502.php) — verified 2026-10-25"
+    },
+    {
+      "brand": "Infinix",
+      "model": "Smart 20",
+      "name": "Infinix Smart 20",
+      "code": "X6840B",
+      "chipset": "Helio G81 Ultimate",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": true,
+      "route": "Kamakiri/META",
+      "route_unknown": false,
+      "note": "Same naam: X6840 aur X6840B dono 'Infinix Smart 20' hain — code se pehchano. X6840 ka regional code variant — wahi phone (Helio G81 Ultimate, Android 16, XOS 16). GSMArena verified 2026-10-25 (models X6840 / X6840B). Route note X6840 wali row me.",
+      "confidence": "documented",
+      "source": "GSMArena (m.gsmarena.com/infinix_smart_20-14502.php) — verified 2026-10-25"
     },
     {
       "brand": "Infinix",
       "model": "Smart 20 HD",
       "name": "Infinix Smart 20 HD",
-      "code": "unknown",
+      "code": "X6725",
       "chipset": "Unisoc T7250",
       "tags": [
         "Unisoc",
@@ -23875,10 +24116,12 @@
         "MDM",
         "Exploit"
       ],
-      "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
-      "note": "Launched India 2026-10-06, sale from 2026-10-08. Code left unknown: GadgetMaya claims X6725 but a Transsion OTA source attributes X6725 to SMART 10; collision unresolved, do not assign."
+      "verified": true,
+      "route": "DIAG/FDL",
+      "route_unknown": false,
+      "note": "GadgetMaya + Rediff verified 2026-10-25: model X6725; Unisoc T7250 (12 nm), Android 15, XOS 15.1; India launch 2026-10-06, sale from 2026-10-08. Shared code: X6725 Smart 10 (2025) ka bhi hai — Transsion ne code dobara istemal kiya; farq: Smart 20 HD 165.62x77.01x8.25 mm / 189 g / Oct 2026, Smart 10 165.6x77.8x8.3 mm / 187 g / June 2025 — naam se pehchano, sirf code se nahi. Smart 20 (MTK) se ALAG phone hai — kabhi MTK rasta mat lagana. | Round 2 (2026-10-25) §2.2: route DIAG/FDL (Unisoc T7250 rule §7.4); bench confirm baqi.",
+      "confidence": "documented",
+      "source": "GadgetMaya (gadgetmaya.com/product/infinix-smart-20-hd/) + Rediff (2026-10-19) — verified 2026-10-25"
     },
     {
       "brand": "Infinix",
@@ -23891,10 +24134,12 @@
         "TMETA",
         "MDM"
       ],
-      "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
-      "note": "VERDICT: real Infinix model, shipped (announced 2026-01-19, released 2026-01-31). NOT Samsung Galaxy Note Edge SM-N915. Retail listings show X6887 5G."
+      "verified": true,
+      "route": "new-Auth",
+      "route_unknown": false,
+      "note": "GSMArena + FCC verified 2026-10-25: announced 2026-01-19, released 2026-01-31; Dimensity 7100 (6 nm), Android 16, XOS 16; model X6887 (FCC). Hamza ka apna phone. NOT Samsung Galaxy Note Edge SM-N915. | Round 2 (2026-10-25) §2.2: route new-Auth (Dimensity 7100 class); bench confirm baqi.",
+      "confidence": "documented",
+      "source": "GSMArena (m.gsmarena.com/infinix_note_edge_5g-14421.php) + FCC cert. X6887 — verified 2026-10-25"
     },
     {
       "brand": "Infinix",
@@ -27810,9 +28055,11 @@
         "MDM"
       ],
       "verified": false,
-      "route": "unknown",
-      "route_unknown": true,
-      "note": "Excluded-8 se ab shipped: Philippines me 2026-10-01 launch, sales 2026-10-16; parent ne 7 mazeed sources se tasdeeq ki (GadgetPilipinas, TechPatrol, WalasTech, PinoyTechnoGuide, Technobaboy, REVU, NoypiGeeks). Code abhi unknown."
+      "route": "new-Auth",
+      "route_unknown": false,
+      "note": "Excluded-8 se ab shipped: Philippines me 2026-10-01 launch, sales 2026-10-16; parent ne 7 mazeed sources se tasdeeq ki (GadgetPilipinas, TechPatrol, WalasTech, PinoyTechnoGuide, Technobaboy, REVU, NoypiGeeks). Code abhi unknown. | Round 2 (2026-10-25) §7.7 Wave 1: route new-Auth (inferred — chip-class rule §7.4); bench confirm baqi.",
+      "confidence": "inferred",
+      "source": "RESEARCH-2 §7.4 new-Auth rule (MT6835/MT6878 class, release >=2024) — 2026-10-25"
     },
     {
       "brand": "Xiaomi",
@@ -27827,6 +28074,24 @@
       "route": "unknown",
       "route_unknown": true,
       "note": "Excluded-8 se ab shipped: GSMArena par announced 2026-09-01, released 2026-09-11; parent ne GSMArena spec page + GizmoChina + Beebom se tasdeeq ki. Code abhi unknown."
+    },
+    {
+      "brand": "Tecno",
+      "model": "Spark 40S",
+      "name": "Tecno Spark 40S",
+      "code": "unknown",
+      "chipset": "Helio G81",
+      "tags": [
+        "MediaTek",
+        "TMETA",
+        "MDM"
+      ],
+      "verified": false,
+      "route": "META",
+      "route_unknown": false,
+      "confidence": "unverified",
+      "source": "mobileinto (single source, chip unverified); Tecno SA press confirms model exists, chip not confirmed (RESEARCH-2 §2.3) — 2026-10-25",
+      "note": "Round 2 (2026-10-25) §2.3: new row — chipset Helio G81 single-source (mobileinto), unverified; code unknown; route META (inferred — G81 family); apni spec check baqi."
     }
   ]
 }
