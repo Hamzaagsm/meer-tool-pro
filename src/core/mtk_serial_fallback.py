@@ -20,17 +20,32 @@ Usool (kabhi nahi toota):
   bhi preloader port pakra jata hai (DFT ka aam tareeqa). Is liye
   op start par device na ho to wait-mode me COM port ka wait hota
   hai; sirf tab FAIL jab waqt par koi preloader COM port na mile.
-- Sirf 3 ops (mtk_reset_only, mtk_frp_reset, mtk_frp_only) is
-  module ko istemal karte hain — IMEI ops ki logic ko haath nahi.
+- Is module ko MTK ke tamam transport ops istemal karte hain
+  (reset/FRP, info, backup, flash, bootloader, NV, RPMB, bypass
+  chain, platforms workbench) — IMEI ops ki logic ko haath nahi.
 - Button vs cable-only farq software se nahi pehchana ja sakta; log
   me wohi likha jata hai jo dekha gaya: "device op start par
   mojood tha" ya "cable insert par preloader COM port mila".
+- Serial-first (2026-10-25, Infinix Smart 20 X6840 bench): Hamza
+  ne sabit kiya ke driver THEEK hain — DFT/Fenix usi PC par usi
+  driver se COM port (VCOM serial) se kaam karte hain. Transport
+  pehle USB/libusb try karta tha jo VCOM-bound port claim hi nahi
+  kar pata ("USB enumeration error"), aur serial fallback tab
+  chalta tha jab 180s timeout zaya ho chuka hota aur phone
+  preloader se nikal chuka hota. Is liye: COM port pehle se nazar
+  aa raha ho to transport SERIAL se shuru hota hai (USB fallback
+  rehta hai); COM port na ho to pehle wala USB-pehle tartib rehta
+  hai. Aur USB koshish par transport-failure wali line milte hi
+  line-hook usay foran khatam kar deta hai (StreamAbort, exit -3)
+  — timeout ka intezaar nahi.
 """
 
 from __future__ import annotations
 
 import sys
 import time
+
+from core.runner import StreamAbort
 
 # ---------------------------------------------------------------------------
 # MediaTek USB IDs (vendored MTKClient ke default_ids se liye hue, plus
@@ -312,6 +327,17 @@ class MtkTransport:
         self.mode = "usb"          # "usb" ya "serial"
         self.serial_port = None    # "COMx" ya "DETECT"
         self.serial_pid = None
+        # Serial-first (Smart 20 bench, 2026-10-25): COM port pehle
+        # se nazar aa raha ho to USB/libusb ki koshish zaya mat
+        # karo — VCOM-bound port libusb claim hi nahi kar pata.
+        # Port na ho to USB-pehle (pehle wala bartao).
+        try:
+            _ports = detect_mtk_vcom_ports(scanner=scanner)
+        except Exception:  # noqa: BLE001 — scan kabhi init nahi rokta
+            _ports = []
+        if _ports:
+            self.mode = "serial"
+            self.serial_port, self.serial_pid = _ports[0]
         self._logged_path = False
 
     # -- andarooni helpers -------------------------------------------------
@@ -328,14 +354,30 @@ class MtkTransport:
         except Exception:
             return False
 
-    def _run(self, full_cmd, timeout, label):
+    def _run(self, full_cmd, timeout, label, line_hook=None):
         lines = []
 
         def _hook(line):
             lines.append(line)
+            if line_hook is not None:
+                try:
+                    line_hook(line)
+                except Exception:  # noqa: BLE001 — caller hook kabhi stream nahi rokta
+                    pass
+            # Early abort (Smart 20 bench, 2026-10-25): transport-
+            # failure wali line milte hi koshish foran khatam karo —
+            # MTKClient ki apni retry loop me 180s zaya mat karo.
+            # StreamAbort par runner stream -3 wapas karta hai;
+            # FakeCtx jaisi ctx ise propagate kare to neeche pakar
+            # kar wahi -3 banaya jata hai.
+            if looks_like_transport_failure([line], None):
+                raise StreamAbort(line)
 
-        code = self.ctx.stream(full_cmd, timeout=timeout, cwd=self.cwd,
-                               line_hook=_hook)
+        try:
+            code = self.ctx.stream(full_cmd, timeout=timeout, cwd=self.cwd,
+                                   line_hook=_hook)
+        except StreamAbort:
+            return -3, lines
         return code, lines
 
     def _serial_prefix(self, port, pid):
@@ -343,12 +385,12 @@ class MtkTransport:
             return ["--serialport", "DETECT"]
         return build_serial_prefix(port, pid)
 
-    def _run_serial(self, args, timeout, label):
+    def _run_serial(self, args, timeout, label, line_hook=None):
         """Serial koshish (+ port-mismatch par aik DETECT koshish)."""
         port, pid = self.serial_port, self.serial_pid
         prefix = self._serial_prefix(port, pid)
         code, lines = self._run(self.cmd + prefix + args + self.extra,
-                                timeout, label)
+                                timeout, label, line_hook=line_hook)
         if (code != 0 and not self._cancelled() and port != "DETECT"
                 and any(m in "\n".join(lines).lower()
                         for m in PORT_MISMATCH_MARKERS)):
@@ -357,15 +399,18 @@ class MtkTransport:
             self.serial_port, self.serial_pid = "DETECT", None
             code, lines = self._run(
                 self.cmd + ["--serialport", "DETECT"] + args + self.extra,
-                timeout, label)
+                timeout, label, line_hook=line_hook)
         return code, lines
 
     def _switch_to_serial(self, args, timeout, label, primary_code,
-                          primary_lines):
+                          primary_lines, line_hook=None):
         """VCOM fallback: port dhoondo (bounded wait) phir serial chalao."""
-        self._log("USB rasta nakam (exit %s) — VCOM (COM port) rasta "
+        why = ("line-hook early-abort (transport error line mili, "
+               "timeout ka intezaar nahi kiya)" if primary_code == -3
+               else "exit %s" % primary_code)
+        self._log("USB rasta nakam (%s) — VCOM (COM port) rasta "
                   "azmaya ja raha hai: %s"
-                  % (primary_code, last_lines(primary_lines)), "WARN")
+                  % (why, last_lines(primary_lines)), "WARN")
         ports = detect_mtk_vcom_ports(scanner=self.scanner)
         if not ports and not self._cancelled():
             self._log("VCOM COM port abhi nahi mila — phone dobara "
@@ -386,7 +431,8 @@ class MtkTransport:
         self.serial_port, self.serial_pid = ports[0]
         self._log("VCOM rasta: Preloader (VCOM %s) — COM port se "
                   "tasdeeq" % self.serial_port, "INFO")
-        code, lines = self._run_serial(args, timeout, label)
+        code, lines = self._run_serial(args, timeout, label,
+                                       line_hook=line_hook)
         if code == 0:
             self.mode = "serial"
             self._log("VCOM rasta kamyab — baqi steps bhi isi raste "
@@ -397,40 +443,69 @@ class MtkTransport:
         return code, lines
 
     # -- bahar wala API ------------------------------------------------------
-    def stream_step(self, args, timeout=180, label=""):
-        """Aik MTKClient step: exit code. Cancel par foran wapas."""
+    def stream_step(self, args, timeout=180, label="", line_hook=None):
+        """Aik MTKClient step: exit code. Cancel par foran wapas.
+
+        line_hook: har output line par caller ka hook bhi chale
+        (masalan mtk_info ki CPU parse) — runner ki live DATA
+        logging waisi hi rehti hai.
+        """
+        code, _lines = self.stream_step_capture(
+            args, timeout=timeout, label=label, line_hook=line_hook)
+        return code
+
+    def stream_step_capture(self, args, timeout=180, label="",
+                            line_hook=None):
+        """stream_step jaisa, lekin (exit code, output lines) dono de.
+
+        Jin ops ko jawab ka MATAN chahiye hota hai (printgpt parse,
+        gettargetconfig, GPT tasdeeq) wo yahi istemal karen — warna
+        unhen VCOM fallback kabhi nahi milta tha (seedha subprocess
+        ya ctx.stream wala rasta). Lines wahi hain jo runner ne
+        live DATA ke tor par log me bhi likhi hain; dobara log
+        karne ki zaroorat nahi.
+        """
         if not self._logged_path:
             self._logged_path = True
-            self._log("MTK rasta: BROM (USB) — %s"
-                      % (self.entry_note or "entry: guard se tasdeeq"),
-                      "INFO")
+            if self.mode == "serial":
+                self._log("MTK rasta: VCOM (serial %s) — %s"
+                          % (self.serial_port,
+                             self.entry_note or "entry: guard se tasdeeq"),
+                          "INFO")
+            else:
+                self._log("MTK rasta: BROM (USB) — %s"
+                          % (self.entry_note or "entry: guard se tasdeeq"),
+                          "INFO")
         order = [self.mode, "serial" if self.mode == "usb" else "usb"]
         last_code, last_lines_out = None, []
         for mode in order:
             if mode == "usb":
                 code, lines = self._run(self.cmd + args + self.extra,
-                                        timeout, label)
+                                        timeout, label,
+                                        line_hook=line_hook)
             else:
                 # Serial seedha sirf tab jab pehle se port maloom ho
                 # (sticky mode); warna _switch_to_serial wait karta hai.
                 if self.serial_port is not None:
-                    code, lines = self._run_serial(args, timeout, label)
+                    code, lines = self._run_serial(args, timeout, label,
+                                                   line_hook=line_hook)
                 else:
                     code, lines = self._switch_to_serial(
-                        args, timeout, label, last_code, last_lines_out)
+                        args, timeout, label, last_code, last_lines_out,
+                        line_hook=line_hook)
             if self._cancelled():
-                return code
+                return code, lines
             if code == 0:
                 self.mode = mode
-                return 0
+                return 0, lines
             last_code, last_lines_out = code, lines
             # Genuine (ghair-transport) failure: dobara koshish bekar.
             if not looks_like_transport_failure(lines, code):
-                return code
+                return code, lines
             # Transport trigger: doosra rasta azmao (loop sirf 2
             # koshishon tak — order ki list hi had hai).
             self._log("Rasta %s par transport masla — doosra rasta "
                       "azmaya jayega." % mode, "WARN")
         self._log("Dono raste nakam — aakhri line: %s"
                   % last_lines(last_lines_out), "ERROR")
-        return last_code
+        return last_code, last_lines_out
