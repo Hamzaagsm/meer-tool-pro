@@ -40,5 +40,8 @@ def run(ctx, model=None) -> bool:
     ctx.log("ADB disable ka verified jawab (status OK) mil gaya. "
             "Phone ko normal reboot karke tasdeeq kar lo — ADB "
             "ab nahi milna chahiye.", "OK")
+    # Aakhri qadam (Smart 20 bench flaw fix, 2026-10-25): phone khud
+    # normal boot par jaye — pehle META mode me atka rehta tha.
+    meta_session.reboot_to_normal(ctx)
     ctx.progress(95, "Disable ADB mukammal")
     return True
