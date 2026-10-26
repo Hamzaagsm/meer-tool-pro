@@ -7,10 +7,11 @@ ke official QPST/QFIL ke "QCN Backup Restore" se hota hai; MEER
 ka kaam:
   1. Diag port kholne ki asal koshish (ADB setprop route) +
      dialer-code wali hidayat.
-  2. QFIL/QPST kholna (user ki copy tools/qpst/ se — Qualcomm
-     official tool bundle nahi kiya gaya).
-  3. Backup ki jagah (tools/qcn/) aur file naam ki hidayat,
+  2. Backup ki jagah (tools/qcn/) aur file naam ki hidayat,
      taake kal ko restore wali file pehchani ja sake.
+  3. QFIL/QPST khud kholne ki rehnumai — MEER ke andar se koi
+     doosra tool NAHI khulta (Hamza ka usool; 2026-10-25 audit
+     A4 — pehle ye op QFIL khol deta tha, ab retired).
 """
 
 import shutil
@@ -25,7 +26,7 @@ from core.runner import TOOLS_DIR
 OP = {
     "id": "qc_qcn_backup",
     "category": "Qualcomm",
-    "name": "QCN Backup (QPST/QFIL Guide)",
+    "name": "QCN Backup — Guide (QFIL khud kholo)",
     "engine": "qpst",
     "modes": ("ADB",),
     "server_required": False,
@@ -97,15 +98,18 @@ def find_qpst():
     return exes[0] if exes else None
 
 
-def _launch(ctx, exe):
-    try:
-        subprocess.Popen([str(exe)], cwd=str(exe.parent))
-    except Exception as exc:  # noqa: BLE001
-        ctx.log(f"QPST/QFIL khul nahi saka ({exe.name}): {exc}",
-                "ERROR")
-        return False
-    ctx.log(f"{exe.name} khul gaya hai.", "OK")
-    return True
+def manual_open_guide(ctx, exe):
+    """QFIL/QPST khud kholne ki rehnumai — MEER koi tool nahi kholta.
+
+    Hamesha False: backup/restore ka asal transfer QFIL ke andar
+    hota hai, jo abhi nahi hua — nakli SUCCESS nahi. (qc_qcn_restore
+    bhi yahi istemal karta hai.)"""
+    ctx.log(f"{exe.name} mila hai ({exe}) — isay Windows se khud "
+            "kholo (tools/qpst/ folder se); MEER ke andar se koi "
+            "doosra tool nahi khulta.", "WARN")
+    ctx.log("Upar wale steps usi khule hue tool me karo — tayyari "
+            "(diag port + file jagah) MEER ne kar di hai.", "INFO")
+    return False
 
 
 def run(ctx) -> bool:
@@ -132,12 +136,9 @@ def run(ctx) -> bool:
     if exe is None:
         ctx.log("QFIL/QPST tools/qpst/ me nahi mila — Qualcomm ka "
                 "official tool is package me bundle NAHI hai; "
-                "apni copy wahan rakho to ye op wahi se kholega. "
+                "apni copy wahan rakho, phir Windows se khud kholo. "
                 "Diag wali tayyari aur steps upar mehfooz hain.",
                 "ERROR")
         return False
-    ctx.progress(60, f"QFIL/QPST khola ja raha hai: {exe.name}")
-    if not _launch(ctx, exe):
-        return False
-    ctx.progress(95, "QFIL/QPST tayyar — backup wahan se karo")
-    return True
+    ctx.progress(60, "QFIL/QPST ki tayyari mukammal — ab khud kholo")
+    return manual_open_guide(ctx, exe)
