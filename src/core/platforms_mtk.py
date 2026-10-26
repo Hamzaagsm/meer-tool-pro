@@ -4,9 +4,10 @@ platforms_mtk.py — Platforms module, MediaTek workbench ke actions.
 Fenix ke Platforms → MediaTek screen jaisa workbench: GPT se bhari
 hui partition table + Identify / Backup / Erase / Flash / Reboot.
 Tamam actions **wohi engines** istemal karte hain jo ops tree ke MTK
-ops karte hain (core/engines.py resolver + ctx.stream) — engine logic
-ki koi doosri copy NAHI hai; yahan sirf table ke hisaab se batching
-aur GPT parsing hai jo tree-ops ko nahi chahiye thi.
+ops karte hain (core/engines.py resolver + MtkTransport — USB pehle,
+VCOM fallback) — engine logic ki koi doosri copy NAHI hai; yahan
+sirf table ke hisaab se batching aur GPT parsing hai jo tree-ops ko
+nahi chahiye thi.
 
 printgpt ka format MTKClient ke source se verify kiya gaya hai
 (Library/Partitions/__init__.py -> tostring()):
@@ -16,13 +17,12 @@ printgpt ka format MTKClient ke source se verify kiya gaya hai
 from __future__ import annotations
 
 import re
-import subprocess
-import sys
 from datetime import datetime
 from pathlib import Path
 from types import SimpleNamespace
 
 from core import engines
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.runner import BACKUPS_DIR, TOOLS_DIR
 
 _GPT_LINE = re.compile(
@@ -75,9 +75,23 @@ def _guard(ctx):
     dev = ctx.device
     if not dev or dev.mode not in ("BROM", "PRELOADER"):
         ctx.log("Device BROM/Preloader mode me nahi mila. Phone band "
-                "karke Volume dono dabaye hue cable lagao.", "ERROR")
+                "karke sirf cable lagao (button zaroori nahi — "
+                "preloader port khud pakra jayega); na ho to phone "
+                "band karke Volume dono dabaye hue cable lagao.",
+                "ERROR")
         return False
     return True
+
+
+def _entry_and_transport(ctx, cmd, cwd, extra):
+    """Cable-only entry wait + MtkTransport.
+
+    Entry na mile to (None, None) — caller phir _guard ki ERROR
+    rehnumai ke saath ruk jata hai (pehle wala bartao)."""
+    ok, entry_note = ensure_mtk_entry(ctx)
+    if not ok and not _guard(ctx):
+        return None, None
+    return MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note), ok
 
 
 def _extra(da):
@@ -86,21 +100,21 @@ def _extra(da):
     return engines.mtk_extra_args()
 
 
-def _maybe_crash(ctx, cmd, cwd, extra, opts):
+def _maybe_crash(ctx, transport, opts):
     if opts.get("crash_first"):
         ctx.log("Crash PL To Brom: preloader ko BROM me crash kiya ja "
                 "raha hai...", "INFO")
-        code = ctx.stream(cmd + ["crash"] + extra, timeout=120, cwd=cwd)
+        code = transport.stream_step(["crash"], timeout=120)
         if code != 0:
             ctx.log("Crash nahi hua — kuch preloader crash hote hi "
                     "nahi; maujooda mode se aage barh rahe hain.",
                     "WARN")
 
 
-def _maybe_reboot(ctx, cmd, cwd, extra, opts):
+def _maybe_reboot(ctx, transport, opts):
     if opts.get("auto_reboot"):
         ctx.log("Auto-Reboot: reset bheja ja raha hai...", "INFO")
-        ctx.stream(cmd + ["reset"] + extra, timeout=120, cwd=cwd)
+        transport.stream_step(["reset"], timeout=120)
 
 
 def _auth_note(ctx, opts):
@@ -110,43 +124,36 @@ def _auth_note(ctx, opts):
                 "auth nahi milta. Free engine wala amal is ke baghair "
                 "chalaya ja raha hai; auth lazmi ho to amal yahin ruk "
                 "jayega aur wajah log me ayegi.", "WARN")
+        ctx.log("Free rasta: pehle MTK ops tree ka 'Latest Bypass "
+                "(Auto)' azmao — payload / carbonara / heapbait chain "
+                "GPT se verify hota hai; Transsion phone ho to MDM "
+                "List ka TMETA route bhi documented free rasta hai.",
+                "INFO")
 
 
 def identify_op(on_gpt, opts):
     """Identify: (ikhtiyari gettargetconfig + crash) + printgpt parh
     kar table ke liye parsed partitions on_gpt callback ko deta hai."""
     def run(ctx):
-        if not _guard(ctx):
-            return False
         cmd, cwd = _engine_or_fail(ctx)
         if cmd is None:
             return False
         extra = _extra(opts.get("da"))
         _auth_note(ctx, opts)
-        _maybe_crash(ctx, cmd, cwd, extra, opts)
+        transport, _ok = _entry_and_transport(ctx, cmd, cwd, extra)
+        if transport is None:
+            return False
+        _maybe_crash(ctx, transport, opts)
         if opts.get("android_info"):
             ctx.log("Android Info: target config parha ja raha hai "
                     "(sbc/daa/auth halat)...", "INFO")
-            ctx.stream(cmd + ["gettargetconfig"] + extra,
-                       timeout=120, cwd=cwd)
+            transport.stream_step(["gettargetconfig"], timeout=120)
         ctx.progress(30, "GPT parha ja raha hai...")
-        kwargs = {}
-        if sys.platform.startswith("win"):
-            kwargs["creationflags"] = getattr(
-                subprocess, "CREATE_NO_WINDOW", 0)
-        try:
-            out = subprocess.run(
-                cmd + ["printgpt"] + extra, capture_output=True,
-                text=True, timeout=300,
-                cwd=cwd if cwd else None, **kwargs)
-            text = (out.stdout or "") + "\n" + (out.stderr or "")
-            rc = out.returncode
-        except Exception as e:  # noqa: BLE001
-            ctx.log(f"printgpt chal nahi saka: {e}", "ERROR")
-            return False
-        for line in text.splitlines():
-            if line.strip():
-                ctx.log(line, "DATA")
+        # Lines runner live DATA ke tor par pehle hi log kar chuka
+        # hai — yahan sirf parse ke liye text jora jata hai.
+        rc, lines = transport.stream_step_capture(["printgpt"],
+                                                  timeout=300)
+        text = "\n".join(lines)
         parts = parse_gpt(text)
         if rc != 0 or not parts:
             ctx.log("GPT parha nahi ja saka — device BROM/Preloader "
@@ -168,13 +175,14 @@ def backup_op(names, opts):
             ctx.log("Koi partition select nahi — pehle table me "
                     "partitions tick karo.", "ERROR")
             return False
-        if not _guard(ctx):
-            return False
         cmd, cwd = _engine_or_fail(ctx)
         if cmd is None:
             return False
         extra = _extra(opts.get("da"))
-        _maybe_crash(ctx, cmd, cwd, extra, opts)
+        transport, _ok = _entry_and_transport(ctx, cmd, cwd, extra)
+        if transport is None:
+            return False
+        _maybe_crash(ctx, transport, opts)
         ts = datetime.now().strftime("%Y%m%d-%H%M%S")
         outdir = BACKUPS_DIR / f"platforms-mtk-{ts}"
         try:
@@ -184,8 +192,8 @@ def backup_op(names, opts):
             return False
         files = [str(outdir / f"{n}.bin") for n in names]
         ctx.progress(15, f"{len(names)} partitions ka backup...")
-        code = ctx.stream(cmd + ["r", ",".join(names), ",".join(files)]
-                          + extra, timeout=3600, cwd=cwd)
+        code = transport.stream_step(
+            ["r", ",".join(names), ",".join(files)], timeout=3600)
         if code != 0:
             ctx.log(f"Backup fail hua (exit code {code}).", "ERROR")
             return False
@@ -195,7 +203,7 @@ def backup_op(names, opts):
             ctx.log("Koi file nahi bani — backup nakam.", "ERROR")
             return False
         ctx.log(f"Backup tayyar: {outdir} ({len(done)} files)", "OK")
-        _maybe_reboot(ctx, cmd, cwd, extra, opts)
+        _maybe_reboot(ctx, transport, opts)
         return True
     return _op("platforms_mtk_backup", "Backup (Platforms MTK)", run)
 
@@ -206,21 +214,21 @@ def erase_op(names, opts):
             ctx.log("Koi partition select nahi — pehle table me "
                     "partitions tick karo.", "ERROR")
             return False
-        if not _guard(ctx):
-            return False
         cmd, cwd = _engine_or_fail(ctx)
         if cmd is None:
             return False
         extra = _extra(opts.get("da"))
-        _maybe_crash(ctx, cmd, cwd, extra, opts)
+        transport, _ok = _entry_and_transport(ctx, cmd, cwd, extra)
+        if transport is None:
+            return False
+        _maybe_crash(ctx, transport, opts)
         failed = []
         for i, name in enumerate(names):
             if ctx.is_cancelled():
                 return False
             ctx.progress(10 + int(80 * i / max(1, len(names))),
                          f"{name} erase ho raha hai...")
-            code = ctx.stream(cmd + ["e", name] + extra,
-                              timeout=300, cwd=cwd)
+            code = transport.stream_step(["e", name], timeout=300)
             if code != 0:
                 failed.append(name)
                 ctx.log(f"{name} erase FAIL (exit code {code}).",
@@ -231,7 +239,7 @@ def erase_op(names, opts):
             ctx.log(f"Ye partitions erase nahi hue: "
                     f"{', '.join(failed)}", "ERROR")
             return False
-        _maybe_reboot(ctx, cmd, cwd, extra, opts)
+        _maybe_reboot(ctx, transport, opts)
         return True
     return _op("platforms_mtk_erase", "Erase (Platforms MTK)", run)
 
@@ -245,29 +253,30 @@ def flash_op(pairs, opts):
                     "karke file select karo (ya As Scatter istemal "
                     "karo).", "ERROR")
             return False
-        if not _guard(ctx):
-            return False
         cmd, cwd = _engine_or_fail(ctx)
         if cmd is None:
             return False
         extra = _extra(opts.get("da"))
         _auth_note(ctx, opts)
+        transport, _ok = _entry_and_transport(ctx, cmd, cwd, extra)
+        if transport is None:
+            return False
         ctx.log("Ye ASAL flash hai — ghalat file phone ko brick kar "
                 "sakti hai.", "WARN")
-        _maybe_crash(ctx, cmd, cwd, extra, opts)
+        _maybe_crash(ctx, transport, opts)
         for i, (name, path) in enumerate(pairs):
             if ctx.is_cancelled():
                 return False
             ctx.progress(10 + int(80 * i / max(1, len(pairs))),
                          f"{name} flash ho raha hai...")
-            code = ctx.stream(cmd + ["w", name, str(path)] + extra,
-                              timeout=900, cwd=cwd)
+            code = transport.stream_step(["w", name, str(path)],
+                                         timeout=900)
             if code != 0:
                 ctx.log(f"{name} flash FAIL (exit code {code}) — "
                         "yahan ruk rahe hain.", "ERROR")
                 return False
             ctx.log(f"{name} flash ho gaya.", "OK")
-        _maybe_reboot(ctx, cmd, cwd, extra, opts)
+        _maybe_reboot(ctx, transport, opts)
         return True
     return _op("platforms_mtk_flash", "Flash (Platforms MTK)", run)
 
@@ -333,13 +342,14 @@ def flash_scatter_op(scatter_path, selected, opts):
 
 def reboot_op(opts):
     def run(ctx):
-        if not _guard(ctx):
-            return False
         cmd, cwd = _engine_or_fail(ctx)
         if cmd is None:
             return False
-        code = ctx.stream(cmd + ["reset"] + _extra(opts.get("da")),
-                          timeout=120, cwd=cwd)
+        transport, _ok = _entry_and_transport(
+            ctx, cmd, cwd, _extra(opts.get("da")))
+        if transport is None:
+            return False
+        code = transport.stream_step(["reset"], timeout=120)
         return code == 0
     return _op("platforms_mtk_reboot", "Reboot (Platforms MTK)", run)
 
