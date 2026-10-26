@@ -38,6 +38,20 @@ Usool (kabhi nahi toota):
   hai. Aur USB koshish par transport-failure wali line milte hi
   line-hook usay foran khatam kar deta hai (StreamAbort, exit -3)
   — timeout ka intezaar nahi.
+- ARGPARSE TRAP (2026-10-26, Smart 20 bench — root cause):
+  serial-first ke bawajood FRP fail hota raha, log me "MTK rasta:
+  VCOM (serial COM4)" ke baad bhi "USB enumeration error" — kyun
+  ke MTKClient ko `--serialport COM4` subcommand se PEHLE milta
+  tha (`mtk.py --serialport COM4 e frp`) aur argparse use khamoshi
+  se gira deta hai (option main parser aur subparser dono me hai;
+  subparser ka default None pehle di hui value ko overwrite kar
+  deta hai). Nateeja: MTKClient ke andar Port ne SerialClass ki
+  bajaye UsbClass banaya aur libusb enumeration par gira — serial
+  koshish kabhi serial thi hi nahi. Fix: serial prefix subcommand
+  ke BAAD lagao (`mtk.py e frp --serialport COM4`); vendored
+  mtk.py me --serialport/--vid/--pid/--loader par
+  default=argparse.SUPPRESS bhi laga hai taake pehle wali tartib
+  bhi kaam kare.
 """
 
 from __future__ import annotations
@@ -230,13 +244,18 @@ def wait_for_mtk_vcom_port(timeout_s=FALLBACK_WAIT_S, poll_s=1.0,
 
 
 def build_serial_prefix(port, pid):
-    """MTKClient global args (subcommand se PEHLE lagane ke liye).
+    """MTKClient global args (subcommand ke BAAD lagane ke liye).
 
     Aam PIDs ke liye plain `--serialport COMx`. default_ids se bahir
     wale PIDs (0x2006/0x2007) ke liye --vid/--pid bhi dena lazmi hai,
     warna MTKClient ka serial detect us port ko nahi dekhta.
     getint() decimal phir hex parse karta hai, is liye 0x- wali
     shakal di gayi hai (warna "2006" decimal samjha jayega).
+
+    TARTIB (2026-10-26): prefix subcommand ke BAAD ana LAZMI hai
+    (`mtk.py e frp --serialport COM4`) — pehle lagane par argparse
+    use khamoshi se gira deta hai (subparser default overwrite) aur
+    MTKClient serial ki bajaye USB rasta leta hai.
     """
     if pid in MTK_DEFAULT_PIDS:
         return ["--serialport", port]
@@ -386,10 +405,16 @@ class MtkTransport:
         return build_serial_prefix(port, pid)
 
     def _run_serial(self, args, timeout, label, line_hook=None):
-        """Serial koshish (+ port-mismatch par aik DETECT koshish)."""
+        """Serial koshish (+ port-mismatch par aik DETECT koshish).
+
+        TARTIB (2026-10-26): prefix subcommand ke BAAD lagta hai
+        (`mtk.py e frp --serialport COM4`) — pehle lagane par
+        argparse use khamoshi se gira deta hai aur MTKClient USB
+        rasta le leta hai (serial koshish kabhi serial hoti hi nahi).
+        """
         port, pid = self.serial_port, self.serial_pid
         prefix = self._serial_prefix(port, pid)
-        code, lines = self._run(self.cmd + prefix + args + self.extra,
+        code, lines = self._run(self.cmd + args + prefix + self.extra,
                                 timeout, label, line_hook=line_hook)
         if (code != 0 and not self._cancelled() and port != "DETECT"
                 and any(m in "\n".join(lines).lower()
@@ -398,7 +423,7 @@ class MtkTransport:
                       "DETECT se dobara koshish..." % port, "WARN")
             self.serial_port, self.serial_pid = "DETECT", None
             code, lines = self._run(
-                self.cmd + ["--serialport", "DETECT"] + args + self.extra,
+                self.cmd + args + ["--serialport", "DETECT"] + self.extra,
                 timeout, label, line_hook=line_hook)
         return code, lines
 
