@@ -36,6 +36,12 @@ from core import gpt_parse, meta_patch, meta_session
 GPT_CANDIDATE_NAMES = ("gpt", "pgpt")
 GPT_READ_BYTES = 64 * 1024     # header + 128 entries × 128B ke liye kaafi
 
+# Aakhri kamyab GPT read (Partition Manager UI ki listbox is se
+# bharti hai — session ke baghair UI ke paas table ka aur koi
+# zariya nahi; khali = abhi tak koi GPT read nahi hua).
+LAST_GPT_NAMES = []
+LAST_GPT_ENTRIES = []
+
 
 def read_gpt(ctx, session):
     """(names, wajah) — names = GPT partition naamon ki list
@@ -61,7 +67,43 @@ def read_gpt(ctx, session):
             continue
         ctx.log(f"GPT '{name}' partition se parha gaya — "
                 f"{len(names)} partitions mileen.", "OK")
+        LAST_GPT_NAMES[:] = list(names)
         return names, None
+    ctx.log("GPT parha nahi ja saka: " + (last_err or "koi wajah "
+            "nahi mili") + " Kuch firmwares par FT partition read "
+            "supported nahi hota — aisi surat me patch-class ops "
+            "imaandari se yahin rukte hain (andaze par kaam "
+            "nahi hota).", "ERROR")
+    return None, last_err or "GPT read fail"
+
+
+def read_gpt_entries(ctx, session):
+    """read_gpt jaisa, lekin naam ke saath LBA range + size bhi.
+
+    Returns (entries|None, wajah|None) — entries =
+    parse_gpt_entries wale dicts. Partition Manager isi se
+    exact-size backup/read-back karta hai; LAST_GPT_ENTRIES
+    UI ki listbox ke liye bhi bhar jata hai."""
+    last_err = ""
+    for name in GPT_CANDIDATE_NAMES:
+        raw = meta_patch.ft_part_read_to_end(session, name,
+                                             GPT_READ_BYTES)
+        if not raw:
+            last_err = (f"'{name}' partition se kuch NAHI parha "
+                        "ja saka (FT part-read unsupported ya "
+                        "partition maujood nahi).")
+            continue
+        try:
+            entries = gpt_parse.parse_gpt_entries(raw)
+        except ValueError as e:
+            last_err = (f"'{name}' parha gaya ({len(raw)} bytes) "
+                        f"lekin GPT parse nahi hua: {e}")
+            continue
+        ctx.log(f"GPT '{name}' partition se parha gaya — "
+                f"{len(entries)} partitions mileen.", "OK")
+        LAST_GPT_NAMES[:] = [e["name"] for e in entries]
+        LAST_GPT_ENTRIES[:] = [dict(e) for e in entries]
+        return entries, None
     ctx.log("GPT parha nahi ja saka: " + (last_err or "koi wajah "
             "nahi mili") + " Kuch firmwares par FT partition read "
             "supported nahi hota — aisi surat me patch-class ops "
