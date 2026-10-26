@@ -88,6 +88,12 @@ def run(ctx) -> bool:
     patch = patch_candidates[0]
     ctx.log(f"patch: {patch.name}", "INFO")
 
+    from core import arb_check
+    ctx.log("OnePlus 13/13T/15, Ace 5/5 Pro par flash se PEHLE 'OnePlus ARB "
+            "Fuse Warning' op chalao (ADB se build check: 16.0.3.500+ = "
+            "fused). Fused phone par purana ROM flash = hard brick, "
+            "motherboard hi rasta hai.", "WARN")
+
     ctx.log("KHABARDAR: ye asal EDL flash hai — ghalat firmware/loaders "
             "se phone hard-brick ho sakta hai; pehle backup lo.", "WARN")
 
