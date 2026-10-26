@@ -16,11 +16,10 @@ saath) — andaze se kuch nahi parha jata. Identify fail ho to
 op FAIL hai aur kisi backup ka dawa NAHI kiya jata.
 """
 
-import subprocess
-import sys
 from datetime import datetime
 
 from core import engines, platforms_mtk
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.runner import BACKUPS_DIR
 from ops.mtk_info import _CRASH_CODES, _CRASH_LINE
 
@@ -56,8 +55,9 @@ def _guard(ctx) -> bool:
     dev = ctx.device
     if not dev or dev.mode not in OP["modes"]:
         ctx.log("Device BROM/Preloader mode me nahi mila. Phone "
-                "band karke Volume dono dabaye hue cable lagao.",
-                "ERROR")
+                "band karke sirf cable lagao (button zaroori nahi — "
+                "preloader port khud pakra jayega); na ho to Volume "
+                "dono dabaye hue cable lagao.", "ERROR")
         return False
     return True
 
@@ -70,34 +70,29 @@ def _model_slug(dev) -> str:
     return slug or "unknown"
 
 
-def _identify(ctx, cmd, cwd, extra):
+def _identify(ctx, transport):
     """printgpt capture + parse — partitions list ya None.
 
-    Nakami ki har surat yahin log ho jati hai; caller sirf
-    None dekh kar rukta hai (partial-backup ka dawa kabhi
+    Transport se chalta hai (USB pehle, VCOM fallback) — is liye
+    VCOM-bound preloader par bhi Identify hota hai. Lines runner
+    live DATA ke tor par pehle hi log kar chuka hota hai, is liye
+    yahan dobara log nahi hoti; sirf parse ke liye text jora
+    jata hai. Nakami ki har surat yahin log ho jati hai; caller
+    sirf None dekh kar rukta hai (partial-backup ka dawa kabhi
     nahi hoga)."""
-    kwargs = {}
-    if sys.platform.startswith("win"):
-        kwargs["creationflags"] = getattr(
-            subprocess, "CREATE_NO_WINDOW", 0)
     try:
-        out = subprocess.run(
-            cmd + ["printgpt"] + extra, capture_output=True,
-            text=True, timeout=300,
-            cwd=str(cwd) if cwd else None, **kwargs)
+        code, lines = transport.stream_step_capture(
+            ["printgpt"], timeout=300)
     except Exception as e:  # noqa: BLE001
         ctx.log(f"printgpt chal nahi saka: {e}", "ERROR")
         return None
-    text = (out.stdout or "") + "\n" + (out.stderr or "")
-    for line in text.splitlines():
-        if line.strip():
-            ctx.log(line, "DATA")
-    if out.returncode in _CRASH_CODES:
+    text = "\n".join(lines)
+    if code in _CRASH_CODES:
         ctx.log(_CRASH_LINE, "ERROR")
         return None
-    if out.returncode != 0:
+    if code != 0:
         ctx.log(f"Identify fail — MTKClient exit code "
-                f"{out.returncode} ke saath band hua. Aam "
+                f"{code} ke saath band hua. Aam "
                 "wajahen: device BROM me nahi aya, DA/auth is "
                 "chipset ke liye server-required hai, ya USB "
                 "driver ka masla hai.", "ERROR")
@@ -114,7 +109,10 @@ def _identify(ctx, cmd, cwd, extra):
 
 
 def run(ctx) -> bool:
-    if not _guard(ctx):
+    # Entry: cable-only wait (Y91i jaisa VCOM-bound case) — na mile
+    # to asal _guard ki ERROR rehnumai + False (pehle wala bartao).
+    ok, entry_note = ensure_mtk_entry(ctx)
+    if not ok and not _guard(ctx):
         return False
     cmd, cwd = _engine(ctx)
     if cmd is None:
@@ -129,11 +127,12 @@ def run(ctx) -> bool:
     if extra:
         ctx.log("User ka DA (loader) istemal hoga jo "
                 "tools/loaders/mtk/ me rakha hai.", "INFO")
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
 
     # Step 1: Identify (printgpt) — fail = seedha FAIL
     ctx.progress(15, "Identify ho raha hai (GPT parhi ja rahi hai)...")
     ctx.log("Step 1/2: Identify — GPT parhna (printgpt)", "INFO")
-    parts = _identify(ctx, cmd, cwd, extra)
+    parts = _identify(ctx, transport)
     if ctx.is_cancelled():
         return False
     if parts is None:
@@ -170,10 +169,9 @@ def run(ctx) -> bool:
                      "backup ho raha hai...")
     ctx.log(f"Step 2/2: Backup — {', '.join(present)}", "INFO")
     files = [outdir / f"{n}.bin" for n in present]
-    code = ctx.stream(
-        cmd + ["r", ",".join(present),
-               ",".join(str(f) for f in files)] + extra,
-        timeout=900, cwd=cwd)
+    code = transport.stream_step(
+        ["r", ",".join(present),
+         ",".join(str(f) for f in files)], timeout=900)
     if ctx.is_cancelled():
         return False
 
