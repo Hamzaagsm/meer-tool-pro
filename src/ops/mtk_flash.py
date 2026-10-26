@@ -12,6 +12,7 @@ pehle Backup op se backup lena sab se behtareen hifazat hai.
 """
 
 from core import engines
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.runner import APP_ROOT, BACKUPS_DIR, TOOLS_DIR  # noqa: F401
 
 OP = {
@@ -48,8 +49,10 @@ def _guard(ctx) -> bool:
     dev = ctx.device
     if not dev or dev.mode not in OP["modes"]:
         ctx.log("Device BROM/Preloader mode me nahi mila. Phone band karke "
-                "Volume dono dabaye hue cable lagao (kuch models par "
-                "test-point lagta hai).", "ERROR")
+                "sirf cable lagao (button zaroori nahi — preloader port "
+                "khud pakra jayega); na ho to Volume dono dabaye hue "
+                "cable lagao (kuch models par test-point lagta hai).",
+                "ERROR")
         return False
     return True
 
@@ -113,7 +116,10 @@ def _parse_scatter(text):
 
 
 def run(ctx) -> bool:
-    if not _guard(ctx):
+    # Entry: cable-only wait (Y91i jaisa VCOM-bound case) — na mile
+    # to asal _guard ki ERROR rehnumai + False (pehle wala bartao).
+    ok, entry_note = ensure_mtk_entry(ctx)
+    if not ok and not _guard(ctx):
         return False
     cmd, cwd = _engine(ctx)
     if cmd is None:
@@ -175,6 +181,7 @@ def run(ctx) -> bool:
     if extra:
         ctx.log("User ka DA (loader) istemal hoga jo tools/loaders/mtk/ "
                 "me rakha hai.", "INFO")
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
 
     total = len(queue)
     for idx, (part, fpath) in enumerate(queue, start=1):
@@ -188,8 +195,7 @@ def run(ctx) -> bool:
         pct = 5 + int(90 * (idx - 1) / total)
         ctx.progress(pct, f"Flash ho raha hai: {part} ({idx}/{total})")
         ctx.log(f"Flash {idx}/{total}: {part} likha ja raha hai...", "INFO")
-        code = ctx.stream(cmd + ["w", part, str(fpath)] + extra,
-                          timeout=900, cwd=cwd)
+        code = transport.stream_step(["w", part, str(fpath)], timeout=900)
         if ctx.is_cancelled():
             return False
         if code != 0:
