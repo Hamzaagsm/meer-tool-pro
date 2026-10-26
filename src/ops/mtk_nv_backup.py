@@ -12,6 +12,7 @@ na-mukammal mana jata hai.
 from datetime import datetime
 
 from core import engines
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.runner import BACKUPS_DIR
 
 OP = {
@@ -45,18 +46,26 @@ def _guard(ctx) -> bool:
     dev = ctx.device
     if not dev or dev.mode not in OP["modes"]:
         ctx.log("Device BROM/Preloader mode me nahi mila. Phone "
-                "band karke Volume dono dabaye hue cable lagao.",
-                "ERROR")
+                "band karke sirf cable lagao (button zaroori nahi — "
+                "preloader port khud pakra jayega); na ho to Volume "
+                "dono dabaye hue cable lagao.", "ERROR")
         return False
     return True
 
 
-def read_pair(ctx, cmd, cwd, extra, outdir):
-    """nvram+nvdata parho — (nvram_path, nvdata_path) ya None."""
+def read_pair(ctx, cmd, cwd, extra, outdir, transport=None):
+    """nvram+nvdata parho — (nvram_path, nvdata_path) ya None.
+
+    transport mile to usi se (VCOM fallback ke saath); warna
+    seedha ctx.stream (purana rasta — test/legacy callers)."""
     files = [outdir / f"{name}.bin" for name in PAIR]
     arg = ",".join(str(f) for f in files)
-    code = ctx.stream(cmd + ["r", ",".join(PAIR), arg] + extra,
-                      timeout=600, cwd=cwd)
+    if transport is not None:
+        code = transport.stream_step(
+            ["r", ",".join(PAIR), arg], timeout=600)
+    else:
+        code = ctx.stream(cmd + ["r", ",".join(PAIR), arg] + extra,
+                          timeout=600, cwd=cwd)
     if code != 0:
         return None
     ok = [f for f in files if f.is_file() and f.stat().st_size > 0]
@@ -66,12 +75,16 @@ def read_pair(ctx, cmd, cwd, extra, outdir):
 
 
 def run(ctx) -> bool:
-    if not _guard(ctx):
+    # Entry: cable-only wait (Y91i jaisa VCOM-bound case) — na mile
+    # to asal _guard ki ERROR rehnumai + False (pehle wala bartao).
+    ok, entry_note = ensure_mtk_entry(ctx)
+    if not ok and not _guard(ctx):
         return False
     cmd, cwd = _engine(ctx)
     if cmd is None:
         return False
     extra = engines.mtk_extra_args()
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
     outdir = BACKUPS_DIR / ("mtk-nv-" + datetime.now().strftime("%Y%m%d-%H%M%S"))
     try:
         outdir.mkdir(parents=True, exist_ok=True)
@@ -79,7 +92,7 @@ def run(ctx) -> bool:
         ctx.log(f"Backup folder nahi ban saka: {e}", "ERROR")
         return False
     ctx.progress(30, "nvram + nvdata parhe ja rahe hain...")
-    files = read_pair(ctx, cmd, cwd, extra, outdir)
+    files = read_pair(ctx, cmd, cwd, extra, outdir, transport=transport)
     if ctx.is_cancelled():
         return False
     if files is None:
