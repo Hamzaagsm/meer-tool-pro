@@ -235,10 +235,15 @@ def run_flash(ctx, csc_key) -> bool:
                 "Download Mode me lao: phone band karo, phir Vol "
                 "Down + Vol Up dono dabaye hue USB cable lagao, "
                 "screen par warning aye to Vol Up dabao (Download "
-                "Mode). Ya phone agar ADB me on hai to 'Reboot → "
-                "Download (Samsung)' wala op pehle chalao. Cable "
-                "lagi rehne do aur ye op dobara chalao. (Samsung "
-                "USB drivers bhi install hone chahiyein.)", "ERROR")
+                "Mode). One UI 8.5 (S26 / Z Fold 7) par pehle phone "
+                "on karke Settings → Device care → Maintenance Mode "
+                "ON karna parta hai — us ke baghair Download Mode "
+                "nahi khulta (Download Mode khatam nahi hua, sirf "
+                "Maintenance Mode ke peeche hai). Ya phone agar ADB "
+                "me on hai to 'Reboot → Download (Samsung)' wala op "
+                "pehle chalao. Cable lagi rehne do aur ye op dobara "
+                "chalao. (Samsung USB drivers bhi install hone "
+                "chahiyein.)", "ERROR")
         return False
     ctx.log(f"Download Mode device mila: {port}", "OK")
 
