@@ -173,6 +173,24 @@ jobs:
           --hidden-import serial.serialwin32
           --hidden-import serial.win32
           --hidden-import serial.serialutil
+          --hidden-import ops.carrier_unlock_guide
+          --hidden-import ops.engine_refresh
+          --hidden-import ops.meta_bootloader_unlock
+          --hidden-import ops.meta_patch_capture
+          --hidden-import ops.mtk_route_ladder
+          --hidden-import ops.oneplus_arb_warning
+          --hidden-import ops.qc_diag_qcn
+          --hidden-import ops.qc_noauth_loader_slot
+          --hidden-import ops.samsung_fw_download
+          --hidden-import ops.spd_diag_factory_reset
+          --hidden-import ops.spd_diag_frp_erase
+          --hidden-import ops.xiaomi_hyperos_unlock_helper
+          --hidden-import ops.xiaomi_noauth_edl
+          --hidden-import core.engine_refresh
+          --hidden-import core.meta_patch_capture
+          --hidden-import core.mtk_ladder
+          --hidden-import core.qc_diag
+          --hidden-import core.samloader_client
           src/main.py
 
       - name: Package (EXE + tools folder aik ZIP me)
