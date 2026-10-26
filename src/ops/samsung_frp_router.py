@@ -21,9 +21,33 @@ OP = {
 _TEST_MODE_STEPS = [
     "1) Phone on rakho, WiFi se connect karo, FRP (Google account) wali screen par raho.",
     "2) Emergency Dialer khol kar *#0*# dial karo — agar rang-biranga TEST MENU khul jaye to rasta khula hai; na khule to is patch par ye tareeqa band hai.",
-    "3) Test menu ke andar se USB debugging/ADB enable karke FRP reset ka documented flow hota hai — SamFw jaisi free utilities bhi bilkul yahi rasta istemal karti hain.",
+    "3) Test menu khul jaye to Samsung section ka 'FRP Remove — Test Mode *#0*# (Free)' op chalao — wo ADB milte hi FRP reset khud karega aur tasdeeq bhi karega (SamFw v6.2 wala public rasta, MEER ke apne engine me).",
     "4) Kaam ke baad phone restart karke normal setup karo.",
 ]
+
+# One UI 8.5 (S26/Z Fold 7, builds "xxC3") — Download Mode khatam
+# NAHI hua, sirf Maintenance Mode ke peeche chhupa hai (Research-2
+# §3.1, verified: Android Authority + PiunikaWeb, Mar 2026).
+_ONEUI85_DOWNLOAD_MODE_STEPS = [
+    "One UI 8.5 par Download Mode (S26 / Z Fold 7): pehle phone on "
+    "karke Settings → Device care → Maintenance Mode ON karo.",
+    "Phir phone band karo, Vol Down + Vol Up dono dabaye hue USB "
+    "cable lagao — warning screen par Vol Up dabao (Download Mode).",
+    "Download Mode khul jaye to Odin flash waisa hi chalta hai jaisa "
+    "pehle tha — 'khatam' wali khabar ghalat thi.",
+    "Maintenance Mode band karne ke baad Download Mode dobara chhup "
+    "jata hai — har dafa pehle Maintenance Mode ON karna parta hai.",
+]
+
+
+def oneui85_download_mode_steps():
+    """One UI 8.5 Download Mode steps (pure — testable)."""
+    return list(_ONEUI85_DOWNLOAD_MODE_STEPS)
+
+
+def _log_oneui85_guide(ctx):
+    for step in _ONEUI85_DOWNLOAD_MODE_STEPS:
+        ctx.log(step, "INFO")
 
 
 def _log_test_mode_guide(ctx):
@@ -38,8 +62,11 @@ def _log_decision_tree(ctx):
     ctx.log("Qualcomm Samsung → EDL tab ki operations dekho.", "INFO")
     ctx.log("Exynos + purana patch → test mode wala rasta koshish ke qabil hai.",
             "INFO")
-    ctx.log("Exynos/Qualcomm + 2023 ke baad ka patch → free rasta nahi, "
+    ctx.log("Exynos/Qualcomm + Dec 2022 ke baad ka patch → free rasta nahi, "
             "ye server wala kaam hai.", "INFO")
+    ctx.log("One UI 8.5 (S26 / Z Fold 7) par Download Mode khatam NAHI "
+            "hua — sirf Maintenance Mode ke peeche hai:", "INFO")
+    _log_oneui85_guide(ctx)
 
 
 def run(ctx) -> bool:
@@ -75,37 +102,30 @@ def run(ctx) -> bool:
         if patch:
             ctx.log(f"Security Patch: {patch}", "DATA")
 
-        year = None
-        if patch:
-            try:
-                year = int(str(patch)[:4])
-            except (TypeError, ValueError):
-                year = None
+        # Patch boundary: Dec 2022 (SamFw v6.2 free/paid line,
+        # research §4.3a) — mahina-ahem hai, sirf saal nahi:
+        # 2022-12 free hai, 2023-01 server hai. Helper executor
+        # op se ata hai taake boundary aik hi jagah rahe.
+        from ops.samsung_frp_testmode import patch_is_free
+        free = patch_is_free(patch)
 
-        if year is None:
+        if free is None:
             ctx.log("Security patch level parha nahi gaya — saal ka pata nahi "
                     "chal saka, is liye pakka rasta nahi bataya ja sakta.", "WARN")
-            ctx.log("Aam guidance: purana patch (2021 ya us se pehle) ho to "
-                    "test mode wala rasta ummeed deta hai; 2023 ya us ke baad "
-                    "ka patch ho to test mode band hai aur free rasta nahi "
-                    "hota.", "INFO")
+            ctx.log("Aam guidance: purana patch (Dec 2022 ya us se pehle) "
+                    "ho to test mode wala rasta ummeed deta hai; us ke "
+                    "baad ka patch ho to test mode band hai aur free "
+                    "rasta nahi hota.", "INFO")
             return False
 
-        if year <= 2021:
+        if free:
             _log_test_mode_guide(ctx)
-            ctx.log("Patch purana hai — test mode wala rasta koshish ke qabil hai.",
-                    "OK")
+            ctx.log("Patch Dec 2022 ya us se purana hai — test mode wala "
+                    "rasta koshish ke qabil hai.", "OK")
             return True
 
-        if year == 2022:
-            _log_test_mode_guide(ctx)
-            ctx.log("2022 ke patches par test mode kabhi chalta hai kabhi nahi — "
-                    "koshish kar lo; na chale to ye model free me nahi hoga.",
-                    "WARN")
-            return True
-
-        # year >= 2023
-        ctx.log("Patch 2023 ya us ke baad ka hai — Samsung ne One UI 5 ke saath "
+        # free is False → patch 2023-01 ya us ke baad ka
+        ctx.log("Patch Dec 2022 ke baad ka hai — Samsung ne One UI 5 ke saath "
                 "test mode wala rasta band kar diya tha. Is device ka FRP free "
                 "engines se nahi hoga; ye SERVER REQUIRED wala kaam hai "
                 "(Samsung tab me is ka alag tag wala item dekho).", "ERROR")
