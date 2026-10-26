@@ -17,6 +17,7 @@ from datetime import datetime
 
 from core import engines
 from core.imei_gate import imei_write_gate
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.runner import BACKUPS_DIR
 from ops.mtk_nv_backup import PAIR, _engine, _guard, read_pair
 
@@ -53,12 +54,16 @@ def run(ctx) -> bool:
     # koi snapshot/write koshish bhi nahi.
     if not imei_write_gate(ctx):
         return False
-    if not _guard(ctx):
+    # Entry: cable-only wait (Y91i jaisa VCOM-bound case) — na mile
+    # to asal _guard ki ERROR rehnumai + False (pehle wala bartao).
+    ok, entry_note = ensure_mtk_entry(ctx)
+    if not ok and not _guard(ctx):
         return False
     cmd, cwd = _engine(ctx)
     if cmd is None:
         return False
     extra = engines.mtk_extra_args()
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
 
     src = _latest_pair_folder()
     if src is None:
@@ -78,7 +83,7 @@ def run(ctx) -> bool:
         ctx.log(f"Snapshot folder nahi ban saka: {e}", "ERROR")
         return False
     ctx.progress(25, "Pre-restore snapshot liya ja raha hai (maujooda NV)...")
-    got = read_pair(ctx, cmd, cwd, extra, snap)
+    got = read_pair(ctx, cmd, cwd, extra, snap, transport=transport)
     if ctx.is_cancelled():
         return False
     if got is None:
@@ -93,8 +98,7 @@ def run(ctx) -> bool:
     files = [src / f"{n}.bin" for n in PAIR]
     arg = ",".join(str(f) for f in files)
     ctx.progress(60, "NV jora wapas likha ja raha hai...")
-    code = ctx.stream(cmd + ["w", ",".join(PAIR), arg] + extra,
-                      timeout=600, cwd=cwd)
+    code = transport.stream_step(["w", ",".join(PAIR), arg], timeout=600)
     if ctx.is_cancelled():
         return False
     if code != 0:
