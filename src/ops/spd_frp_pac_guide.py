@@ -1,22 +1,22 @@
 """
-spd_frp_pac_guide.py — SPD / Unisoc ke liye FRP.pac banane ki guide + launcher.
+spd_frp_pac_guide.py — SPD / Unisoc ke liye FRP.pac banane ki guide.
 
 Ye public documented method hai (androidmtk "create FRP SPD research
 tool"): stock PAC firmware se Research Download ke andar aik chhota sa
 FRP.pac packet banta hai, aur wahi packet flash karne se FRP erase ho
-jata hai. Ye op khud packet NAHI banata — steps batata hai, prerequisites
-(Research Download exe + stock PAC) check karta hai, aur sab tayyar ho
-to Research Download tool khol deta hai.
+jata hai. Ye op khud packet NAHI banata — steps batata hai aur
+prerequisites (Research Download exe + stock PAC) check karta hai.
+Research Download ko Windows se khud kholna hota hai — MEER ke andar
+se koi doosra tool NAHI khulta (Hamza ka usool; 2026-10-25 audit A4 —
+pehle ye op tool khol deta tha, ab retired).
 """
-
-import subprocess
 
 from core.runner import TOOLS_DIR
 
 OP = {
     "id": "spd_frp_pac_guide",
     "category": "SPD / Unisoc",
-    "name": "FRP.pac Guide (SPD Research Tool)",
+    "name": "FRP.pac Guide (Research Tool khud kholo)",
     "engine": "guide",
     "modes": (),
     "server_required": False,
@@ -59,23 +59,19 @@ def run(ctx) -> bool:
                 "nahi milengi — galat PAC = phone brick).", "ERROR")
         missing = True
     if research_exe is None:
-        ctx.log("Research Download nahi mila — pehle SPD Official Tools wala "
-                "op dekho, Research Download ki copy tools/spd/ me chahiye.",
-                "ERROR")
+        ctx.log("Research Download nahi mila — SPD Official Tools ki "
+                "copy tools/spd/ me rakho, phir Windows se khud kholo "
+                "(MEER ke andar se koi tool nahi khulta).", "ERROR")
         missing = True
     if missing:
         return False
 
     ctx.log(f"Research Download mila: {research_exe.name}", "INFO")
     ctx.log(f"PAC firmware mila: {pac.name}", "INFO")
-    ctx.progress(50, f"Research Download khola ja raha hai: {research_exe.name}")
-    try:
-        subprocess.Popen([str(research_exe)], cwd=str(research_exe.parent))
-    except Exception as exc:
-        ctx.log(f"Research Download khul nahi saka ({research_exe.name}): {exc}",
-                "ERROR")
-        return False
-    ctx.progress(90, "Research Download khul gaya")
-    ctx.log("Sab tayyar hai — Research Download khul gaya hai; upar wale "
-            "steps se pehle FRP.pac packet banao, phir usi ko flash karo.", "OK")
-    return True
+    ctx.log("Sab tayyar hai — Research Download ko Windows se khud "
+            "kholo (tools/spd/ folder se); upar wale steps se pehle "
+            "FRP.pac packet banao, phir usi ko flash karo.", "WARN")
+    ctx.log("Ye op guide de kar rukta hai — FRP erase ka asal kaam "
+            "Research Download ke andar hota hai, MEER ke andar nahi.",
+            "INFO")
+    return False
