@@ -101,6 +101,69 @@ def parse_gpt(data: bytes, sector_size: int = 0) -> list:
     return names
 
 
+def parse_gpt_entries(data: bytes, sector_size: int = 0) -> list:
+    """GPT bytes -> partition entries (naam + LBA range + size).
+
+    Returns [{name, first_lba, last_lba, size_bytes, sector_size}]
+    (asal case, GPT tartib me). Partition Manager ko naam ke
+    saath SAHI SIZE chahiye hota hai — backup/read-back exact
+    size se hota hai (adhoora backup = brick ka rasta), is liye
+    sirf naam wali parse_gpt yahan kaafi nahi. Kharab data par
+    ValueError (parse_gpt wala hi usool).
+    """
+    if not data:
+        raise ValueError("GPT data khali hai.")
+    found = _find_header(data)
+    if found is None:
+        raise ValueError("GPT signature ('EFI PART') nahi mila — "
+                         "ye GPT dump nahi lagta.")
+    hdr_off, auto_sector = found
+    sector = sector_size or auto_sector
+    if len(data) < hdr_off + 92:
+        raise ValueError("GPT header na-mukammal hai.")
+    entries_lba = struct.unpack_from("<Q", data, hdr_off + 72)[0]
+    num_entries = struct.unpack_from("<I", data, hdr_off + 80)[0]
+    entry_size = struct.unpack_from("<I", data, hdr_off + 84)[0]
+    if entry_size < 128 or entry_size > 4096:
+        raise ValueError(f"GPT entry size ghair-mamooli hai: {entry_size}")
+    if num_entries == 0 or num_entries > 1024:
+        raise ValueError(f"GPT entries ki tadaad ghair-mamooli hai: "
+                         f"{num_entries}")
+    if hdr_off > 0:
+        base = entries_lba * sector
+    else:
+        base = max(entries_lba - 1, 1) * sector
+    out = []
+    for i in range(num_entries):
+        off = base + i * entry_size
+        if off + entry_size > len(data):
+            break
+        entry = data[off:off + entry_size]
+        if entry[0:16] == b"\x00" * 16:
+            continue  # khali entry
+        raw_name = entry[56:128]
+        try:
+            name = raw_name.decode("utf-16-le", errors="strict")
+        except UnicodeDecodeError:
+            name = raw_name.decode("utf-16-le", errors="ignore")
+        name = name.split("\x00")[0].strip()
+        if not name:
+            continue
+        first_lba = struct.unpack_from("<Q", entry, 32)[0]
+        last_lba = struct.unpack_from("<Q", entry, 40)[0]
+        if last_lba < first_lba:
+            raise ValueError(f"Partition '{name}' ki LBA range "
+                             "ulti hai — GPT dump kharab lagta hai.")
+        out.append({"name": name, "first_lba": first_lba,
+                    "last_lba": last_lba,
+                    "size_bytes": (last_lba - first_lba + 1) * sector,
+                    "sector_size": sector})
+    if not out:
+        raise ValueError("GPT parha gaya lekin koi partition naam "
+                         "nahi mila — dump na-mukammal lagta hai.")
+    return out
+
+
 def _canon(names):
     """{lower-naam: asal-naam} mapping."""
     return {n.lower(): n for n in names}
