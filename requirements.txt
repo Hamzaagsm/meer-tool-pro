@@ -6,3 +6,13 @@
 # hai; source mode me na bhi ho to tool graceful degrade ke saath
 # phir bhi chalega:
 pyserial>=3.5
+
+# Samsung firmware download (FUS) ke liye — OPTIONAL, fast AES path:
+# pycryptodome ho to ENC2/ENC4 decrypt C-speed se hota hai; na ho to
+# core/samloader_client.py ka pure-Python AES fallback chalta hai
+# (kaam karta hai, bara firmware slow decrypt hota hai). `samloader`
+# pip package MAUJOOD NAHI hai (PyPI check 2026-10-25: no matching
+# distribution) — is liye FUS client stdlib se likha gaya hai, koi
+# lazmi dependency nahi. EXE build me shamil karna build agent ka
+# faisla hai; source mode me na bhi ho to tool chalega:
+# pycryptodome>=3.18
