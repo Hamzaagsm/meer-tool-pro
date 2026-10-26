@@ -25,6 +25,7 @@ from pathlib import Path
 
 from core import engines
 from core.device_watch import DeviceInfo
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.runner import APP_ROOT, BACKUPS_DIR, TOOLS_DIR  # noqa: F401
 
 OP = {
@@ -155,18 +156,27 @@ def run(ctx) -> bool:
     dev = ctx.device
     if not dev or dev.mode not in OP["modes"]:
         ctx.log("Device BROM/Preloader mode me nahi mila. Phone band karke "
-                "Volume dono dabaye hue cable lagao (kuch models par "
-                "test-point lagta hai).", "WARN")
+                "sirf cable lagao (button zaroori nahi — preloader port "
+                "khud pakra jayega); na ho to Volume dono dabaye hue "
+                "cable lagao (kuch models par test-point lagta hai).",
+                "WARN")
         # Phir bhi koshish: MTKClient khud wait karta hai — user ko mauqa do
-    ctx.progress(10, "MTKClient device ka intezaar kar raha hai...")
-    ctx.log("Phone ko BROM mode me lagao — MTKClient handshake karega.", "INFO")
+    # Entry: device pehle se ho to foran; warna cable-only wait
+    # (band phone + cable). VCOM-bound preloader (Y91i jaisa case)
+    # par USB rasta nakam ho to transport khud VCOM par jayega.
+    # Entry na bhi mile to koshish jari (pehle wala bartao — ye op
+    # device ke baghair bhi MTKClient ka wait azmata hai).
+    _ok, entry_note = ensure_mtk_entry(ctx)
     extra = engines.mtk_extra_args()
     if extra:
         ctx.log("User ka DA (loader) istemal hoga jo tools/loaders/mtk/ "
                 "me rakha hai.", "INFO")
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
+    ctx.progress(10, "MTKClient device ka intezaar kar raha hai...")
+    ctx.log("Phone ko BROM mode me lagao — MTKClient handshake karega.", "INFO")
     found_chip = {}
-    code = ctx.stream(cmd + ["printgpt"] + extra, timeout=180, cwd=cwd,
-                      line_hook=_cpu_hook(found_chip))
+    code, _lines = transport.stream_step_capture(
+        ["printgpt"], timeout=180, line_hook=_cpu_hook(found_chip))
     if ctx.is_cancelled():
         return False
     if code == 0:
