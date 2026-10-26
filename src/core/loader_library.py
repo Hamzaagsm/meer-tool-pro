@@ -352,6 +352,57 @@ def match_qc(brand, chip, tools_dir=None):
     return match(FIREHOSE, brand, chip, tools_dir)
 
 
+def noauth_entries(tools_dir=None):
+    """Installed firehose loaders jo technician ne no-auth mark
+    kiye hue hain (local index me no_auth=True — No-Auth Loader
+    Slot op se darj hote hain)."""
+    return [e for e in installed_entries(tools_dir, kind=FIREHOSE)
+            if e.get("no_auth")]
+
+
+def match_noauth(brand, chip, tools_dir=None):
+    """No-auth firehose loaders, match() wali ranking se.
+
+    Sirf wo loaders jin ka chipset want se milta hai (tier 1/2/4
+    chip-hit) — brand-only tier 3 yahan candidate NAHI (galat
+    chip ka loader EDL flash me khatarnak hai). Us ke baad un
+    no-auth loaders jin ka brand/chip filename se nahi mila
+    (tier 5 — sirf tab istemal honge jab slot me AKEla loader
+    ho, technician ki saaf marzi se). Doosre chip ka loader
+    (key me chip saaf hai) kabhi tier 5 candidate nahi — wo is
+    device ka nahi hai."""
+    want_tokens = chip_tokens(chip)
+    ranked = []
+    for r in match(FIREHOSE, brand, chip, tools_dir):
+        e = r["entry"]
+        if not e.get("no_auth"):
+            continue
+        chip_hit = bool(want_tokens & _entry_tokens(e)) \
+            if want_tokens else False
+        if not chip_hit:
+            continue  # brand-only match — no-auth pick ke liye kafi nahi
+        ranked.append(r)
+    seen = {r["path"] for r in ranked}
+    for e in noauth_entries(tools_dir):
+        p = entry_abspath(e, tools_dir)
+        if p in seen:
+            continue
+        _b, e_chip = parse_filename_tokens(e.get("key", ""))
+        if e_chip and not (want_tokens & _entry_tokens(e)):
+            continue  # doosre chip ka loader — candidate nahi
+        brand_tokens = _brand_token_set(e.get("brand", ""))
+        if not _brand_match(brand, e.get("brand", "")) \
+                and brand_tokens - {"noauth"}:
+            continue  # doosre brand ka loader — candidate nahi
+        ranked.append({"entry": e, "path": p, "tier": 5,
+                       "why": "no-auth slot — brand/chip filename "
+                              "se nahi mila (sirf aik ho to istemal "
+                              "hoga)",
+                       "cross_brand": False})
+    ranked.sort(key=lambda it: (it["tier"], *_rank_key(it)))
+    return ranked
+
+
 # ---------------------------------------------------------------------------
 # Import helpers (ops/util_loader_import.py inhe istemal karta hai)
 # ---------------------------------------------------------------------------
@@ -398,7 +449,7 @@ def record_local_entry(entry, tools_dir=None) -> None:
     existing = [e for e in existing if e.get("path") != entry["path"]]
     clean = {k: entry[k] for k in
              ("type", "brand", "key", "path", "size", "sha256",
-              "source")
+              "source", "no_auth")
              if k in entry}
     clean["local"] = True
     existing.append(clean)
