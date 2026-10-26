@@ -22,6 +22,7 @@ mtk_flash ki tarah yahan bhi ati hai.
 
 from core import engines, scatter_build
 from core.imei_gate import imei_write_gate
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.platforms_mtk import parse_scatter
 from core.runner import BACKUPS_DIR
 from ops.mtk_frp_reset import _engine, _guard
@@ -65,7 +66,10 @@ def run(ctx) -> bool:
     # SAB SE PEHLE IMEI gate — full restore NV (IMEI) bhi likhta hai.
     if not imei_write_gate(ctx):
         return False
-    if not _guard(ctx):
+    # Entry: cable-only wait (Y91i jaisa VCOM-bound case) — na mile
+    # to asal _guard ki ERROR rehnumai + False (pehle wala bartao).
+    ok, entry_note = ensure_mtk_entry(ctx)
+    if not ok and not _guard(ctx):
         return False
     cmd, cwd = _engine(ctx)
     if cmd is None:
@@ -124,6 +128,7 @@ def run(ctx) -> bool:
     if extra:
         ctx.log("User ka DA (loader) istemal hoga jo tools/loaders/mtk/ "
                 "me rakha hai.", "INFO")
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
 
     total = len(queue)
     for idx, (part, fpath) in enumerate(queue, start=1):
@@ -138,8 +143,7 @@ def run(ctx) -> bool:
         ctx.progress(pct, f"Restore ho raha hai: {part} ({idx}/{total})")
         ctx.log(f"Restore {idx}/{total}: {part} likha ja raha "
                 "hai...", "INFO")
-        code = ctx.stream(cmd + ["w", part, str(fpath)] + extra,
-                          timeout=1800, cwd=cwd)
+        code = transport.stream_step(["w", part, str(fpath)], timeout=1800)
         if ctx.is_cancelled():
             return False
         if code != 0:
