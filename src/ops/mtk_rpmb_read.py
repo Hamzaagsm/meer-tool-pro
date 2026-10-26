@@ -20,15 +20,23 @@ karke chalata hai aur SUCCESS sirf tab deta hai jab:
 Read default/safe amal hai — is par danger gate nahi lagta.
 Range GUI ke neeche wale PARAMS bar se ata hai (Start Sector /
 Sectors); khali = poori RPMB (sector 0 se, device ki size tak).
+
+TRANSPORT (Round 2, §6.4): run_capture ab seedha subprocess.Popen
+NAHI chalata — MtkTransport.stream_step_capture se chalta hai:
+(exit code, output lines) + live log + USB→VCOM fallback + sticky
+mode + line_hook + per-step timeout 600s. Marker checks joined
+lines par waisi hi hain ("Done reading rpmb to" + file size).
+ctx._proc STOP-kill transport ke ctx.stream raste se ata hai.
+Write/erase ops isi shared helper se chalte hain — unhen
+transport mil gaya, un ka danger gate / backup-first / read-back
+verify waisa hi rehta hai.
 """
 
-import subprocess
-import sys
-import threading
 from datetime import datetime
 from pathlib import Path
 
 from core import engines
+from core.mtk_serial_fallback import MtkTransport
 from core.runner import BACKUPS_DIR
 
 OP = {
@@ -106,71 +114,54 @@ def da_output_ok(text, kind):
     return DONE_MARKERS[kind] in text
 
 
-def run_capture(ctx, cmd, cwd=None, timeout=600):
-    """Subprocess chalao: har line LIVE LOG me bhi, aur poora
-    output text wapas bhi — (exit_code, pura_output).
+def run_capture(ctx, cmd, cwd=None, timeout=600, scanner=None,
+                fallback_wait_s=30):
+    """MTKClient command transport se chalao — (exit_code, pura_output).
 
-    ctx.stream sirf exit code deta hai; DA wale ops ko jawab
-    ka MATAN (text) chahiye hota hai tasdeeq ke liye, is liye
-    ye capture wala rasta hai. Cancel/timeout par -1/-2.
+    MtkTransport.stream_step_capture wahi capture semantics deta
+    hai jo pehle yahan Popen se the: har line LIVE LOG me (runner
+    ki DATA logging) + poora output text wapas (marker verification
+    ke liye), aur izafi: USB nakam ho to VCOM COM port fallback,
+    kamyab rasta sticky, per-step timeout.
+
+    cmd poora command hai (base + ["da", "rpmb", ...] + extra) —
+    transport base cmd + per-step args alag karta hai, is liye
+    yahan pehle "da" subcommand par taqseem hoti hai. scanner /
+    fallback_wait_s sirf tests ke liye injectable hain (asal run
+    me default: system COM scan + 30s wait).
+
+    Return contract pehle jaisa: -1 = shuru nahi hua / cancel,
+    -2 = timeout (stream sirf timeout ya cancel par marta hai;
+    cancel upar alag pakra jata hai). Exit code yahan bhi saboot
+    nahi — caller da_output_ok + file size se verify karta hai.
     """
-    ctx.log(" ".join(str(c) for c in cmd), "CMD")
-    kwargs = {}
-    if sys.platform.startswith("win"):
-        kwargs["creationflags"] = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+    argv = [str(c) for c in (cmd or [])]
     try:
-        proc = subprocess.Popen(
-            [str(c) for c in cmd],
-            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-            text=True, bufsize=1, cwd=str(cwd) if cwd else None,
-            **kwargs)
-    except FileNotFoundError:
-        ctx.log(f"Engine nahi mila: {cmd[0]}", "ERROR")
+        split = argv.index("da")
+    except ValueError:
+        ctx.log("RPMB command me 'da' subcommand nahi mila — "
+                "command ki shakl ghalat hai, kuch nahi chalaya "
+                "gaya.", "ERROR")
         return -1, ""
-    except Exception as e:  # noqa: BLE001
-        ctx.log(f"Process shuru nahi ho saka: {e}", "ERROR")
+    base, args = argv[:split], argv[split:]
+    if not base or not args:
+        ctx.log("RPMB command adhoora hai (base ya args khali) — "
+                "kuch nahi chalaya gaya.", "ERROR")
         return -1, ""
-    ctx._proc = proc
-    lines = []
-    timed_out = threading.Event()
-    timer = None
-    if timeout:
-        def _kill():
-            timed_out.set()
-            try:
-                proc.kill()
-            except Exception:  # noqa: BLE001
-                pass
-        timer = threading.Timer(timeout, _kill)
-        timer.daemon = True
-        timer.start()
-    try:
-        assert proc.stdout is not None
-        for line in proc.stdout:
-            if ctx.is_cancelled():
-                try:
-                    proc.terminate()
-                except Exception:  # noqa: BLE001
-                    pass
-                ctx.log("User ne operation rok diya (STOP).", "WARN")
-                break
-            line = line.rstrip("\n")
-            lines.append(line)
-            if line.strip():
-                ctx.log(line, "DATA")
-        proc.wait()
-    finally:
-        if timer:
-            timer.cancel()
-        ctx._proc = None
-    if timed_out.is_set():
-        ctx.log(f"Timeout ({timeout}s) — engine ko rok diya gaya.",
-                "ERROR")
-        return -2, "\n".join(lines)
+    transport = MtkTransport(
+        ctx, base, cwd, [],
+        entry_note="entry: guard se tasdeeq (BROM/Preloader)",
+        scanner=scanner, fallback_wait_s=fallback_wait_s)
+    code, lines = transport.stream_step_capture(
+        args, timeout=timeout or 600, label="RPMB")
+    text = "\n".join(lines)
     if ctx.is_cancelled():
-        return -1, "\n".join(lines)
-    return (proc.returncode if proc.returncode is not None else -1,
-            "\n".join(lines))
+        return -1, text
+    if code is None:
+        return -1, text
+    if code < 0:
+        return -2, text
+    return code, text
 
 
 def engine_and_guard(ctx):
