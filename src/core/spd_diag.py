@@ -412,6 +412,48 @@ class DiagSession:
                 f"mila): {text.strip()[:120]}")
         return text
 
+    def diag_command(self, payload: bytes, timeout=3.0) -> bytes:
+        """Aik HDLC-framed Diag binary command bhejo, jawab lo.
+
+        Sirf transport hai (ISO 13239 framing — public): payload
+        ke bytes caller deta hai; is method me koi command
+        invent nahi hota. Jawab tabhi qabool jab HDLC frame
+        FCS-durust ho aur kam az kam 1 byte payload laye — warna
+        DiagError. Khamoshi bhi DiagError. Yehi method
+        attempt_diag_frp_erase / attempt_diag_factory_reset ke
+        verified-command table ki koshish chalata hai.
+        """
+        if self._ser is None:
+            raise DiagError("Diag session khula hi nahi — pehle open() karo.")
+        if not payload:
+            raise DiagError("Diag command khali hai — bhejne ko kuch nahi.")
+        frame = hdlc_encode(bytes(payload))
+        try:
+            try:
+                self._ser.reset_input_buffer()
+            except Exception:  # noqa: BLE001
+                pass
+            self._ser.write(frame)
+        except Exception as e:  # noqa: BLE001
+            raise DiagError(f"Diag command bhejna fail hua: {e}")
+        buf = bytearray()
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            try:
+                chunk = self._ser.read(4096)
+            except Exception as e:  # noqa: BLE001
+                raise DiagError(f"Diag port parhna fail hua: {e}")
+            if chunk:
+                buf += chunk
+                payloads, _rest = hdlc_parse(bytes(buf))
+                if payloads:
+                    return payloads[0]
+        raise DiagError(
+            "Diag command par device ne koi FCS-durust jawab nahi "
+            f"diya ({timeout:.0f}s) — is composition par Diag "
+            "binary channel jawab nahi deta, ya device diag me "
+            "hi nahi.")
+
     def read_imei_state(self, timeout=3.0):
         """AT+CGSN se IMEI 1 ki halat: (state, value|None).
 
@@ -473,3 +515,239 @@ def write_imei_via_diag(ctx, session, imei1, imei2="") -> bool:
         ctx.log(f"IMEI 2 (original): {imei2}", "DATA")
     ctx.log(WRITE_UNAVAILABLE_NOTE, "WARN")
     return False
+
+
+# ---------------------------------------------------------------------------
+# Diag identify + universal FRP-erase / factory-reset attempt
+# (Round 2 — Group 2: SERVER-REQUIRED-ROUTES-RESEARCH-2 §1.9, §8.4–8.5, §9.2)
+#
+# Precedent (public, verify shuda — report §1.9):
+#   - NCK Online Tool Unisoc Module v1.9 (20 Oct 2026): "TECNO/
+#     INFINIX/ITEL reset FRP in Diag mode — universal, will
+#     autodetect phone and erase FRP if supported. No model
+#     selection needed." + Backup/Restore.
+#   - UMT Unisoc Module v2.3 (Oct 2026): wahi universal Diag FRP.
+#   - UMT Unisoc v1.7 (7 Mar 2026): Enter DIAG, Read Info, Remove
+#     FRP, Safe Format, NV backup/restore.
+#   - TSM PRO 2026.08.15: "Factory Reset Unisoc Devices via Diag
+#     Mode" + Boot Tiger T760–T820 Generic/Safe.
+# Dono paid tools hain; un ke Diag-erase command bytes CLOSED
+# hain — kisi public/open source me byte-level documented NAHI
+# hain (is round me dobara dhoonda gaya: koi open-source
+# implementation, koi param/command sequence nahi mili).
+#
+# Is liye is module ki imaandar tartib ye hai:
+#   1. Pehchan (REAL, public): AT+CGMI/CGMM/CGMR/CGSN — 3GPP
+#      TS 27.007 ke standard commands — se phone identify karo.
+#   2. Darja-bandi (REAL): research se target chip/model table.
+#   3. Koshish (REAL machinery, KHALI verified table): HDLC
+#      transport + jawab-verify ka code asal hai aur test shuda
+#      hai — lekin production table me aaj KOI erase/reset
+#      command NAHI hai, kyun ke koi command publicly documented
+#      nahi aur MEER andaze se byte nahi banata. Table khali ho
+#      to attempt (False, bench-capture rehnumai) deta hai aur
+#      port par AIK byte bhi nahi jata. Jhooti SUCCESS mumkin hi
+#      nahi rakhi gayi.
+#   4. Bench-capture rasta: bench par aik asal (NCK/UMT) Diag
+#      erase ke doran Diag traffic capture karo (request bytes +
+#      device ka jawab) → table me entry dalo → phir attempt
+#      asal koshish karega aur jawab verify karega. Jab tak wo
+#      na ho, working alternative FDL rasta hai (spd_frp:
+#      persist erase; spd_reset: userdata erase).
+# ---------------------------------------------------------------------------
+
+# Target chips — research §1.9 (UMS codenames ka daawa nahi; sirf
+# marketing chip naam jo report me verify shuda hain).
+UNISOC_DIAG_CHIPS = (
+    "T7250", "T760", "T820", "T7300",
+    "T612", "T616", "T610", "T700",
+)
+
+# Target models — code (AT+CGMM me jo aye) -> naam. Research §1.9/§2.
+UNISOC_DIAG_MODELS = {
+    "X6725": "Infinix Smart 10 (T7250)",
+    "X6725B": "Infinix Smart 10 Plus (T7250)",
+    "KM4S": "Tecno Pop 10 (T7250)",
+    "KM4": "Tecno Spark Go 3 (T7250)",
+    "P65": "Itel P65 (T612/T616 class)",
+    "C681L": "Itel City 200 (T7250)",
+    "S685LN": "Itel S25 (T620 class)",
+    "S688LN": "Itel Super 26 Ultra (T7300)",
+    "Z2469N": "ZTE A76 5G (T760 — TSM world-first)",
+    "X6525D": "Infinix Smart 10 HD",
+}
+
+
+def parse_at_value(text: str, cmd: str):
+    """AT jawab se value nikalo: echo + OK/ERROR/khali lines hatao.
+
+    Pehli baqi line hi value hai (masalan AT+CGMM par 'Infinix
+    X6725'). Kuch na bache to None — andaza kabhi nahi.
+    """
+    if not text:
+        return None
+    want_echo = (cmd or "").strip().upper()
+    for raw in str(text).splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.upper() in ("OK", "ERROR"):
+            continue
+        if want_echo and line.upper() == want_echo:
+            continue
+        if line.upper().startswith("+CGMI:"):
+            line = line.split(":", 1)[1].strip()
+        elif line.upper().startswith("+CGMM:"):
+            line = line.split(":", 1)[1].strip()
+        elif line.upper().startswith("+CGMR:"):
+            line = line.split(":", 1)[1].strip()
+        if line:
+            return line
+    return None
+
+
+def identify_diag_device(session, timeout=3.0) -> dict:
+    """Diag session se phone ki pehchan — public AT commands se.
+
+    Returns {"manufacturer","model","firmware","imei_state","imei"}.
+    CGMI/CGMM lazmi (na milen to DiagError — pehchan ke baghair
+    universal erase ka daawa nahi); CGMR na aye to firmware None
+    (aage barho, lekin log me likho); IMEI read_imei_state se.
+    """
+    try:
+        manufacturer = parse_at_value(
+            session.at_command("AT+CGMI", timeout=timeout), "AT+CGMI")
+    except DiagError:
+        manufacturer = None
+    try:
+        model = parse_at_value(
+            session.at_command("AT+CGMM", timeout=timeout), "AT+CGMM")
+    except DiagError:
+        model = None
+    if not manufacturer and not model:
+        raise DiagError(
+            "Diag port AT pehchan nahi de raha (AT+CGMI/AT+CGMM "
+            "par koi jawab nahi) — phone identify nahi ho saka, "
+            "is liye universal erase ki koshish yahin rukti hai.")
+    try:
+        firmware = parse_at_value(
+            session.at_command("AT+CGMR", timeout=timeout), "AT+CGMR")
+    except DiagError:
+        firmware = None
+    state, value = session.read_imei_state(timeout=timeout)
+    return {"manufacturer": manufacturer, "model": model,
+            "firmware": firmware, "imei_state": state, "imei": value}
+
+
+def classify_diag_target(ident: dict):
+    """Pehchan se darja: ("supported"|"likely"|"unknown", wajah).
+
+    supported = model code target table me hai; likely = chip
+    naam (T7250/T760/...) pehchan me hai lekin model code nahi;
+    unknown = dono nahi — erase ki koshish phir bhi chalegi
+    (universal ka matlab yahi hai), lekin log me saaf likha
+    jayega ke ye model bench-verified list me nahi hai.
+    """
+    model = str((ident or {}).get("model") or "")
+    firmware = str((ident or {}).get("firmware") or "")
+    hay = (model + " " + firmware).upper()
+    for code, name in UNISOC_DIAG_MODELS.items():
+        if code.upper() in hay:
+            return "supported", (f"target model pehchan me aya: "
+                                 f"{name} (code {code}).")
+    for chip in UNISOC_DIAG_CHIPS:
+        if chip.upper() in hay:
+            return "likely", (f"chip {chip} target class me hai, "
+                              "lekin model code target list me "
+                              "nahi — koshish chalegi, bench par "
+                              "tasdeeq baqi rahegi.")
+    return "unknown", ("model/chip target list me nahi mila — "
+                       "universal koshish chalegi, lekin is model "
+                       "par Diag erase ka koi saboot nahi hai.")
+
+
+# -- Verified Diag command tables (AAJ KHALI — upar wali wajah) ----
+# Entry ki shakal (bench-capture ke baad):
+#   "T7250": (request_bytes, expected_response_prefix_bytes)
+#   ya model code se: "X6725": (request_bytes, expected_prefix)
+# Request sirf table se ata hai — code me kahin hardcoded
+# erase/reset bytes nahi hain.
+DIAG_FRP_ERASE_COMMANDS: dict = {}
+DIAG_FACTORY_RESET_COMMANDS: dict = {}
+
+BENCH_CAPTURE_NOTE = (
+    "Diag FRP-erase / factory-reset ka command is build me "
+    "publicly documented NAHI hai (NCK v1.9 / UMT v2.3 / TSM PRO "
+    "ke command bytes closed hain) — is liye MEER ne andaze se "
+    "koi byte port par NAHI bheja. Bench-capture rasta: aik asal "
+    "phone (Smart 10 / Pop 10 / Spark Go class) par Diag erase "
+    "ke doran Diag traffic capture karo (request bytes + device "
+    "ka jawab) aur DIAG_FRP_ERASE_COMMANDS / "
+    "DIAG_FACTORY_RESET_COMMANDS me entry dalo — phir attempt "
+    "asal koshish karega aur jawab verify karega. Aaj ka working "
+    "rasta FDL hai: FRP ke liye 'Unisoc FRP Erase (FDL)' "
+    "(spd_frp — persist erase), reset ke liye 'Unisoc Factory "
+    "Reset (FDL)' (spd_reset — userdata erase).")
+
+
+def _lookup_diag_command(table, ident):
+    """Table me entry: pehle model code, phir chip naam, warna None."""
+    model = str((ident or {}).get("model") or "")
+    firmware = str((ident or {}).get("firmware") or "")
+    hay = (model + " " + firmware).upper()
+    for code in UNISOC_DIAG_MODELS:
+        if code.upper() in hay and code in table:
+            return table[code]
+    for chip in UNISOC_DIAG_CHIPS:
+        if chip.upper() in hay and chip in table:
+            return table[chip]
+    return None
+
+
+def attempt_diag_command(session, table, ident, purpose: str,
+                         timeout=5.0):
+    """Verified-table wali Diag koshish — (ok, evidence/wajah).
+
+    Table me entry na ho: (False, BENCH_CAPTURE_NOTE) aur port
+    par ZERO bytes. Entry ho: request bhejo (HDLC), jawab lo,
+    expected prefix se milao — mismatch/khamoshi par (False,
+    wajah). Sirf prefix-match par (True, jawab ka hex).
+    """
+    entry = _lookup_diag_command(table, ident or {})
+    if entry is None:
+        return False, BENCH_CAPTURE_NOTE
+    try:
+        request, expected = entry
+    except Exception:  # noqa: BLE001
+        return False, ("Diag command table ki entry kharab shakal "
+                       "me hai — koshish nahi hui.")
+    if not request or not isinstance(request, (bytes, bytearray)):
+        return False, ("Diag command table ki entry me request "
+                       "bytes nahi hain — koshish nahi hui.")
+    try:
+        resp = session.diag_command(bytes(request), timeout=timeout)
+    except DiagError as e:
+        return False, (f"{purpose} ki koshish par device ne jawab "
+                       f"nahi diya: {e}")
+    if expected and not bytes(resp).startswith(bytes(expected)):
+        return False, (f"{purpose} ka jawab expected shakal se "
+                       "nahi mila — erase/reset sabit NAHI hua. "
+                       f"Jawab (hex): {bytes(resp)[:32].hex() or '-'}")
+    return True, (f"{purpose} ka jawab verify hua — device ne "
+                  f"expected jawab diya (hex: "
+                  f"{bytes(resp)[:32].hex() or '-'}).")
+
+
+def attempt_diag_frp_erase(session, ident, table=None):
+    """Universal Diag FRP erase ki koshish — (ok, evidence/wajah)."""
+    return attempt_diag_command(
+        session, DIAG_FRP_ERASE_COMMANDS if table is None else table,
+        ident, "Diag FRP erase")
+
+
+def attempt_diag_factory_reset(session, ident, table=None):
+    """Diag factory reset ki koshish — (ok, evidence/wajah)."""
+    return attempt_diag_command(
+        session,
+        DIAG_FACTORY_RESET_COMMANDS if table is None else table,
+        ident, "Diag factory reset")
