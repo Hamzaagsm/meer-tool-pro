@@ -10,12 +10,13 @@ QCN wapas likhna NV/IMEI wala kaam hai — is liye:
      kar sakti hai (documented technician warning) — file ka
      naam log me wazeh ata hai taake technician khud tasdeeq
      kare ke ye usi phone ki file hai.
-Asal transfer QFIL/QPST ke andar hota hai (qc_qcn_backup wala
-hi launcher + diag tayyari).
+Asal transfer QFIL/QPST ke andar hota hai — QFIL ko Windows se
+khud kholo (MEER ke andar se koi tool nahi khulta; 2026-10-25
+audit A4). Diag tayyari qc_qcn_backup se hi milti hai.
 """
 
 from core.imei_gate import imei_write_gate
-from ops.qc_qcn_backup import QCN_DIR, diag_enable, find_qpst, _launch
+from ops.qc_qcn_backup import QCN_DIR, diag_enable, find_qpst, manual_open_guide
 
 OP = {
     "id": "qc_qcn_restore",
@@ -68,8 +69,5 @@ def run(ctx) -> bool:
     ctx.log(f"3) Restore QCN me ye file select karo: {qcn}", "INFO")
     ctx.log("4) Restore ke baad phone restart karke *#06# se "
             "dabbe wala asal IMEI milao.", "INFO")
-    ctx.progress(60, f"QFIL/QPST khola ja raha hai: {exe.name}")
-    if not _launch(ctx, exe):
-        return False
-    ctx.progress(95, "QFIL/QPST tayyar — restore wahan se karo")
-    return True
+    ctx.progress(60, "QFIL/QPST ki tayyari mukammal — ab khud kholo")
+    return manual_open_guide(ctx, exe)
