@@ -27,10 +27,8 @@ hon to imaandar 🔒 SERVER REQUIRED fail: fused + DAA/SLA/Remote-Auth
 active units par public rasta documented hi nahi (research §3.6).
 """
 
-import subprocess
-import sys
-
 from core import engines, mdm_list
+from core.mtk_serial_fallback import MtkTransport, ensure_mtk_entry
 from core.platforms_mtk import parse_gpt
 from core.runner import APP_ROOT, BACKUPS_DIR, TOOLS_DIR  # noqa: F401
 
@@ -65,36 +63,27 @@ def _guard(ctx) -> bool:
     dev = ctx.device
     if not dev or dev.mode not in OP["modes"]:
         ctx.log("Device BROM/Preloader mode me nahi mila. Phone band karke "
-                "Volume dono dabaye hue cable lagao (kuch models par "
-                "test-point lagta hai).", "ERROR")
+                "sirf cable lagao (button zaroori nahi — preloader port "
+                "khud pakra jayega); na ho to Volume dono dabaye hue "
+                "cable lagao (kuch models par test-point lagta hai).",
+                "ERROR")
         return False
     return True
 
 
-def _capture(cmd, cwd, timeout=300):
-    """Command chala kar (exit_code, poori output) — GPT parse ke liye."""
-    kwargs = {}
-    if sys.platform.startswith("win"):
-        kwargs["creationflags"] = getattr(subprocess, "CREATE_NO_WINDOW", 0)
-    try:
-        out = subprocess.run([str(c) for c in cmd], capture_output=True,
-                             text=True, timeout=timeout,
-                             cwd=str(cwd) if cwd else None, **kwargs)
-        return out.returncode, (out.stdout or "") + "\n" + (out.stderr or "")
-    except Exception as e:  # noqa: BLE001
-        return -1, str(e)
-
-
-def _verify_gpt(ctx, cmd, cwd, args, label):
+def _verify_gpt(ctx, transport, args, label):
     """printgpt chala kar GPT parse — bypass ki asal tasdeeq.
 
-    args: printgpt ke extra args (masalan --loader/--ptype/--stock).
-    GPT parh li jaye to True, warna False (wajah log me)."""
+    Transport se chalta hai (USB pehle, VCOM fallback) — VCOM-bound
+    preloader par bhi bypass verify hota hai. Lines runner live
+    DATA ke tor par pehle hi log kar chuka hota hai, is liye yahan
+    dobara log nahi hoti. args: printgpt ke extra args (masalan
+    --loader/--ptype/--stock). GPT parh li jaye to True, warna
+    False (wajah log me)."""
     ctx.log(f"Tasdeeq ({label}): printgpt parha ja raha hai...", "INFO")
-    rc, text = _capture(cmd + ["printgpt"] + args, cwd, timeout=300)
-    for line in text.splitlines():
-        if line.strip():
-            ctx.log(line, "DATA")
+    rc, lines = transport.stream_step_capture(["printgpt"] + args,
+                                              timeout=300)
+    text = "\n".join(lines)
     parts = parse_gpt(text)
     if rc == 0 and parts:
         ctx.log(f"✔ GPT parh li gayi ({len(parts)} partitions) — bypass "
@@ -106,23 +95,23 @@ def _verify_gpt(ctx, cmd, cwd, args, label):
     return False
 
 
-def _target_config(ctx, cmd, cwd):
+def _target_config(ctx, transport):
     """gettargetconfig capture — sbc/daa/sla halat sirf maloomat ke liye."""
     ctx.log("Step 0: target config parha ja raha hai (sbc/daa/sla)...",
             "INFO")
-    rc, text = _capture(cmd + ["gettargetconfig"], cwd, timeout=120)
-    shown = False
-    for line in text.splitlines():
-        low = line.lower()
-        if line.strip() and any(k in low for k in
-                                ("sbc", "daa", "sla", "auth", "target",
-                                 "config", "hw code", "me id")):
-            ctx.log(line, "DATA")
-            shown = True
+    rc, lines = transport.stream_step_capture(["gettargetconfig"],
+                                              timeout=120)
+    # Lines runner live DATA ke tor par pehle hi log kar chuka hai —
+    # yahan sirf ye dekhna hai ke config ki lakeeren aai bhi ya nahi.
+    shown = any(
+        line.strip() and any(k in line.lower() for k in
+                             ("sbc", "daa", "sla", "auth", "target",
+                              "config", "hw code", "me id"))
+        for line in lines)
     if rc != 0 or not shown:
         ctx.log("Target config saaf nahi parha ja saka — chain phir bhi "
                 "aage barhegi; har rasta apni tasdeeq khud karega.", "WARN")
-    return text
+    return "\n".join(lines)
 
 
 def run(ctx) -> bool:
@@ -140,10 +129,17 @@ def run(ctx) -> bool:
     if cmd is None:
         return False
 
+    # Entry: cable-only wait (Y91i jaisa VCOM-bound case) — na mile
+    # to bhi chain koshish jari rakhti hai (pehle wala bartao:
+    # ye op device ke baghair bhi MTKClient ka wait azmati hai).
+    _ok, entry_note = ensure_mtk_entry(ctx)
+    extra = engines.mtk_extra_args()
+    transport = MtkTransport(ctx, cmd, cwd, extra, entry_note=entry_note)
+
     ctx.log("Bypass chain tartib: payload → carbonara → heapbait "
             "(DA stage) → preloader + stock DA. Har rasta GPT se "
             "verify hoga.", "INFO")
-    _target_config(ctx, cmd, cwd)
+    _target_config(ctx, transport)
     if ctx.is_cancelled():
         return False
 
@@ -160,12 +156,12 @@ def run(ctx) -> bool:
     ctx.progress(20, "Rasta 1/4: BROM payload try ho raha hai...")
     ctx.log("Rasta 1/4: BROM payload (kamakiri family) — pre-V6 chips "
             "par yahi asal bypass hai.", "INFO")
-    code = ctx.stream(cmd + ["payload"], timeout=300, cwd=cwd)
+    code = transport.stream_step(["payload"], timeout=300)
     if ctx.is_cancelled():
         return False
     if code == 0:
         ctx.log("Payload lag gaya — ab GPT se tasdeeq:", "INFO")
-        if _verify_gpt(ctx, cmd, cwd, [], "payload"):
+        if _verify_gpt(ctx, transport, [], "payload"):
             ctx.progress(95, "Bypass mukammal (payload)")
             return True
         ctx.log("Payload chala lekin GPT verify nahi hua — agla rasta "
@@ -182,7 +178,7 @@ def run(ctx) -> bool:
         ctx.log("Skip: carbonara ke liye signed/stock DA1 chahiye jo "
                 "tools/loaders/mtk/ me nahi hai. Stock firmware se "
                 "nikla hua DA wahan rakho.", "WARN")
-    elif _verify_gpt(ctx, cmd, cwd,
+    elif _verify_gpt(ctx, transport,
                      ["--loader", str(da), "--ptype", "carbonara"],
                      "carbonara"):
         ctx.progress(95, "Bypass mukammal (carbonara)")
@@ -199,7 +195,7 @@ def run(ctx) -> bool:
     if da is None:
         ctx.log("Skip: heapbait bhi DA mangta hai — DA maujood nahi.",
                 "WARN")
-    elif _verify_gpt(ctx, cmd, cwd, ["--loader", str(da)], "heapbait"):
+    elif _verify_gpt(ctx, transport, ["--loader", str(da)], "heapbait"):
         ctx.progress(95, "Bypass mukammal (heapbait DA stage)")
         return True
     if ctx.is_cancelled():
@@ -211,7 +207,7 @@ def run(ctx) -> bool:
             "units par chalta hai; koi patch nahi lagta.", "INFO")
     if da is None:
         ctx.log("Skip: stock DA bhi maujood nahi.", "WARN")
-    elif _verify_gpt(ctx, cmd, cwd,
+    elif _verify_gpt(ctx, transport,
                      ["--loader", str(da), "--stock"], "stock DA"):
         ctx.progress(95, "Bypass mukammal (stock DA)")
         return True
