@@ -118,13 +118,21 @@ def load_models():
 # user ki jama ki hui entries par bhi label hamesha nazar aye).
 # ---------------------------------------------------------------------------
 
-_NEW_AUTH_CHIPSETS = ("Dimensity 6300", "Dimensity 7300",
-                      "Dimensity 7100")
+# _NEW_AUTH_CHIPSETS hata diya gaya (2026-10-25 audit A2): is ki
+# list NEW_AUTH_TOKENS se mukhtalif thi — Dimensity 7100 yahan tha
+# magar guard me nahi, aur 6400/9000/9400 + MT6835/MT6878/MT6983
+# guard me the magar yahan nahi. Ab model_route seedha
+# NEW_AUTH_TOKENS (neeche, guard ka wahid source) istemal karta hai
+# taake label aur guard kabhi alag baat na kahen.
 
 
 def model_route(m):
     """Model ka zinda darwaza: 'META' / 'META+DA' / 'new-Auth' /
-    'Kamakiri' / 'DIAG/FDL'."""
+    'Kamakiri' / 'DIAG/FDL' / 'unknown'.
+
+    'unknown' ka matlab hai: is model ke liye koi rasta abhi
+    tasdeeq-shuda nahi — jhoota 'DA' likh kar ye dawa nahi kiya
+    jata ke koi DA rasta maujood hai."""
     saved = str(m.get("route", "") or "").strip()
     if saved:
         return saved
@@ -132,7 +140,7 @@ def model_route(m):
     chipset = str(m.get("chipset", "") or "")
     if "UNISOC" in tags or chipset.lower().startswith("unisoc"):
         return "DIAG/FDL"
-    if any(tok in chipset for tok in _NEW_AUTH_CHIPSETS):
+    if any(tok.lower() in chipset.lower() for tok in NEW_AUTH_TOKENS):
         return "new-Auth"
     if "MT6768" in chipset:
         return "Kamakiri"
@@ -140,7 +148,7 @@ def model_route(m):
         return "META+DA"
     if "TMETA" in tags:
         return "META"
-    return "DA"
+    return "unknown"
 
 
 def model_label(m):
@@ -794,15 +802,22 @@ def diag_black_screen_op(model, fdl_provider=None):
                     % found[0], "OK")
             ctx.log("Route: SPD Research Tool se ye prodnv wapas likhen "
                     "(DIAG/FDL session) — black-screen pattern isi state "
-                    "me theek hota hai.", "INFO")
+                    "me theek hota hai. Research Tool ko Windows se khud "
+                    "kholo (MEER ke andar se koi tool nahi khulta); "
+                    "prodnv file upar wale raste par maujood hai.",
+                    "INFO")
         else:
             ctx.log("Library me is model ka prodnv backup NAHI — ye fix "
                     "model-data ke baghair mumkin nahi. Pehle kisi theek "
                     "phone se prodnv backup library me rakhen.", "WARN")
-            ctx.log("Filhal stock PAC flash route khul raha hai — ye "
-                    "black screen fix ki guarantee nahi.", "INFO")
-        import ops.spd_launcher as launcher
-        return launcher.run(ctx)
+            ctx.log("Stock PAC flash route MEER ke andar se nahi khulta "
+                    "— Research Tool ko Windows se khud kholo aur PAC "
+                    "wahan load karo. Ye black screen fix ki guarantee "
+                    "nahi.", "INFO")
+        # Dono suraton me asal write MEER ke bahar hoti hai (Research
+        # Tool, Windows se) — is liye ye op rehnumai de kar False
+        # wapas karta hai, nakli SUCCESS nahi.
+        return False
     return _op("mdm_list_diag_blackscreen",
                "BLACK SCREEN NEW SEC - [DIAG]", run, engine="spd")
 
